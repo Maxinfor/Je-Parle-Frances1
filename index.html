@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JE Parle Français</title>
+    <style>
+        :root {
+            --primary: #002395; /* Azul da França */
+            --white: #ffffff;
+            --red: #ED2939; /* Vermelho da França */
+            --background: #f4f7f6;
+            --success: #2ecc71;
+            --dark: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 5px solid var(--primary);
+            padding-bottom: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: var(--primary);
+        }
+
+        h1 span {
+            color: var(--red);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Status & Gamificação */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #eef2f5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .streak { color: #e67e22; }
+        .xp { color: #9b59b6; }
+        .level-badge { color: var(--primary); }
+
+        /* Navegação de Níveis */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background: #ddd;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Exercícios */
+        .quiz-container, .speech-container {
+            display: none;
+        }
+
+        .quiz-container.active, .speech-container.active {
+            display: block;
+        }
+
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback.wrong {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Botões de Ação */
+        .action-btn {
+            width: 100%;
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .action-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Área de Leitura e Áudio */
+        .text-to-read {
+            background: #fcfcfc;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .mic-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .mic-btn.recording {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Animação do Prêmio */
+        .modal-reward {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .reward-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            animation: popUp 0.4s ease-out;
+        }
+
+        .reward-trophy {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JE Parle <span>Français</span></h1>
+    </header>
+
+    <div class="container">
+        <!-- Barra de Status Gamificada -->
+        <div class="status-bar">
+            <span class="level-badge" id="current-level-display">Nível: A1</span>
+            <span class="streak" id="streak-display">🔥 0 Dias</span>
+            <span class="xp" id="xp-display">✨ 0 XP</span>
+        </div>
+
+        <!-- Abas de Nível (A1 a C2) -->
+        <div class="tabs" id="level-tabs">
+            <button class="tab-btn active" onclick="changeLevel('A1')">A1</button>
+            <button class="tab-btn" onclick="changeLevel('A2')">A2</button>
+            <button class="tab-btn" onclick="changeLevel('B1')">B1</button>
+            <button class="tab-btn" onclick="changeLevel('B2')">B2</button>
+            <button class="tab-btn" onclick="changeLevel('C1')">C1</button>
+            <button class="tab-btn" onclick="changeLevel('C2')">C2</button>
+        </div>
+
+        <!-- Seção do Questionário Alternativo -->
+        <div id="quiz-section" class="quiz-container active">
+            <div class="question" id="quiz-question">Carregando pergunta...</div>
+            <div class="options-grid" id="quiz-options"></div>
+            <div id="quiz-feedback" class="feedback"></div>
+            <button id="next-btn" class="action-btn" onclick="nextExercise()" disabled>Verificar</button>
+        </div>
+
+        <!-- Seção de Reconhecimento de Voz / Leitura -->
+        <div id="speech-section" class="speech-container">
+            <p style="margin-bottom: 10px; font-weight: bold; color: var(--primary);">Prática de Pronúncia:</p>
+            <div class="text-to-read" id="phrase-to-read">Leia a frase em voz alta.</div>
+            <button class="mic-btn" id="mic-button" onclick="toggleListening()">🎙️ Pressione para Falar</button>
+            <div id="speech-feedback" class="feedback"></div>
+            <p style="font-size: 0.85rem; color: gray; margin-top: 10px; text-align: center;">
+                *Nota: Requer permissão de microfone e navegador compatível (Chrome/Edge).
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal de Recompensa / Gamificação -->
+    <div class="modal-reward" id="reward-modal">
+        <div class="reward-content">
+            <div class="reward-trophy">🏆</div>
+            <h2>Félicitations!</h2>
+            <p id="reward-text">Você concluiu uma lição com sucesso!</p>
+            <p style="color: var(--success); font-weight: bold; margin: 10px 0;">+50 XP conquistados!</p>
+            <button class="action-btn" onclick="closeRewardModal()">Continuar Aprendendo</button>
+        </div>
+    </div>
+
+    <script>
+        // Banco de Dados do App (Todos os níveis de francês)
+        const database = {
+            A1: {
+                question: "Como se diz 'Bom dia' em francês?",
+                options: ["Au revoir", "Bonjour", "Merci", "S'il vous plaît"],
+                correct: 1,
+                phrase: "Bonjour, ça va?"
+            },
+            A2: {
+                question: "Qual é o passado composto do verbo 'manger' com o sujeito 'Je'?",
+                options: ["Je mangeais", "Je vais manger", "J'ai mangé", "Je manges"],
+                correct: 2,
+                phrase: "J'ai mangé um croissant ce matin."
+            },
+            B1: {
+                question: "Escolha a frase correta no Subjuntivo:",
+                options: ["Il faut que tu viens", "Il faut que tu viennes", "Il faut que tu vas venir", "Il faut que tu as venu"],
+                correct: 1,
+                phrase: "Il faut que nous fassions attention."
+            },
+            B2: {
+                question: "O que significa a expressão 'Mettre les pieds dans le plat'?",
+                options: ["Cozinhar bem", "Fazer uma gafa / Falar sem pensar", "Limpar os pés", "Ter pressa"],
+                correct: 1,
+                phrase: "Sans le vouloir, il a mis les pieds dans le plat."
+            },
+            C1: {
+                question: "Identifique o sinônimo erudito de 'Évident':",
+                options: ["Palpable", "Incongru", "Manifeste", "Ambigu"],
+                correct: 2,
+                phrase: "Il est manifeste que la situation a évolué."
+            },
+            C2: {
+                question: "Substitua por um pronome correto: 'Il pense toujours à ses projets futuros'.",
+                options: ["Il y pense toujours", "Il en pense toujours", "Il les pense toujours", "Il lui pense toujours"],
+                correct: 0,
+                phrase: "Quoi qu'il en soit, nous y parviendrons."
+            }
+        };
+
+        // Estado do Usuário (Carrega do localStorage se existir)
+        let userState = {
+            currentLevel: 'A1',
+            xp: 0,
+            streak: 0,
+            lastActiveDate: null
+        };
+
+        // Reconhecimento de Voz Avançado
+        let recognition;
+        let isListening = false;
+
+        // Inicialização do App
+        window.onload = function() {
+            loadUserData();
+            checkNotificationAndStreak();
+            loadLevelData();
+            setupSpeechRecognition();
+        };
+
+        function loadUserData() {
+            const savedState = localStorage.getItem('jeParleFrancais_Data');
+            if (savedState) {
+                userState = JSON.parse(savedState);
+                updateUI();
+            }
+        }
+
+        function saveUserData() {
+            localStorage.setItem('jeParleFrancais_Data', JSON.stringify(userState));
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('xp-display').innerText = `✨ ${userState.xp} XP`;
+            document.getElementById('streak-display').innerText = `🔥 ${userState.streak} Dias`;
+            document.getElementById('current-level-display').innerText = `Nível: ${userState.currentLevel}`;
+        }
+
+        // Sistema de Ofensiva (Streak) e Lembrete Noturno
+        function checkNotificationAndStreak() {
+            const today = new Date().toDateString();
+            
+            if (userState.lastActiveDate) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (userState.lastActiveDate === yesterday.toDateString()) {
+                    // Continuou a ofensiva
+                } else if (userState.lastActiveDate !== today) {
+                    // Quebrou a ofensiva se passou mais de um dia
+                    userState.streak = 0;
+                }
+            }
+            
+            // Simulação de Lembrete caso o usuário acesse após tempo sem fazer nada
+            if (userState.lastActiveDate !== today && userState.lastActiveDate !== null) {
+                alert("📣 JE Parle Français: Ne perdez pas votre élan! Não perca o ritmo, faça sua lição de hoje para manter seu foco!");
+            }
+        }
+
+        function completeLesson() {
+            const today = new Date().toDateString();
+            if (userState.lastActiveDate !== today) {
+                userState.streak += 1;
+                userState.lastActiveDate = today;
+            }
+            userState.xp += 50;
+            saveUserData();
+            triggerReward();
+        }
+
+        // Gerenciamento de Telas e Abas
+        function changeLevel(level) {
+            userState.currentLevel = level;
+            
+            // Atualizar classes das abas
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if(btn.innerText === level) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            // Alternar modos para dar dinâmica (Ex: níveis pares fazem leitura, ímpares fazem quiz)
+            if(['A2', 'B2', 'C2'].includes(level)) {
+                document.getElementById('quiz-section').classList.remove('active');
+                document.getElementById('speech-section').classList.add('active');
+            } else {
+                document.getElementById('speech-section').classList.remove('active');
+                document.getElementById('quiz-section').classList.add('active');
+            }
+
+            loadLevelData();
+            saveUserData();
+        }
+
+        function loadLevelData() {
+            const data = database[userState.currentLevel];
+            
+            // Renderizar Quiz
+            document.getElementById('quiz-question').innerText = data.question;
+            const optionsDiv = document.getElementById('quiz-options');
+            optionsDiv.innerHTML = '';
+            
+            data.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option;
+                btn.onclick = () => checkQuizAnswer(index);
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').className = 'feedback';
+            document.getElementById('next-btn').disabled = true;
+            document.getElementById('next-btn').innerText = "Verificar";
+
+            // Renderizar Texto de Fala
+            document.getElementById('phrase-to-read').innerText = data.phrase;
+            document.getElementById('speech-feedback').className = 'feedback';
+        }
+
+        // Verificação do Quiz Tradicional
+        let selectedOption = null;
+        function checkQuizAnswer(selectedIndex) {
+            const data = database[userState.currentLevel];
+            const feedback = document.getElementById('quiz-feedback');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (selectedIndex === data.correct) {
+                feedback.innerText = "Excellent! Resposta correta. 🎉";
+                feedback.className = "feedback correct";
+                nextBtn.disabled = false;
+                nextBtn.innerText = "Resgatar Prêmio";
+                nextBtn.onclick = completeLesson;
+            } else {
+                feedback.innerText = "Oups! Tente novamente. Você consegue!";
+                feedback.className = "feedback wrong";
+            }
+        }
+
+        // API de Reconhecimento de Voz (Speech Recognition)
+        function setupSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'fr-FR'; // Configurado especificamente para Francês
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onresult = function(event) {
+                    const speechToText = event.results[0][0].transcript.toLowerCase();
+                    const expectedText = database[userState.currentLevel].phrase.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+                    
+                    const feedback = document.getElementById('speech-feedback');
+                    
+                    // Validação aproximada inteligente
+                    if(speechToText.includes(expectedText) || expectedText.includes(speechToText)) {
+                        feedback.innerText = `Magnifique! Você disse: "${speechToText}"`;
+                        feedback.className = "feedback correct";
+                        setTimeout(completeLesson, 1000);
+                    } else {
+                        feedback.innerText = `Quase lá! Ouvimos: "${speechToText}". Tente focar na pronúncia nativa.`;
+                        feedback.className = "feedback wrong";
+                    }
+                };
+
+                recognition.onerror = function() {
+                    stopListening();
+                };
+
+                recognition.onend = function() {
+                    stopListening();
+                };
+            }
+        }
+
+        function toggleListening() {
+            if(!recognition) {
+                alert("O reconhecimento de voz não é totalmente suportado no seu navegador atual. Use o Google Chrome para esta funcionalidade!");
+                return;
+            }
+            if (isListening) {
+                stopListening();
+            } else {
+                isListening = true;
+                const micBtn = document.getElementById('mic-button');
+                micBtn.innerText = "🛑 Escutando... Fale agora!";
+                micBtn.classList.add('recording');
+                recognition.start();
+            }
+        }
+
+        function stopListening() {
+            isListening = false;
+            const micBtn = document.getElementById('mic-button');
+            micBtn.innerText = "🎙️ Pressione para Falar";
+            micBtn.classList.remove('recording');
+            if(recognition) recognition.stop();
+        }
+
+        // Sistema de Recompensas por Lição
+        function triggerReward() {
+            document.getElementById('reward-modal').style.display = 'flex';
+        }
+
+        function closeRewardModal() {
+            document.getElementById('reward-modal').style.display = 'none';
+            // Avança para o próximo nível dinamicamente para manter o engajamento
+            const levels = Object.keys(database);
+            let nextIdx = levels.indexOf(userState.currentLevel) + 1;
+            if(nextIdx >= levels.length) nextIdx = 0; // Reseta para o A1 se fechar o ciclo
+            changeLevel(levels[nextIdx]);
+        }
+    </script>
+</body>
+</html>

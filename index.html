@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Francês: Missões</title>
+    <title>App de Francês: Aula Invertida</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         .app-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
@@ -15,7 +15,7 @@
         .mic-btn { background-color: #8e44ad; color: white; border: none; border-radius: 50%; width: 80px; height: 80px; font-size: 30px; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         .mic-btn.recording { background-color: #e74c3c; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        #feedback { margin-top: 15px; font-weight: bold; color: #7f8c8d; }
+        #prep-text { text-align: left; background: #fdfefe; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db; margin: 15px 0; font-size: 0.95em; color: #555; }
     </style>
 </head>
 <body>
@@ -26,27 +26,36 @@
         <span>⭐ XP: <span id="xp-count">0</span></span>
     </div>
 
+    <!-- Tela de Menu -->
     <div id="screen-menu" class="screen active">
         <h2>Missões Disponíveis</h2>
-        <button class="menu-btn" onclick="openLevel(1)">Nível 1: La Chambre</button>
-        <button class="menu-btn" id="btn-lvl2" onclick="openLevel(2)" disabled>Nível 2: La Boulangerie 🔒</button>
+        <button class="menu-btn" onclick="openPrep(1)">Nível 1: La Chambre</button>
+        <button class="menu-btn" id="btn-lvl2" onclick="openPrep(2)" disabled>Nível 2: La Boulangerie 🔒</button>
     </div>
 
+    <!-- Tela de Preparação (Aula Invertida) -->
+    <div id="screen-prep" class="screen">
+        <h2 id="prep-title">Preparação</h2>
+        <div id="prep-text"></div>
+        <button class="menu-btn" onclick="startGame()">Ir para Prática</button>
+        <button class="menu-btn" style="background:#95a5a6;" onclick="goBack()">Voltar ao Menu</button>
+    </div>
+
+    <!-- Tela de Jogo -->
     <div id="screen-game" class="screen">
         <h2 id="game-title">Nível 1</h2>
         <div id="visual" style="font-size: 60px; margin: 15px 0;">⏰</div>
-        <p id="instruction">Carregue no microfone e diga:</p>
         <p id="target-word" style="font-size: 1.5em; font-weight: bold; color: #8e44ad;">...</p>
         <button class="mic-btn" id="mic-btn" onclick="startListening()">🎤</button>
         <p id="feedback">Clique para falar</p>
-        <button class="menu-btn" style="background:#95a5a6; margin-top:20px;" onclick="goBack()">Voltar ao Menu</button>
     </div>
 </div>
 
 <script>
-    // Carregar progresso salvo
     let xp = parseInt(localStorage.getItem('francesXP')) || 0;
     let lvl2Unlocked = localStorage.getItem('lvl2Unlocked') === 'true';
+    let currentLevel = 0;
+    let currentStep = 0;
 
     document.getElementById('xp-count').innerText = xp;
     if(lvl2Unlocked) {
@@ -54,17 +63,24 @@
         document.getElementById('btn-lvl2').innerText = "Nível 2: La Boulangerie";
     }
 
-    let currentLevel = 0;
-    let currentStep = 0;
-
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.lang = 'fr-FR';
 
-    function openLevel(lvl) {
+    function openPrep(lvl) {
         currentLevel = lvl;
-        currentStep = 1;
+        const prepContent = {
+            1: "<strong>Dica de Aula Invertida:</strong> No francês, o 'e' final em 'réveil' é brando. O 'lit' refere-se à cama. Pratique a pronúncia destas palavras para aplicar na nossa próxima aula.",
+            2: "<strong>Dica de Aula Invertida:</strong> 'Bonjour' é a base da cortesia. 'Un croissant' exige foco na nasalização. Prepare-se para realizar este pedido na simulação."
+        };
+        document.getElementById('prep-text').innerHTML = prepContent[lvl];
         document.getElementById('screen-menu').classList.remove('active');
+        document.getElementById('screen-prep').classList.add('active');
+    }
+
+    function startGame() {
+        currentStep = 1;
+        document.getElementById('screen-prep').classList.remove('active');
         document.getElementById('screen-game').classList.add('active');
         updateGameUI();
     }
@@ -90,23 +106,15 @@
         
         if (currentLevel === 1) {
             if (currentStep === 1 && transcript.includes('réveil')) {
-                currentStep = 2; xp += 50;
-                updateGameUI();
+                currentStep = 2; xp += 50; updateGameUI();
             } else if (currentStep === 2 && transcript.includes('lit')) {
-                xp += 100;
-                lvl2Unlocked = true;
-                saveProgress();
-                goBack();
+                xp += 100; lvl2Unlocked = true; saveProgress(); goBack();
             }
         } else if (currentLevel === 2) {
             if (currentStep === 1 && transcript.includes('bonjour')) {
-                currentStep = 2; xp += 50;
-                updateGameUI();
+                currentStep = 2; xp += 50; updateGameUI();
             } else if (currentStep === 2 && transcript.includes('croissant')) {
-                xp += 150;
-                saveProgress();
-                alert("Parabéns! Nível concluído.");
-                goBack();
+                xp += 150; saveProgress(); alert("Parabéns!"); goBack();
             }
         }
         document.getElementById('xp-count').innerText = xp;
@@ -115,12 +123,12 @@
     function saveProgress() {
         localStorage.setItem('francesXP', xp);
         localStorage.setItem('lvl2Unlocked', lvl2Unlocked);
-        document.getElementById('btn-lvl2').disabled = !lvl2Unlocked;
+        document.getElementById('btn-lvl2').disabled = false;
         document.getElementById('btn-lvl2').innerText = "Nível 2: La Boulangerie";
     }
 
     function goBack() {
-        document.getElementById('screen-game').classList.remove('active');
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('screen-menu').classList.add('active');
     }
 </script>

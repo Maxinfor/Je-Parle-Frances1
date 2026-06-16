@@ -3,134 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App de Francês: Aula Invertida</title>
+    <title>Francês A1: Jornada de Domínio</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .app-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        .hud { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; color: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; min-height: 100vh; margin: 0; }
+        .app-container { background: white; width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .progress-bar-container { background: #e0e0e0; border-radius: 10px; height: 15px; margin: 20px 0; overflow: hidden; }
+        #progress-bar { background: #2ecc71; height: 100%; width: 0%; transition: 0.5s; }
+        .level-card { border: 1px solid #ddd; padding: 15px; margin: 8px 0; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .locked { opacity: 0.5; background: #f9f9f9; }
+        .practice { border: 2px solid #3498db; background: #ebf5fb; }
         .screen { display: none; }
         .screen.active { display: block; }
-        .menu-btn { background-color: #3498db; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
-        .menu-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
-        .mic-btn { background-color: #8e44ad; color: white; border: none; border-radius: 50%; width: 80px; height: 80px; font-size: 30px; cursor: pointer; transition: 0.3s; margin-top: 15px; }
-        .mic-btn.recording { background-color: #e74c3c; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        #prep-text { text-align: left; background: #fdfefe; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db; margin: 15px 0; font-size: 0.95em; color: #555; }
+        button { padding: 10px 15px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; }
+        button:disabled { background: #bdc3c7; }
+        .mic-btn { width: 80px; height: 80px; border-radius: 50%; font-size: 30px; margin: 20px auto; display: block; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <div class="hud">
-        <span>🔥 Streak: 18</span>
-        <span>⭐ XP: <span id="xp-count">0</span></span>
-    </div>
-
     <!-- Tela de Menu -->
     <div id="screen-menu" class="screen active">
-        <h2>Missões Disponíveis</h2>
-        <button class="menu-btn" onclick="openPrep(1)">Nível 1: La Chambre</button>
-        <button class="menu-btn" id="btn-lvl2" onclick="openPrep(2)" disabled>Nível 2: La Boulangerie 🔒</button>
-    </div>
-
-    <!-- Tela de Preparação (Aula Invertida) -->
-    <div id="screen-prep" class="screen">
-        <h2 id="prep-title">Preparação</h2>
-        <div id="prep-text"></div>
-        <button class="menu-btn" onclick="startGame()">Ir para Prática</button>
-        <button class="menu-btn" style="background:#95a5a6;" onclick="goBack()">Voltar ao Menu</button>
+        <h2>🇫🇷 Jornada Francês A1</h2>
+        <div class="progress-bar-container"><div id="progress-bar"></div></div>
+        <div id="levels-list"></div>
     </div>
 
     <!-- Tela de Jogo -->
     <div id="screen-game" class="screen">
-        <h2 id="game-title">Nível 1</h2>
-        <div id="visual" style="font-size: 60px; margin: 15px 0;">⏰</div>
-        <p id="target-word" style="font-size: 1.5em; font-weight: bold; color: #8e44ad;">...</p>
-        <button class="mic-btn" id="mic-btn" onclick="startListening()">🎤</button>
-        <p id="feedback">Clique para falar</p>
+        <h2 id="game-title">Exercício</h2>
+        <p id="question" style="font-size: 1.2em; margin-bottom: 20px;"></p>
+        <button id="mic-btn" class="mic-btn" onclick="startListening()">🎤</button>
+        <p id="feedback" style="text-align:center;">Clique e responda</p>
+        <button onclick="goBack()" style="background:#95a5a6; width:100%;">Voltar ao Menu</button>
     </div>
 </div>
 
 <script>
-    let xp = parseInt(localStorage.getItem('francesXP')) || 0;
-    let lvl2Unlocked = localStorage.getItem('lvl2Unlocked') === 'true';
-    let currentLevel = 0;
-    let currentStep = 0;
+    // Estrutura de currículo internacional em 4 Blocos
+    let levels = JSON.parse(localStorage.getItem('levels')) || [
+        { id: 0, title: "1. Cumprimentos", target: "salut", q: "Como dizer 'Oi'?", locked: false },
+        { id: 1, title: "2. Informações (Moi)", target: "nationalité", q: "Diga 'Minha nacionalidade'.", locked: true },
+        { id: 2, title: "★ Síntese 1", target: "je suis", q: "Diga: 'Eu sou brasileiro'.", locked: true, practice: true },
+        { id: 3, title: "3. La Famille", target: "père", q: "Como dizer 'O pai'?", locked: true },
+        { id: 4, title: "4. Ma Journée", target: "réveil", q: "Como dizer 'Despertador'?", locked: true },
+        { id: 5, title: "★ Síntese 2", target: "famille", q: "Diga: 'Minha família'.", locked: true, practice: true },
+        { id: 6, title: "5. En Ville", target: "gauche", q: "Como dizer 'À esquerda'?", locked: true },
+        { id: 7, title: "6. Au Restaurant", target: "croissant", q: "Como pedir 'um croissant'?", locked: true },
+        { id: 8, title: "★ Síntese 3", target: "restaurant", q: "Diga: 'Eu vou ao restaurante'.", locked: true, practice: true },
+        { id: 9, title: "7. Mes Loisirs", target: "j'aime", q: "Como dizer 'Eu gosto'?", locked: true },
+        { id: 10, title: "8. Les Achats", target: "combien", q: "Como perguntar 'Quanto custa'?", locked: true },
+        { id: 11, title: "★ Síntese Final", target: "français", q: "Diga: 'Eu falo francês'.", locked: true, practice: true }
+    ];
 
-    document.getElementById('xp-count').innerText = xp;
-    if(lvl2Unlocked) {
-        document.getElementById('btn-lvl2').disabled = false;
-        document.getElementById('btn-lvl2').innerText = "Nível 2: La Boulangerie";
+    let currentId = 0;
+
+    function render() {
+        const list = document.getElementById('levels-list');
+        list.innerHTML = '';
+        let completed = 0;
+        levels.forEach(lvl => {
+            if (!lvl.locked) completed++;
+            list.innerHTML += `
+                <div class="level-card ${lvl.locked ? 'locked' : ''} ${lvl.practice ? 'practice' : ''}">
+                    <span>${lvl.title}</span>
+                    <button onclick="openGame(${lvl.id})" ${lvl.locked ? 'disabled' : ''}>${lvl.locked ? '🔒' : '▶️'}</button>
+                </div>
+            `;
+        });
+        const progress = (completed / levels.length) * 100;
+        document.getElementById('progress-bar').style.width = progress + "%";
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'fr-FR';
-
-    function openPrep(lvl) {
-        currentLevel = lvl;
-        const prepContent = {
-            1: "<strong>Dica de Aula Invertida:</strong> No francês, o 'e' final em 'réveil' é brando. O 'lit' refere-se à cama. Pratique a pronúncia destas palavras para aplicar na nossa próxima aula.",
-            2: "<strong>Dica de Aula Invertida:</strong> 'Bonjour' é a base da cortesia. 'Un croissant' exige foco na nasalização. Prepare-se para realizar este pedido na simulação."
-        };
-        document.getElementById('prep-text').innerHTML = prepContent[lvl];
+    function openGame(id) {
+        currentId = id;
         document.getElementById('screen-menu').classList.remove('active');
-        document.getElementById('screen-prep').classList.add('active');
-    }
-
-    function startGame() {
-        currentStep = 1;
-        document.getElementById('screen-prep').classList.remove('active');
         document.getElementById('screen-game').classList.add('active');
-        updateGameUI();
+        document.getElementById('game-title').innerText = levels[id].title;
+        document.getElementById('question').innerText = levels[id].q;
     }
 
-    function updateGameUI() {
-        if(currentLevel === 1) {
-            document.getElementById('game-title').innerText = "Nível 1: La Chambre";
-            document.getElementById('target-word').innerText = currentStep === 1 ? "Le réveil" : "Le lit";
-        } else {
-            document.getElementById('game-title').innerText = "Nível 2: La Boulangerie";
-            document.getElementById('target-word').innerText = currentStep === 1 ? "Bonjour" : "Un croissant";
-        }
-    }
+    const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    rec.lang = 'fr-FR';
 
-    function startListening() {
-        recognition.start();
-        document.getElementById('mic-btn').classList.add('recording');
-    }
+    function startListening() { rec.start(); }
 
-    recognition.onresult = (e) => {
-        document.getElementById('mic-btn').classList.remove('recording');
+    rec.onresult = (e) => {
         const transcript = e.results[0][0].transcript.toLowerCase();
-        
-        if (currentLevel === 1) {
-            if (currentStep === 1 && transcript.includes('réveil')) {
-                currentStep = 2; xp += 50; updateGameUI();
-            } else if (currentStep === 2 && transcript.includes('lit')) {
-                xp += 100; lvl2Unlocked = true; saveProgress(); goBack();
-            }
-        } else if (currentLevel === 2) {
-            if (currentStep === 1 && transcript.includes('bonjour')) {
-                currentStep = 2; xp += 50; updateGameUI();
-            } else if (currentStep === 2 && transcript.includes('croissant')) {
-                xp += 150; saveProgress(); alert("Parabéns!"); goBack();
-            }
+        if (transcript.includes(levels[currentId].target)) {
+            if (levels[currentId + 1]) levels[currentId + 1].locked = false;
+            localStorage.setItem('levels', JSON.stringify(levels));
+            alert("Correto! Avançando...");
+            goBack();
+        } else {
+            document.getElementById('feedback').innerText = "Tente novamente!";
         }
-        document.getElementById('xp-count').innerText = xp;
     };
 
-    function saveProgress() {
-        localStorage.setItem('francesXP', xp);
-        localStorage.setItem('lvl2Unlocked', lvl2Unlocked);
-        document.getElementById('btn-lvl2').disabled = false;
-        document.getElementById('btn-lvl2').innerText = "Nível 2: La Boulangerie";
+    function goBack() {
+        document.getElementById('screen-game').classList.remove('active');
+        document.getElementById('screen-menu').classList.add('active');
+        render();
     }
 
-    function goBack() {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-menu').classList.add('active');
-    }
+    render();
 </script>
 </body>
 </html>

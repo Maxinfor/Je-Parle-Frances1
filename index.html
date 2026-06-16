@@ -324,7 +324,6 @@
             if(!this.ctx) {
                 this.ctx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            // Força o contexto de áudio a sair do estado suspenso imposto pelos navegadores
             if (this.ctx && this.ctx.state === 'suspended') {
                 this.ctx.resume();
             }
@@ -362,46 +361,67 @@
             osc.start(agora);
             osc.stop(agora + 0.26);
         },
-        tocarMusicaFrancesa() {
+        tocarHipHopFrances() {
             this.init();
             const agora = this.ctx.currentTime;
-            
-            // La Vie en Rose - Ajuste milimétrico de compasso para caixinha de música nativa
-            const melodia = [
-                {f: 523.25, t: 0.0, d: 0.4},  
-                {f: 587.33, t: 0.4, d: 0.4},  
-                {f: 659.25, t: 0.8, d: 0.8},  
-                {f: 659.25, t: 1.6, d: 0.4},  
-                {f: 587.33, t: 2.0, d: 0.4},  
-                {f: 523.25, t: 2.4, d: 0.8},  
-                {f: 523.25, t: 3.2, d: 0.4},  
-                {f: 493.88, t: 3.6, d: 0.4},  
-                {f: 440.00, t: 4.0, d: 1.2},  
+            const bpm = 92; // Ritmo clássico de Boom Bap francês
+            const tempoPasso = 60 / bpm;
+
+            // Estrutura de batida rítmica curta (cerca de 3 segundos)
+            const batidas = [
+                // Compasso 1
+                { tipo: 'bombo', t: 0 },
+                { tipo: 'baixo', t: 0, f: 65.41 }, // Nota Dó grave
+                { tipo: 'bombo', t: tempoPasso * 0.5 },
+                { tipo: 'caixa', t: tempoPasso },
+                { tipo: 'baixo', t: tempoPasso, f: 73.42 }, // Nota Ré
+                { tipo: 'bombo', t: tempoPasso * 1.5 },
+                { tipo: 'bombo', t: tempoPasso * 2 },
+                { tipo: 'baixo', t: tempoPasso * 2, f: 58.27 }, // Nota Si Bemol
+                { tipo: 'caixa', t: tempoPasso * 3 },
                 
-                {f: 440.00, t: 5.4, d: 0.4},  
-                {f: 493.88, t: 5.8, d: 0.4},  
-                {f: 523.25, t: 6.2, d: 0.8},  
-                {f: 523.25, t: 7.0, d: 0.4},  
-                {f: 440.00, t: 7.4, d: 0.4},  
-                {f: 392.00, t: 7.8, d: 1.5}   
+                // Compasso 2
+                { tipo: 'bombo', t: tempoPasso * 4 },
+                { tipo: 'baixo', t: tempoPasso * 4, f: 65.41 },
+                { tipo: 'caixa', t: tempoPasso * 5 },
+                { tipo: 'bombo', t: tempoPasso * 5.5 },
+                { tipo: 'bombo', t: tempoPasso * 6 },
+                { tipo: 'baixo', t: tempoPasso * 6, f: 49.00 }, // Nota Sol bem grave
+                { tipo: 'caixa', t: tempoPasso * 7 }
             ];
 
-            melodia.forEach(nota => {
+            batidas.forEach(b => {
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(nota.f, agora + nota.t);
-                
-                gain.gain.setValueAtTime(0, agora + nota.t);
-                gain.gain.linearRampToValueAtTime(0.12, agora + nota.t + 0.02); // Leve aumento de volume base
-                gain.gain.exponentialRampToValueAtTime(0.001, agora + nota.t + nota.d);
-                
+
+                if (b.tipo === 'bombo') {
+                    // Chute do bumbo (frequência cai rápido para simular o impacto)
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, agora + b.t);
+                    osc.frequency.exponentialRampToValueAtTime(0.01, agora + b.t + 0.12);
+                    gain.gain.setValueAtTime(0.4, agora + b.t);
+                    gain.gain.linearRampToValueAtTime(0, agora + b.t + 0.12);
+                } 
+                else if (b.tipo === 'caixa') {
+                    // Caixa (Som mais estalado e agressivo)
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, agora + b.t);
+                    gain.gain.setValueAtTime(0.15, agora + b.t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, agora + b.t + 0.15);
+                } 
+                else if (b.tipo === 'baixo') {
+                    // Linha de baixo Hip-hop sustentada
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(b.f, agora + b.t);
+                    gain.gain.setValueAtTime(0, agora + b.t);
+                    gain.gain.linearRampToValueAtTime(0.3, agora + b.t + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, agora + b.t + (tempoPasso * 0.9));
+                }
+
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
-                
-                osc.start(agora + nota.t);
-                osc.stop(agora + nota.t + nota.d + 0.05);
+                osc.start(agora + b.t);
+                osc.stop(agora + b.t + 0.8);
             });
         }
     };
@@ -608,7 +628,7 @@
                     pergunta: "Como pedir uma sugestão de vinho para acompanhar seu prato?", 
                     opcoes: [
                         {t: "Donne-moi un bon vin.", c: false}, 
-                        {t: "Qu'est-ce que vous conseillez comme vin ?", c: true}, 
+                        {t: "Qu'est-ce que vous conseillez como vin ?", c: true}, 
                         {t: "Quel vin est cher ici ?", c: false}, 
                         {t: "Je veux boire du rouge.", c: false}
                     ], 
@@ -660,7 +680,7 @@
                 },
                 { 
                     local: "Museu", npc: "Guichetier", avatar: "🎟️", 
-                    pergunta: "Como perguntar if estudantes têm direito a desconto no ingresso?", 
+                    pergunta: "Como perguntar se estudantes têm direito a desconto no ingresso?", 
                     opcoes: [
                         {t: "C'est moins cher pour l'école ?", c: false}, 
                         {t: "Je étudie, quel preço ?", c: false}, 
@@ -716,7 +736,7 @@
                         {t: "L'eau et l'électricité payent ensemble ?", c: false}, 
                         {t: "Les charges são grátis ?", c: false}, 
                         {t: "Les charges sont-elles comprises dans le loyer ?", c: true}, 
-                        {t: "Tout le bâtiment est payé ?", c: false}
+                        {t: "Tout le edifício est payé ?", c: false}
                     ], 
                     exp: "Em locações, as taxas administrativas/condomínio são chamadas de 'charges'. Elas podem ser 'comprises' (inclusas)." 
                 },
@@ -735,7 +755,7 @@
                     local: "Seguradora", npc: "Courtier", avatar: "🛡️", 
                     pergunta: "Como declarar formalmente que deseja rescindir um contrato de serviços?", 
                     opcoes: [
-                        {t: "Je veux finir le papier.", c: false}, 
+                        {t: "Je veux finir le papel.", c: false}, 
                         {t: "Je souhaite résilier mon contrat de plein droit.", c: true}, 
                         {t: "Casser le deal d'assurance.", c: false}, 
                         {t: "Arrêter le document s'il vous plaît.", c: false}
@@ -828,7 +848,6 @@
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('game-ui').style.display = 'block';
         
-        // Ativa o áudio imediatamente no primeiro clique de configuração da meta
         som.init();
         renderizar();
     }
@@ -928,7 +947,6 @@
         document.getElementById('next-btn').style.display = 'block';
     }
 
-    // Intercepta o clique físico do usuário para validar o desbloqueio do áudio no navegador
     function triggerAvancarMissao() {
         som.init(); 
         avancarMissao();
@@ -942,9 +960,9 @@
                 if (nivelAtual === 0) {
                     temBronze = true;
                     dispararShowDeFogos();
-                    som.tocarMusicaFrancesa(); // Roda perfeitamente agora por estar atrelada ao clique direto
+                    som.tocarHipHopFrances(); // Dispara o trecho curto de Rap Francês 92 BPM
                     setTimeout(() => {
-                        alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos! O Croissant de Bronze é seu ao som de La Vie en Rose! 🎆🎵`);
+                        alert(`🎉 Incroyable! Você conseguiu ${acertosNoNivel}/10 acertos! O Croissant de Bronze é seu ao som de uma batida clássica de Hip Hop Francês! 🎆🥁`);
                     }, 100);
                 }
                 if (nivelAtual === 1) {

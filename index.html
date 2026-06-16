@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francês A1 - Corrigido</title>
+    <title>Jornada Francês A1 - Versão Definitiva</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; text-align: center; }
         .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
@@ -61,6 +61,7 @@
 </div>
 
 <script>
+    // Imagens de personagens otimizadas
     const avatar = {
         boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150&auto=format&fit=crop&q=60", 
         prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=60",      
@@ -73,17 +74,17 @@
 
     const niveis = [
         { nome: "Nível 1: Cumprimentos", img: "https://cdn-icons-png.flaticon.com/128/2921/2921226.png", missoes: [
-            { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra para comprar um doce. O que diz ao padeiro?", opcoes: [{t: "Un pain!", c: false}, {t: "Bonjour !", c: true}] },
+            { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra para comprar um doce. O que diz ao padeiro?", opcoes: [{t: "Un pain !", c: false}, {t: "Bonjour !", c: true}] },
             { local: "Rua", npc: "Mme. Martin", foto: avatar.prof, pergunta: "Você encontra sua professora de francês na calçada. Como falar de forma polida?", opcoes: [{t: "Salut prof !", c: false}, {t: "Bonjour, madame !", c: true}] },
             { local: "Café à tarde", npc: "Lucas", foto: avatar.amigo, pergunta: "São 18h, você encontra um conhecido. Como cumprimentar?", opcoes: [{t: "Bonsoir !", c: true}, {t: "Bonjour !", c: false}] },
             { local: "Loja de Souvenirs", npc: "Chloé (Atendente)", foto: avatar.garcom, pergunta: "Você pagou e está saindo da loja. Despeça-se educadamente:", opcoes: [{t: "Merci, au revoir !", c: true}, {t: "Salut !", c: false}] },
             { local: "Metrô", npc: "Desconhecido", foto: avatar.passante, pergunta: "Para pedir informação a um homem desconhecido na plataforma, você o aborda dizendo:", opcoes: [{t: "Excusez-moi, Monsieur.", c: true}, {t: "Salut toi.", c: false}] }
         ]},
         { nome: "Nível 2: Apresentação", img: "https://cdn-icons-png.flaticon.com/128/197/197560.png", missoes: [
-            { local: "Imigração", npc: "Agente Pierre", foto: avatar.policial, pergunta: "O oficial olha seu passaporte e pergunta seu nome. Responda:", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis de Idney.", c: false}] },
+            { local: "Imigração", npc: "Agente Pierre", foto: avatar.policial, pergunta: "O oficial olha seu passaporte e pergunta seu nome. Responda corretamente:", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis de Idney.", c: false}] },
             { local: "Hostel", npc: "Thomas (Hóspede)", foto: avatar.amigo, pergunta: "Conversando com um turista, como pergunta 'E você?' de forma polida?", opcoes: [{t: "Et vous ?", c: true}, {t: "C'est toi ?", c: false}] },
             { local: "Praça", npc: "Sarah", foto: avatar.viajante, pergunta: "Ela quer saber de onde você é. Diga que você é brasileiro(a):", opcoes: [{t: "Je suis Brésilien.", c: true}, {t: "J'ai Brésil.", c: false}] },
-            { local: "Albergue", npc: "Marc", foto: avatar.passante, pergunta: "Acabaram de se conhecer. Como falar 'Prazer em conhecê-lo':", opcoes: [{t: "Enchanté.", c: true}, {t: "Au revoir.", c: false}] },
+            { local: "Albergue", npc: "Marc", foto: avatar.passante, pergunta: "Acabaram de se conhecer. Como falar 'Prazer em conhecê-lo'?", opcoes: [{t: "Enchanté.", c: true}, {t: "Au revoir.", c: false}] },
             { local: "Alfândega", npc: "Fiscal", foto: avatar.policial, pergunta: "Perguntaram sua profissão. Responda que é funcionário público:", opcoes: [{t: "Je suis fonctionnaire.", c: true}, {t: "J'ai fonctionnaire.", c: false}] }
         ]},
         { nome: "Nível 3: Números", img: "https://cdn-icons-png.flaticon.com/128/1175/1175134.png", missoes: [
@@ -118,6 +119,7 @@
     }
 
     function renderizar() {
+        // Atualiza a barra visual do passaporte com os selos conquistados
         niveis.forEach((n, i) => {
             const stamp = document.getElementById('stamp-' + i);
             stamp.style.backgroundImage = `url('${n.img}')`;
@@ -128,6 +130,7 @@
             }
         });
 
+        // Fluxo de Fim de Jogo (Evita erro de crash ao estourar o índice do array)
         if (nivelAtual >= niveis.length) {
             document.getElementById('titulo-fase').innerText = "🎉 Félicitations !";
             document.getElementById('character-zone').style.display = 'none';
@@ -147,6 +150,7 @@
         
         const m = nivel.missoes[indiceMissao];
         
+        // Renderização dinâmica do cenário e NPC
         document.getElementById('location-badge').innerText = m.local.toUpperCase();
         document.getElementById('char-name').innerText = m.npc;
         document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
@@ -166,13 +170,14 @@
     function verificar(correta) {
         if (correta) {
             indiceMissao++;
+            // Verifica se concluiu todas as missões da fase atual
             if (indiceMissao >= niveis[nivelAtual].missoes.length) {
                 if (!conquistados.includes(niveis[nivelAtual].nome)) {
                     conquistados.push(niveis[nivelAtual].nome);
                 }
                 nivelAtual++; 
                 indiceMissao = 0;
-                alert("Bravo! Você ganhou mais um carimbo!");
+                alert("Bravo ! Você ganhou mais um carimbo !");
                 
                 if(nivelAtual < niveis.length) {
                     document.getElementById('revisao-btn').style.display = 'block';
@@ -181,7 +186,7 @@
             }
             renderizar();
         } else { 
-            alert("Opa, o personagem não te entendeu muito bem... Tente outra vez! ❌"); 
+            alert("Opa, o personagem não te entendeu muito bem... Tente outra vez ! ❌"); 
         }
     }
 
@@ -189,7 +194,7 @@
         nivelAtual = 0;
         indiceMissao = 0;
         conquistados = [];
-        alert("Modo Revisão ativo! Vamos refazer os diálogos do início.");
+        alert("Modo Revisão ativo ! Vamos refazer os diálogos do início.");
         renderizar();
     }
 </script>

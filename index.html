@@ -2,17 +2,30 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francês A1</title>
+    <title>Jornada Francês A1 - Com Personagens</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; text-align: center; }
         .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
         .passport-container { background: #fdf6e3; border: 2px solid #8b4513; padding: 10px; border-radius: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; }
         .stamp { width: 50px; height: 50px; background: #e0d8c3; border: 2px dashed #8b4513; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); opacity: 0.5; background-size: 60%; background-repeat: no-repeat; background-position: center; transition: all 0.3s; }
         .stamp.earned { filter: grayscale(0%) drop-shadow(0 0 5px #f1c40f); border: 3px solid #f1c40f; opacity: 1; }
+        
+        /* --- ESTILO DOS PERSONAGENS --- */
+        .character-zone { display: flex; align-items: center; margin: 20px 0; background: #f9f9f9; padding: 15px; border-radius: 15px; border-left: 5px solid #3498db; text-align: left; }
+        .char-avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 15px; background-size: cover; background-position: center; flex-shrink: 0; }
+        .dialogue-box { flex-grow: 1; }
+        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.9em; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .char-bubble { font-size: 1.05em; color: #34495e; margin: 0; position: relative; }
+        .location-badge { display: inline-block; background: #e8f4fd; color: #2980b9; padding: 2px 8px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 5px; }
+        
         .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; }
+        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; font-size: 1em; transition: transform 0.1s, background 0.2s; }
+        button:active { transform: scale(0.98); }
+        button:hover { background: #2980b9; }
         #start-btn { background: #27ae60; font-size: 1.2em; width: 100%; }
+        #start-btn:hover { background: #219150; }
         #revisao-btn { background: #e67e22; margin-top: 15px; width: 100%; display: none; }
+        #revisao-btn:hover { background: #d35400; }
     </style>
 </head>
 <body>
@@ -20,7 +33,7 @@
 <div class="app-container">
     <div id="start-screen">
         <h1>🇫🇷 Bem-vindo!</h1>
-        <p>Prepare-se para sua jornada na França.</p>
+        <p>Prepare-se para sua jornada interativa na França.</p>
         <button id="start-btn" onclick="iniciarApp()">Entrar na França 🇫🇷</button>
     </div>
 
@@ -31,49 +44,71 @@
             <div id="stamp-2" class="stamp"></div><div id="stamp-3" class="stamp"></div>
             <div id="stamp-4" class="stamp"></div>
         </div>
+        
         <h4 id="titulo-fase">Carregando...</h4>
-        <p id="pergunta"></p>
+        
+        <!-- Zona Dinâmica do Personagem -->
+        <div class="character-zone" id="character-zone">
+            <div class="char-avatar" id="char-avatar"></div>
+            <div class="dialogue-box">
+                <span class="location-badge" id="location-badge">PADARIA</span>
+                <div class="char-name" id="char-name">Nome do NPC</div>
+                <p class="char-bubble" id="pergunta">Fala do personagem aqui...</p>
+            </div>
+        </div>
+
         <div id="choices" class="choices"></div>
         <button id="revisao-btn" onclick="iniciarRevisao()">Modo Revisão 🔄</button>
     </div>
 </div>
 
 <script>
+    // Banco de avatares gratuitos e expressivos do Unsplash
+    const avatar = {
+        boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150&auto=format&fit=crop&q=60", // Padeiro/Trabalhador
+        prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=60",      // Professora
+        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60",  // Homem na rua
+        policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150&auto=format&fit=crop&q=60",  // Oficial/Imigração
+        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=60",     // Jovem/Amigo
+        garcom: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?w=150&auto=format&fit=crop&q=60",    // Garçom/Atendente
+        viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&auto=format&fit=crop&q=60"   // Moça na estação
+    };
+
     const niveis = [
         { nome: "Nível 1: Cumprimentos", img: "https://cdn-icons-png.flaticon.com/128/2921/2921226.png", missoes: [
-            { local: "Padaria", pergunta: "O que diz ao entrar?", opcoes: [{t: "Un pain!", c: false}, {t: "Bonjour!", c: true}] },
-            { local: "Rua", pergunta: "Encontro com professor:", opcoes: [{t: "Salut prof!", c: false}, {t: "Bonjour, monsieur!", c: true}] },
-            { local: "Tarde", pergunta: "São 17h, como cumprimentar?", opcoes: [{t: "Bonsoir!", c: true}, {t: "Bonjour!", c: false}] },
-            { local: "Saída", pergunta: "Despedida polida:", opcoes: [{t: "Merci, au revoir!", c: true}, {t: "Salut!", c: false}] },
-            { local: "Formal", pergunta: "Como tratar estranhos?", opcoes: [{t: "Com 'Vous'.", c: true}, {t: "Com 'Tu'.", c: false}] }
+            { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra para comprar um doce. O que diz ao padeiro?", opcoes: [{t: "Un pain!", c: false}, {t: "Bonjour!", c: true}] },
+            { local: "Rua", npc: "Mme. Martin", foto: avatar.prof, pergunta: "Você encontra sua professora de francês na calçada:", opcoes: [{t: "Salut prof!", c: false}, {t: "Bonjour, monsieur!", c: true}] },
+            { local: "Café à tarde", npc: "Lucas", foto: avatar.amigo, pergunta: "São 17h, você encontra um conhecido. Como cumprimentar?", opcoes: [{t: "Bonsoir!", c: true}, {t: "Bonjour!", c: false}] },
+            { local: "Loja de Souvenirs", npc: "Chloé (Atendente)", foto: avatar.garcom, pergunta: "Você pagou e está saindo da loja de forma polida:", opcoes: [{t: "Merci, au revoir!", c: true}, {t: "Salut!", c: false}] },
+            { local: "Metrô", npc: "Desconhecido", foto: avatar.passante, pergunta: "Para pedir informação a um estranho na plataforma, você o trata:", opcoes: [{t: "Com 'Vous' (Formal).", c: true}, {t: "Com 'Tu' (Informal).", c: false}] }
         ]},
         { nome: "Nível 2: Apresentação", img: "https://cdn-icons-png.flaticon.com/128/197/197560.png", missoes: [
-            { local: "Imigração", pergunta: "Como dizer seu nome?", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis Idney.", c: false}] },
-            { local: "Conversa", pergunta: "Como perguntar 'E você?':", opcoes: [{t: "Et vous?", c: true}, {t: "C'est toi?", c: false}] },
-            { local: "Nacionalidade", pergunta: "Você é brasileiro(a):", opcoes: [{t: "Je suis Brésilien.", c: true}, {t: "J'ai Brésilien.", c: false}] },
-            { local: "Conhecer", pergunta: "Prazer em conhecê-lo:", opcoes: [{t: "Enchanté.", c: true}, {t: "Au revoir.", c: false}] },
-            { local: "Trabalho", pergunta: "Sou servidor público:", opcoes: [{t: "Je suis fonctionnaire.", c: true}, {t: "J'habite fonctionnaire.", c: false}] }
+            { local: "Imigração", npc: "Agente Pierre", foto: avatar.policial, pergunta: "O oficial olha seu passaporte e pergunta seu nome. Responda:", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis Idney.", c: false}] },
+            { local: "Hostel", npc: "Thomas (Hóspede)", foto: avatar.amigo, pergunta: "Conversando com um turista, como pergunta 'E você?' de forma gentil?", opcoes: [{t: "Et vous?", c: true}, {t: "C'est toi?", c: false}] },
+            { local: "Praça", npc: "Sarah", foto: avatar.viajante, pergunta: "Ela quer saber de onde você é. Diga que você é brasileiro(a):", opcoes: [{t: "Je suis Brésilien.", c: true}, {t: "J'ai Brésilien.", c: false}] },
+            { local: "Albergue", npc: "Marc", foto: avatar.passante, pergunta: "Acabaram de se conhecer. Como falar 'Prazer em conhecê-lo':", opcoes: [{t: "Enchanté.", c: true}, {t: "Au revoir.", c: false}] },
+            { local: "Alfândega", npc: "Fiscal", foto: avatar.policial, pergunta: "Perguntaram sua profissão. Responda que é servidor público:", opcoes: [{t: "Je suis fonctionnaire.", c: true}, {t: "J'habite fonctionnaire.", c: false}] }
         ]},
         { nome: "Nível 3: Números", img: "https://cdn-icons-png.flaticon.com/128/1175/1175134.png", missoes: [
-            { local: "Padaria", pergunta: "Quero 2 croissants:", opcoes: [{t: "Deux croissants.", c: true}, {t: "Un croissant.", c: false}] },
-            { local: "Caixa", pergunta: "O valor é 3 euros:", opcoes: [{t: "C'est trois euros.", c: true}, {t: "Il a trois euros.", c: false}] },
-            { local: "Telefone", pergunta: "Como dizer o número 4?", opcoes: [{t: "Quatre.", c: true}, {t: "Cinq.", c: false}] },
-            { local: "Preço", pergunta: "Quanto custa?", opcoes: [{t: "C'est combien?", c: true}, {t: "Combien c'est?", c: false}] },
-            { local: "Quantidade", pergunta: "Pedir 5 baguetes:", opcoes: [{t: "Cinq baguettes.", c: true}, {t: "Deux baguettes.", c: false}] }
+            { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você quer comprar exatamente dois croissants:", opcoes: [{t: "Deux croissants.", c: true}, {t: "Un croissant.", c: false}] },
+            { local: "Banca de Jornal", npc: "Benoît", foto: avatar.passante, pergunta: "O atendente diz o preço de um mapa. Como ele fala 'São 3 euros'?", opcoes: [{t: "C'est trois euros.", c: true}, {t: "Il a trois euros.", c: false}] },
+            { local: "Hotel", npc: "Recepcionista", foto: avatar.garcom, pergunta: "Ela pede o dígito final do seu quarto. Como dizer o número 4?", opcoes: [{t: "Quatre.", c: true}, {t: "Cinq.", c: false}] },
+            { local: "Feira de Rua", npc: "Vendedor", foto: avatar.boulanger, pergunta: "Você vê uma lembrança bonita. Como perguntar 'Quanto custa?'", opcoes: [{t: "C'est combien?", c: true}, {t: "Combien c'est?", c: false}] },
+            { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "A família é grande! Peça 5 baguetes:", opcoes: [{t: "Cinq baguettes.", c: true}, {t: "Deux baguettes.", c: false}] }
         ]},
         { nome: "Nível 4: Restaurante", img: "https://cdn-icons-png.flaticon.com/128/3063/3063185.png", missoes: [
-            { local: "Entrada", pergunta: "Mesa para dois:", opcoes: [{t: "Une table pour deux.", c: true}, {t: "Je veux deux.", c: false}] },
-            { local: "Pedido", pergunta: "Gostaria de um café:", opcoes: [{t: "Je voudrais un café.", c: true}, {t: "J'ai un café.", c: false}] },
-            { local: "Conta", pergunta: "Pedindo a conta:", opcoes: [{t: "La note, s'il vous plaît.", c: true}, {t: "Donnez-moi ça.", c: false}] },
-            { local: "Água", pergunta: "Pode trazer água?", opcoes: [{t: "De l'eau, s'il vous plaît.", c: true}, {t: "Je veux l'eau.", c: false}] },
-            { local: "Menu", pergunta: "Onde está o menu?", opcoes: [{t: "Le menu, s'il vous plaît.", c: true}, {t: "Où est le plat?", c: false}] }
+            { local: "Restaurante", npc: "Maître", foto: avatar.garcom, pergunta: "Você chega na recepção e pede uma mesa para duas pessoas:", opcoes: [{t: "Une table pour deux.", c: true}, {t: "Je veux deux.", c: false}] },
+            { local: "Mesa", npc: "Garçom", foto: avatar.garcom, pergunta: "O garçom se aproxima. Peça educadamente: 'Gostaria de um café':", opcoes: [{t: "Je voudrais un café.", c: true}, {t: "J'ai un café.", c: false}] },
+            { local: "Mesa", npc: "Garçom", foto: avatar.garcom, pergunta: "Hora de ir embora. Chame o garçom pedindo a conta:", opcoes: [{t: "La note, s'il vous plaît.", c: true}, {t: "Donnez-moi ça.", c: false}] },
+            { local: "Mesa", npc: "Garçom", foto: avatar.garcom, pergunta: "Está calor. Peça água de forma educada:", opcoes: [{t: "De l'eau, s'il vous plaît.", c: true}, {t: "Je veux l'eau.", c: false}] },
+            { local: "Restaurante", npc: "Maître", foto: avatar.garcom, pergunta: "Você quer ver as opções de prato. Peça o menu:", opcoes: [{t: "Le menu, s'il vous plaît.", c: true}, {t: "Où est le plat?", c: false}] }
         ]},
         { nome: "Nível 5: Imersão", img: "https://cdn-icons-png.flaticon.com/128/2904/2904772.png", missoes: [
-            { local: "Rua", pergunta: "Onde fica a estação?", opcoes: [{t: "Où est la gare?", c: true}, {t: "La gare est où?", c: false}] },
-            { local: "Compras", pergunta: "Eu gostaria de um bilhete:", opcoes: [{t: "Je voudrais un billet.", c: true}, {t: "J'ai besoin ticket.", c: false}] },
-            { local: "Trem", pergunta: "O trem está atrasado?", opcoes: [{t: "Le train est en retard?", c: true}, {t: "Le train a retard?", c: false}] },
-            { local: "Local", pergunta: "Estou perdido(a):", opcoes: [{t: "Je suis perdu.", c: true}, {t: "J'ai perdu.", c: false}] },
-            { local: "Tempo", pergunta: "Que horas são?", opcoes: [{t: "Quelle heure est-il?", c: true}, {t: "Il est quelle heure?", c: false}] }
+            { local: "Rua", npc: "Pedestre", foto: avatar.passante, pergunta: "Você precisa pegar o trem. Pergunte: 'Onde fica a estação?'", opcoes: [{t: "Où est la gare?", c: true}, {t: "La gare est où?", c: false}] },
+            { local: "Guichê", npc: "Atendente SNCF", foto: avatar.viajante, pergunta: "Diga para a atendente: 'Eu gostaria de um bilhete':", opcoes: [{t: "Je voudrais un billet.", c: true}, {t: "J'ai besoin ticket.", c: false}] },
+            { local: "Plataforma", npc: "Passageiro", foto: avatar.amigo, pergunta: "Você olha para o painel. Pergunte se o trem está atrasado:", opcoes: [{t: "Le train est en retard?", c: true}, {t: "Le train a retard?", c: false}] },
+            { local: "Rua", npc: "Policial", foto: avatar.policial, pergunta: "Seu mapa sumiu! Diga ao guarda: 'Estou perdido(a)':", opcoes: [{t: "Je suis perdu.", c: true}, {t: "J'ai perdido.", c: false}] },
+            { local: "Ponto de Ônibus", npc: "Senhora", foto: avatar.prof, pergunta: "Para não perder o horário, pergunte a ela que horas são:", opcoes: [{t: "Quelle heure est-il?", c: true}, {t: "Il est quelle heure?", c: false}] }
         ]}
     ];
 
@@ -86,20 +121,53 @@
     }
 
     function renderizar() {
-        const nivel = niveis[nivelAtual];
-        document.getElementById('titulo-fase').innerText = nivel.nome;
-        const m = nivel.missoes[indiceMissao];
-        document.getElementById('pergunta').innerText = `(${m.local}) ${m.pergunta}`;
-        const choicesDiv = document.getElementById('choices'); choicesDiv.innerHTML = '';
-        m.opcoes.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.innerText = opt.t; btn.onclick = () => verificar(opt.c);
-            choicesDiv.appendChild(btn);
-        });
+        // Atualiza os carimbos do passaporte
         niveis.forEach((n, i) => {
             const stamp = document.getElementById('stamp-' + i);
             stamp.style.backgroundImage = `url('${n.img}')`;
-            if (conquistados.includes(n.nome)) stamp.classList.add('earned');
+            if (conquistados.includes(n.nome)) {
+                stamp.classList.add('earned');
+            } else {
+                stamp.classList.remove('earned');
+            }
+        });
+
+        // Fim do Jogo
+        if (nivelAtual >= niveis.length) {
+            document.getElementById('titulo-fase').innerText = "🎉 Félicitations !";
+            document.getElementById('character-zone').style.display = 'none'; // Esconde a caixa de diálogo
+            
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '<p style="font-weight: bold; color: #27ae60;">Você completou sua jornada inicial e está pronto para explorar a França!</p>';
+            
+            document.getElementById('revisao-btn').style.display = 'block';
+            document.getElementById('revisao-btn').innerText = "Reiniciar Jornada 🔄";
+            return;
+        }
+
+        // Garante que a zona de personagem esteja visível durante o jogo
+        document.getElementById('character-zone').style.display = 'flex';
+
+        const nivel = niveis[nivelAtual];
+        document.getElementById('titulo-fase').innerText = nivel.nome;
+        
+        const m = nivel.missoes[indiceMissao];
+        
+        // Injeta os dados do personagem e cenário na tela
+        document.getElementById('location-badge').innerText = m.local.toUpperCase();
+        document.getElementById('char-name').innerText = m.npc;
+        document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
+        document.getElementById('pergunta').innerText = m.pergunta;
+        
+        // Renderiza botões de escolha
+        const choicesDiv = document.getElementById('choices'); 
+        choicesDiv.innerHTML = '';
+        
+        m.opcoes.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.innerText = opt.t; 
+            btn.onclick = () => verificar(opt.c);
+            choicesDiv.appendChild(btn);
         });
     }
 
@@ -107,17 +175,30 @@
         if (correta) {
             indiceMissao++;
             if (indiceMissao >= niveis[nivelAtual].missoes.length) {
-                conquistados.push(niveis[nivelAtual].nome);
-                nivelAtual++; indiceMissao = 0;
-                alert("Bravo! Nível concluído!");
-                if(conquistados.length > 0) document.getElementById('revisao-btn').style.display = 'block';
+                if (!conquistados.includes(niveis[nivelAtual].nome)) {
+                    conquistados.push(niveis[nivelAtual].nome);
+                }
+                nivelAtual++; 
+                indiceMissao = 0;
+                alert("Bravo! Você ganhou mais um carimbo!");
+                
+                if(nivelAtual < niveis.length) {
+                    document.getElementById('revisao-btn').style.display = 'block';
+                    document.getElementById('revisao-btn').innerText = "Modo Revisão 🔄";
+                }
             }
             renderizar();
-        } else { alert("Tente outra vez!"); }
+        } else { 
+            alert("Opa, o personagem não te entendeu muito bem... Tente outra vez! ❌"); 
+        }
     }
 
     function iniciarRevisao() {
-        alert("Modo Revisão ativado! Continue treinando suas missões.");
+        nivelAtual = 0;
+        indiceMissao = 0;
+        conquistados = [];
+        alert("Modo Revisão ativo! Vamos refazer os diálogos do início.");
+        renderizar();
     }
 </script>
 </body>

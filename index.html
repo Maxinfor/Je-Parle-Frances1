@@ -2,58 +2,49 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Francês A1: Jornada de Domínio</title>
+    <title>Jornada Francês A1</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; min-height: 100vh; margin: 0; }
-        .app-container { background: white; width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .progress-bar-container { background: #e0e0e0; border-radius: 10px; height: 15px; margin: 20px 0; overflow: hidden; }
-        #progress-bar { background: #2ecc71; height: 100%; width: 0%; transition: 0.5s; }
-        .level-card { border: 1px solid #ddd; padding: 15px; margin: 8px 0; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; background: #fff; }
-        .locked { opacity: 0.5; background: #f9f9f9; }
-        .practice { border: 2px solid #3498db; background: #ebf5fb; }
+        .app-container { background: white; width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 15px; }
+        .level-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 12px; background: #fff; display: flex; flex-direction: column; }
+        .locked { opacity: 0.6; background: #f9f9f9; }
+        .goal-text { font-size: 0.85em; color: #7f8c8d; font-style: italic; margin-top: 5px; }
         .screen { display: none; }
         .screen.active { display: block; }
-        button { padding: 10px 15px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; }
+        button { padding: 12px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; }
         button:disabled { background: #bdc3c7; }
-        .mic-btn { width: 80px; height: 80px; border-radius: 50%; font-size: 30px; margin: 20px auto; display: block; }
+        #cert-btn { background: #e67e22; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Tela de Menu -->
+    <!-- Menu -->
     <div id="screen-menu" class="screen active">
         <h2>🇫🇷 Jornada Francês A1</h2>
-        <div class="progress-bar-container"><div id="progress-bar"></div></div>
         <div id="levels-list"></div>
     </div>
 
-    <!-- Tela de Jogo -->
+    <!-- Jogo -->
     <div id="screen-game" class="screen">
         <h2 id="game-title">Exercício</h2>
-        <p id="question" style="font-size: 1.2em; margin-bottom: 20px;"></p>
-        <button id="mic-btn" class="mic-btn" onclick="startListening()">🎤</button>
-        <p id="feedback" style="text-align:center;">Clique e responda</p>
-        <button onclick="goBack()" style="background:#95a5a6; width:100%;">Voltar ao Menu</button>
+        <p id="question" style="font-weight: bold;"></p>
+        <button id="mic-btn" onclick="startListening()">🎤 Responder Agora</button>
+        <p id="feedback" style="text-align:center; color: #e74c3c;"></p>
+        <button onclick="goBack()" style="background:#95a5a6;">Voltar ao Menu</button>
     </div>
 </div>
 
 <script>
-    // Estrutura de currículo internacional em 4 Blocos
     let levels = JSON.parse(localStorage.getItem('levels')) || [
-        { id: 0, title: "1. Cumprimentos", target: "salut", q: "Como dizer 'Oi'?", locked: false },
-        { id: 1, title: "2. Informações (Moi)", target: "nationalité", q: "Diga 'Minha nacionalidade'.", locked: true },
-        { id: 2, title: "★ Síntese 1", target: "je suis", q: "Diga: 'Eu sou brasileiro'.", locked: true, practice: true },
-        { id: 3, title: "3. La Famille", target: "père", q: "Como dizer 'O pai'?", locked: true },
-        { id: 4, title: "4. Ma Journée", target: "réveil", q: "Como dizer 'Despertador'?", locked: true },
-        { id: 5, title: "★ Síntese 2", target: "famille", q: "Diga: 'Minha família'.", locked: true, practice: true },
-        { id: 6, title: "5. En Ville", target: "gauche", q: "Como dizer 'À esquerda'?", locked: true },
-        { id: 7, title: "6. Au Restaurant", target: "croissant", q: "Como pedir 'um croissant'?", locked: true },
-        { id: 8, title: "★ Síntese 3", target: "restaurant", q: "Diga: 'Eu vou ao restaurante'.", locked: true, practice: true },
-        { id: 9, title: "7. Mes Loisirs", target: "j'aime", q: "Como dizer 'Eu gosto'?", locked: true },
-        { id: 10, title: "8. Les Achats", target: "combien", q: "Como perguntar 'Quanto custa'?", locked: true },
-        { id: 11, title: "★ Síntese Final", target: "français", q: "Diga: 'Eu falo francês'.", locked: true, practice: true }
+        { id: 0, title: "1. Cumprimentos", goal: "Aprender a saudar e despedir-se.", target: "salut", q: "Como dizer 'Oi'?", hint: "Dica: O 't' final é mudo. Pronuncie 'sa-lü'.", locked: false },
+        { id: 1, title: "2. Informações", goal: "Saber dizer nome e nacionalidade.", target: "nationalité", q: "Diga a palavra 'nacionalidade'.", hint: "Dica: Foque no final 'té'.", locked: true },
+        { id: 2, title: "3. Os Números", goal: "Dominar a base numérica (0-10).", target: "un deux trois", q: "Diga 1, 2 e 3.", hint: "Dica: O 's' final de 'trois' não é pronunciado.", locked: true },
+        { id: 3, title: "4. As Horas", goal: "Aplicar números para dizer a hora.", target: "quelle heure", q: "Pergunte 'Que horas são'?", hint: "Dica: Use a pergunta que aprendemos.", locked: true },
+        { id: 4, title: "5. A Família", goal: "Descrever membros da família.", target: "père", q: "Como dizer 'O pai'?", hint: "Dica: O 'r' é gutural.", locked: true },
+        { id: 5, title: "6. Rotina", goal: "Expressar ações do dia a dia.", target: "réveil", q: "Como dizer 'despertador'?", hint: "Dica: Foque no som 'véi'.", locked: true },
+        { id: 6, title: "7. Restaurante", goal: "Fazer pedidos e interagir.", target: "croissant", q: "Peça um 'croissant'.", hint: "Dica: Nasalize bem o 'on'.", locked: true },
+        { id: 7, title: "8. Quanto custa?", goal: "Saber perguntar preços.", target: "combien", q: "Pergunte 'Quanto custa'?", hint: "Dica: Junte os sons: 'combien'.", locked: true }
     ];
 
     let currentId = 0;
@@ -61,18 +52,16 @@
     function render() {
         const list = document.getElementById('levels-list');
         list.innerHTML = '';
-        let completed = 0;
         levels.forEach(lvl => {
-            if (!lvl.locked) completed++;
             list.innerHTML += `
-                <div class="level-card ${lvl.locked ? 'locked' : ''} ${lvl.practice ? 'practice' : ''}">
-                    <span>${lvl.title}</span>
-                    <button onclick="openGame(${lvl.id})" ${lvl.locked ? 'disabled' : ''}>${lvl.locked ? '🔒' : '▶️'}</button>
+                <div class="level-card ${lvl.locked ? 'locked' : ''}">
+                    <strong>${lvl.title}</strong>
+                    <span class="goal-text">Objetivo: ${lvl.goal}</span>
+                    <button onclick="openGame(${lvl.id})" ${lvl.locked ? 'disabled' : ''}>${lvl.locked ? '🔒 Bloqueado' : '▶️ Iniciar'}</button>
                 </div>
             `;
         });
-        const progress = (completed / levels.length) * 100;
-        document.getElementById('progress-bar').style.width = progress + "%";
+        checkCompletion();
     }
 
     function openGame(id) {
@@ -81,6 +70,7 @@
         document.getElementById('screen-game').classList.add('active');
         document.getElementById('game-title').innerText = levels[id].title;
         document.getElementById('question').innerText = levels[id].q;
+        document.getElementById('feedback').innerText = "";
     }
 
     const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -93,12 +83,25 @@
         if (transcript.includes(levels[currentId].target)) {
             if (levels[currentId + 1]) levels[currentId + 1].locked = false;
             localStorage.setItem('levels', JSON.stringify(levels));
-            alert("Correto! Avançando...");
+            alert("Correto! Bravo! 🇫🇷");
             goBack();
         } else {
-            document.getElementById('feedback').innerText = "Tente novamente!";
+            document.getElementById('feedback').innerText = levels[currentId].hint;
         }
     };
+
+    function checkCompletion() {
+        if (levels.every(lvl => !lvl.locked) && !document.getElementById('cert-btn')) {
+            const btn = document.createElement('button');
+            btn.id = 'cert-btn';
+            btn.innerText = '🎓 Gerar Certificado';
+            btn.onclick = () => {
+                const win = window.open();
+                win.document.write(`<h1>Certificado A1 Francês</h1><p>Parabéns, você completou todos os níveis!</p>`);
+            };
+            document.getElementById('screen-menu').appendChild(btn);
+        }
+    }
 
     function goBack() {
         document.getElementById('screen-game').classList.remove('active');

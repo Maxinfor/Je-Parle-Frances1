@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês A1 - Nível 1 Perfeito</title>
+    <title>Jornada Francês Pro - Sistema de Conquistas</title>
     <style>
         :root {
             --primary: #3498db;
@@ -30,7 +30,7 @@
         .app-container { 
             background: var(--card-bg); 
             width: 100%; 
-            max-width: 480px; 
+            max-width: 500px; 
             padding: 25px; 
             border-radius: 24px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
@@ -45,16 +45,16 @@
 
         .hearts { font-size: 1.3em; letter-spacing: 2px; }
 
-        /* Estante de Prêmios Famosos */
+        /* Estante Dinâmica de Troféus e Medalhas */
         .trophy-section {
             background: #f8fafc;
             padding: 15px;
             border-radius: 18px;
             border: 2px solid #e2e8f0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .trophy-title {
-            font-size: 0.8em;
+            font-size: 0.75em;
             font-weight: bold;
             color: #7f8c8d;
             text-transform: uppercase;
@@ -64,32 +64,67 @@
         }
         .trophy-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
+            gap: 5px;
+            flex-wrap: wrap;
         }
         .trophy-slot {
-            width: 75px;
-            height: 75px;
+            width: 55px;
+            height: 55px;
             background: #e2e8f0;
             border-radius: 50%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 2.3em;
+            font-size: 1.6em;
             filter: grayscale(100%);
-            opacity: 0.25;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25);
-            border: 2px solid #b5c2d1;
+            opacity: 0.2;
+            transition: all 0.5s ease;
+            border: 2px dashed #b5c2d1;
+            position: relative;
+        }
+        .trophy-slot span {
+            font-size: 0.35em;
+            font-weight: bold;
+            position: absolute;
+            bottom: 2px;
+            text-transform: uppercase;
         }
         .trophy-slot.unlocked {
             filter: grayscale(0%);
             opacity: 1;
             background: #fff;
-            box-shadow: 0 10px 20px rgba(243, 156, 18, 0.3);
-            transform: scale(1.12) rotate(4deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
             border: 2px solid var(--warning);
+            transform: scale(1.05);
         }
 
-        /* Alerta de Última Pergunta (Antecipação) */
+        /* Banner de Fundo de Cidade Francesa */
+        .city-banner {
+            width: 100%;
+            height: 120px;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 15px;
+            transition: background-image 0.8s ease;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .city-label {
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            background: rgba(0,0,0,0.6);
+            padding: 4px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+
         .boss-alert {
             display: none;
             background: linear-gradient(135deg, #e74c3c, #f39c12);
@@ -97,10 +132,9 @@
             padding: 12px;
             border-radius: 12px;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 0.85em;
             margin-bottom: 15px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
             animation: pulse 1s infinite alternate;
         }
 
@@ -122,28 +156,28 @@
         .character-zone { 
             display: flex; 
             align-items: center; 
-            margin: 20px 0; 
+            margin: 15px 0; 
             background: #f8fafc; 
-            padding: 18px; 
+            padding: 15px; 
             border-radius: 16px; 
             border-left: 6px solid var(--primary); 
             text-align: left; 
         }
         .char-avatar { 
-            width: 70px; 
-            height: 70px; 
+            width: 60px; 
+            height: 60px; 
             border-radius: 50%; 
             border: 3px solid #fff; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            margin-right: 15px; 
+            margin-right: 12px; 
             background-size: cover; 
             background-position: center; 
             flex-shrink: 0; 
         }
         .dialogue-box { flex-grow: 1; }
-        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.85em; margin-bottom: 3px; text-transform: uppercase; }
-        .char-bubble { font-size: 1.05em; color: #34495e; margin: 0; line-height: 1.4; }
-        .location-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 6px; }
+        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.8em; margin-bottom: 3px; text-transform: uppercase; }
+        .char-bubble { font-size: 1em; color: #34495e; margin: 0; line-height: 1.4; }
+        .location-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 20px; font-size: 0.7em; font-weight: bold; margin-bottom: 6px; }
         
         .explanation-box {
             display: none;
@@ -157,9 +191,9 @@
             color: #7e5109;
         }
 
-        .choices { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         button { 
-            padding: 15px; 
+            padding: 14px; 
             border-radius: 14px; 
             border: none; 
             background: var(--primary); 
@@ -178,43 +212,54 @@
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            100% { transform: scale(1.02); }
+            100% { transform: scale(1.01); }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Tela Inicial -->
     <div id="start-screen">
-        <h1>🇫🇷 Nível 1: Comunicação Inicial</h1>
-        <p>Aprenda a cumprimentar, usar a polidez formal e se despedir de acordo com as normas mundiais de ensino <strong>(Padrão CECRL A1)</strong>.</p>
-        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Iniciar Módulo Completo 🚀</button>
+        <h1>🇫🇷 Trilha de Idiomas Europeia</h1>
+        <p>Conclua os blocos A1, A2 e A3 para destravar os lendários <strong>Croissants de Metais Preciosos</strong> e abrir os monumentos mundiais!</p>
+        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Iniciar Jornada Cultural ➔</button>
     </div>
 
-    <!-- Interface do Jogo -->
     <div id="game-ui" style="display:none;">
         <div class="status-bar">
             <span id="hearts-display" class="hearts">❤️❤️❤️</span>
-            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Etapa 1/6</span>
+            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Bloco - Etapa 1</span>
         </div>
 
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
 
-        <!-- Estante de Prêmios -->
+        <!-- Seção de Recompensas -->
         <div class="trophy-section">
-            <div class="trophy-title">Grande Prêmio do Nível 1:</div>
+            <div class="trophy-title">🥐 Galeria de Medalhas Ativas:</div>
             <div class="trophy-container">
-                <div id="trophy-0" class="trophy-slot">🏛️</div>
+                <div id="croissant-bronze" class="trophy-slot">🥐<span style="color:#cd7f32">Bronze</span></div>
+                <div id="croissant-prata" class="trophy-slot">🥐<span style="color:#7f8c8d">Prata</span></div>
+                <div id="croissant-ouro" class="trophy-slot">🥐<span style="color:#d4af37">Ouro</span></div>
+            </div>
+            <div class="trophy-title" style="margin-top:12px; margin-bottom:6px;">🏛️ Monumentos Bloqueados/Desbloqueados:</div>
+            <div class="trophy-container">
+                <div id="monumento-louvre" class="trophy-slot">🏛️<span>Louvre</span></div>
+                <div id="monumento-eiffel-b" class="trophy-slot">🗼<span>Eiffel Br</span></div>
+                <div id="monumento-eiffel-p" class="trophy-slot">🗼<span>Eiffel Pr</span></div>
+                <div id="monumento-eiffel-o" class="trophy-slot">🗼<span>Eiffel Ou</span></div>
             </div>
         </div>
 
-        <!-- Alerta Dinâmico de Prêmio -->
+        <!-- Banner com a Imagem Geográfica Mutável -->
+        <div id="city-banner" class="city-banner">
+            <span id="city-label" class="city-label">França</span>
+        </div>
+
         <div id="boss-alert" class="boss-alert"></div>
         
-        <h3 id="titulo-fase">Nível 1: Cumprimentos & Polidez</h3>
+        <h3 id="titulo-fase">Carregando...</h3>
         
         <div class="character-zone">
             <div class="char-avatar" id="char-avatar"></div>
@@ -232,62 +277,80 @@
 </div>
 
 <script>
+    // Sintetizador nativo de efeitos sonoros (Web Audio API)
+    const som = {
+        ctx: null,
+        init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+        tocarSucesso() {
+            this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+            osc.connect(gain); gain.connect(this.ctx.destination);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, this.ctx.currentTime); // Ré
+            osc.frequency.setValueAtTime(880, this.ctx.currentTime + 0.1); // Lá
+            gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+            osc.start(); osc.stop(this.ctx.currentTime + 0.25);
+        },
+        tocarErro() {
+            this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+            osc.connect(gain); gain.connect(this.ctx.destination);
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(130.81, this.ctx.currentTime); // Dó grave
+            gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+            osc.start(); osc.stop(this.ctx.currentTime + 0.3);
+        }
+    };
+
     const avatar = {
         boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150", 
-        prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150",      
-        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",  
         policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150",  
-        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",     
-        garcom: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?w=150"    
+        viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150",
+        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     };
 
-    const nivel1 = {
-        nome: "Nível 1: Cumprimentos & Polidez",
-        premioNome: "🏛️ O Museu do Louvre",
-        missoes: [
-            { 
-                local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, 
-                pergunta: "Você entra na padaria às 08:00 para comprar um doce. Qual é a abordagem inicial polida recomendada?", 
-                opcoes: [{t: "Salut !", c: false}, {t: "Bonjour !", c: true}], 
-                exp: "<strong>Interação Social Inicial:</strong> No referencial A1, 'Bonjour' é obrigatório ao entrar em qualquer estabelecimento comercial na França. 'Salut' só se usa com amigos próximos." 
-            },
-            { 
-                local: "Rua de Paris", npc: "Mme. Martin", foto: avatar.prof, 
-                pergunta: "Você encontra sua professora de francês na calçada. Como falar de forma polida e formal respeitando a hierarquia?", 
-                opcoes: [{t: "Bonjour, madame !", c: true}, {t: "Salut, prof !", c: false}], 
-                exp: "<strong>Registros de Língua:</strong> O padrão CECRL exige a distinção entre falar com conhecidos e superiores. Adicionar 'Madame' ou 'Monsieur' após o Bonjour demonstra respeito cultural profundo." 
-            },
-            { 
-                local: "Praça do Bairro", npc: "Lucas (Conhecido)", foto: avatar.amigo, 
-                pergunta: "São 18:30 e você encontra um conhecido no parque. Como alternar para o cumprimento correto de fim de dia?", 
-                opcoes: [{t: "Bonjour !", c: false}, {t: "Bonsoir !", c: true}], 
-                exp: "<strong>Uso do Tempo:</strong> A partir do final da tarde (geralmente quando o sol começa a se pôr ou após as 18:00), o 'Bonjour' dá lugar obrigatoriamente ao 'Bonsoir' (Boa noite de chegada)." 
-            },
-            { 
-                local: "Metrô", npc: "Desconhecido", foto: avatar.passante, 
-                pergunta: "Você precisa pedir ajuda para achar a plataforma certa a um desconhecido. Qual expressão de polidez abre essa conversa?", 
-                opcoes: [{t: "S'il te plaît...", c: false}, {t: "S'il vous plaît, excusez-moi...", c: true}], 
-                exp: "<strong>O Pronome de Tratamento:</strong> Para qualquer estranho na rua, usamos a estrutura formal 'S'il vous plaît' (Por favor) ligada ao pronome 'Vous'. 'S'il te plaît' é estritamente informal (Tu)." 
-            },
-            { 
-                local: "Boutique de Roupas", npc: "Chloé (Atendente)", foto: avatar.garcom, 
-                pergunta: "Você terminou de pagar uma compra e está cruzando a porta de saída. O que deve falar ao funcionário?", 
-                opcoes: [{t: "Merci, au revoir !", c: true}, {t: "Ciao, salut !", c: false}], 
-                exp: "<strong>Estrutura de Despedida:</strong> O encerramento de um contato comercial exige um agradecimento seguido da fórmula padrão de despedida: 'Merci, au revoir' (Obrigado, adeus/até logo)." 
-            },
-            { 
-                local: "Hotel de Ville", npc: "Agente Pierre", foto: avatar.policial, 
-                pergunta: "Você quer se desculpar com um oficial antes de interrompê-lo para tirar uma dúvida rápida. Qual é o termo correto?", 
-                opcoes: [{t: "Pardon, excusez-moi.", c: true}, {t: "Désolé, ça va.", c: false}], 
-                exp: "<strong>Fórmulas de Polidez:</strong> 'Pardon' e 'Excusez-moi' são usados para chamar a atenção de alguém ou pedir licença de forma educada. 'Désolé' serve para quando você comete um erro de fato." 
-            }
-        ]
-    };
+    // Banco de questões divididos de acordo com o pedido: Blocos A1, A2 e A3
+    const dadosJornada = [
+        {
+            bloco: "A1",
+            nome: "Módulo A1: Fundamentos Iniciais",
+            regiao: "Norte - Lille",
+            fotoRegiao: "https://images.unsplash.com/photo-1605270103728-66236b222533?w=600",
+            premioAviso: "🥐 Croissant de Bronze",
+            missoes: [
+                { local: "Boulangerie", npc: "Jean", foto: avatar.boulanger, pergunta: "Você entra em uma loja às 09:00. O que deve falar?", opcoes: [{t: "Salut !", c: false}, {t: "Bonjour !", c: true}], exp: "Bonjour é o padrão comercial obrigatório para educação inicial." },
+                { local: "Estação", npc: "Agente", foto: avatar.policial, pergunta: "Como pedir licença a um policial de forma polida?", opcoes: [{t: "Pardon, excusez-moi.", c: true}, {t: "Désolé, ça va.", c: false}], exp: "Pardon e Excusez-moi abrem diálogos formais de forma respeitosa." }
+            ]
+        },
+        {
+            bloco: "A2",
+            nome: "Módulo A2: Estruturas Intermediárias",
+            regiao: "Sul - Marseille / Nice",
+            fotoRegiao: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600",
+            premioAviso: "🥐 Croissant de Prata",
+            missoes: [
+                { local: "Hostel", npc: "Lucas", foto: avatar.passante, pergunta: "Como dizer 'Eu moro na França e trabalho aqui' de forma correta?", opcoes: [{t: "J'habite en France.", c: true}, {t: "J'habite à France.", c: false}], exp: "Para países femininos como France, usamos a preposição 'En'." },
+                { local: "Café Marítimo", npc: "Sophie", foto: avatar.viajante, pergunta: "O garçom trouxe o prato errado. Como explicar a situação?", opcoes: [{t: "Ce n'est pas ce que j'ai commandé.", c: true}, {t: "C'est mauvais !", c: false}], exp: "Expressar insatisfação de forma polida usa a negação estruturada." }
+            ]
+        },
+        {
+            bloco: "A3",
+            nome: "Módulo A3: Fluência Avançada do Bloco",
+            regiao: "Oeste - Bordeaux",
+            fotoRegiao: "https://images.unsplash.com/photo-1590514472304-ad0c7eb6441b?w=600",
+            premioAviso: "🥐 Croissant de Ouro + Chave dos Monumentos",
+            missoes: [
+                { local: "Boutique Wine", npc: "Vendedor", foto: avatar.boulanger, pergunta: "Ao debater preços complexos, qual é a expressão adequada?", opcoes: [{t: "Pouvez-vous me faire uma redução ?", c: false}, {t: "Seria-t-il possible d'avoir un geste commercial ?", c: true}], exp: "No topo do bloco de transações, expressões diplomáticas são valorizadas." },
+                { local: "Prefectura", npc: "Oficial", foto: avatar.policial, pergunta: "Você precisa preencher documentos de longa permanência. Qual expressão define isso?", opcoes: [{t: "Demande de titre de séjour", c: true}, {t: "Carte d'identité express", c: false}], exp: "Vocabulário burocrático e administrativo avançado do bloco de sobrevivência." }
+            ]
+        }
+    ];
 
+    let blocoAtual = 0;
     let indiceMissao = 0;
     let vidas = 3;
-    let premioDesbloqueado = false;
     let respostaDada = false;
+
+    // Estados de Recompensas da Regra de Negócio
+    let temBronze = false;
+    let temPrata = false;
+    let temOuro = false;
 
     function iniciarApp() {
         document.getElementById('start-screen').style.display = 'none';
@@ -296,35 +359,53 @@
     }
 
     function renderizar() {
+        // Atualiza UI de vidas
         document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         
-        if (premioDesbloqueado) {
-            document.getElementById('trophy-0').classList.add('unlocked');
-        } else {
-            document.getElementById('trophy-0').classList.remove('unlocked');
+        // Verifica e atualiza a estante de Croissants baseado nos estados
+        if(temBronze) document.getElementById('croissant-bronze').classList.add('unlocked');
+        if(temPrata) document.getElementById('croissant-prata').classList.add('unlocked');
+        if(temOuro) {
+            document.getElementById('croissant-ouro').classList.add('unlocked');
+            // Abre as portas para os outros brindes (Monumentos ficam elegíveis)
+            document.getElementById('monumento-louvre').style.opacity = "0.5";
+            document.getElementById('monumento-eiffel-b').style.opacity = "0.5";
+            document.getElementById('monumento-eiffel-p').style.opacity = "0.5";
+            document.getElementById('monumento-eiffel-o').style.opacity = "0.5";
         }
 
-        const totalMissoes = nivel1.missoes.length;
-
-        // Se passar da última etapa com sucesso
-        if (indiceMissao >= totalMissoes) {
-            document.getElementById('titulo-fase').innerText = "🏆 PARABÉNS !";
+        // Se terminar a trilha inteira
+        if (blocoAtual >= dadosJornada.length) {
+            document.getElementById('titulo-fase').innerText = "🏆 GRANDE MESTRE DA FRANÇA!";
             document.getElementById('progress-bar').style.width = "100%";
             document.getElementById('boss-alert').style.display = 'none';
             document.getElementById('character-zone').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
+            
+            // Ativa todos os monumentos finais com o Croissant de Ouro ativo
+            document.getElementById('monumento-louvre').classList.add('unlocked');
+            document.getElementById('monumento-eiffel-b').classList.add('unlocked');
+            document.getElementById('monumento-eiffel-p').classList.add('unlocked');
+            document.getElementById('monumento-eiffel-o').classList.add('unlocked');
+
             document.getElementById('choices').innerHTML = `
-                <p style='color:var(--success); font-weight:bold; font-size:1.15em; line-height: 1.5; text-align:center;'>
-                    Magnifique! Você completou todas as etapas de Cumprimentos e Polidez do padrão internacional A1!<br><br>
-                    🏛️ O Museu do Louvre está oficialmente aberto em seu armário de conquistas!
+                <p style='color:var(--success); font-weight:bold; font-size:1.1em; line-height: 1.6; text-align:center;'>
+                    Incroyable! Você conquistou o Croissant de Ouro!<br>
+                    🔑 As portas foram totalmente abertas e os monumentos (Louvre, Eiffel de Bronze, Prata e Ouro) foram adicionados ao seu baú!
                 </p>`;
             return;
         }
 
-        const m = nivel1.missoes[indiceMissao];
+        const bloco = dadosJornada[blocoAtual];
+        const m = bloco.missoes[indiceMissao];
+        const totalMissoes = bloco.missoes.length;
 
-        document.getElementById('titulo-fase').innerText = nivel1.nome;
-        document.getElementById('score-display').innerText = `Módulo 1 — Etapa ${indiceMissao + 1}/${totalMissoes}`;
+        // Atualiza o banner geográfico com a cidade correspondente
+        document.getElementById('city-banner').style.backgroundImage = `url('${bloco.fotoRegiao}')`;
+        document.getElementById('city-label').innerText = bloco.regiao;
+
+        document.getElementById('titulo-fase').innerText = bloco.nome;
+        document.getElementById('score-display').innerText = `Bloco ${bloco.bloco} — Etapa ${indiceMissao + 1}/${totalMissoes}`;
         document.getElementById('progress-bar').style.width = ((indiceMissao / totalMissoes) * 100) + "%";
 
         document.getElementById('location-badge').innerText = m.local.toUpperCase();
@@ -336,10 +417,10 @@
         document.getElementById('next-btn').style.display = 'none';
         respostaDada = false;
         
-        // Alerta de antecipação na etapa final (Etapa 6)
+        // Alerta de antecipação do Croissant na última pergunta do nível
         const alertBox = document.getElementById('boss-alert');
         if (indiceMissao === totalMissoes - 1) {
-            alertBox.innerHTML = `🔥 VALENDO PRÊMIO HISTÓRICO! Se você acertar esta última questão, desbloqueará: <strong>${nivel1.premioNome}</strong>!`;
+            alertBox.innerHTML = `🔥 ATENÇÃO: Esta é a última questão! Responda corretamente para liberar o seu <strong>${bloco.premioAviso}</strong>!`;
             alertBox.style.display = 'block';
         } else {
             alertBox.style.display = 'none';
@@ -368,37 +449,44 @@
         expBox.style.display = 'block';
 
         if (correta) {
+            som.tocarSucesso(); // Dispara áudio de acerto
             elemento.classList.add('correct');
             
-            // Destrava o prêmio se for o acerto da última etapa
-            if (indiceMissao === nivel1.missoes.length - 1) {
-                premioDesbloqueado = true;
-                document.getElementById('trophy-0').classList.add('unlocked');
-                expBox.innerHTML += `<br><br><span style='color:var(--success); font-weight:bold;'>🎉 EXCELENTE! Você conquistou ${nivel1.premioNome}!</span>`;
+            // Regra de atribuição ao concluir a última missão do bloco
+            if (indiceMissao === dadosJornada[blocoAtual].missoes.length - 1) {
+                if (blocoAtual === 0) temBronze = true;
+                if (blocoAtual === 1) temPrata = true;
+                if (blocoAtual === 2) temOuro = true;
+                expBox.innerHTML += `<br><br><span style='color:var(--success); font-weight:bold;'>🎉 BLOCO CONCLUÍDO! Medalha atualizada na estante.</span>`;
             }
         } else {
+            som.tocarErro(); // Dispara áudio de erro
             elemento.classList.add('wrong');
             vidas--;
             document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         }
 
-        // O botão continuar sempre surge para dar feedback do erro ou acerto
         document.getElementById('next-btn').style.display = 'block';
     }
 
     function avancarMissao() {
-        // CORREÇÃO AQUI: Se as vidas acabarem, reseta o jogo ANTES de mudar o índice da missão
+        // Anti-travamento se as vidas esgotarem
         if (vidas <= 0) {
-            alert("Suas energias acabaram! Vamos recomeçar o treinamento da Etapa 1 para fixação total.");
+            alert(`Suas energias acabaram! Vamos reiniciar este bloco atual para melhor fixação.`);
             vidas = 3;
             indiceMissao = 0;
-            premioDesbloqueado = false;
             renderizar();
             return;
         }
 
-        // Avança normalmente apenas se ainda tiver vidas
         indiceMissao++;
+        
+        // Passa de nível/bloco se tiver vencido as etapas
+        if (indiceMissao >= dadosJornada[blocoAtual].missoes.length) {
+            blocoAtual++;
+            indiceMissao = 0;
+        }
+        
         renderizar();
     }
 </script>

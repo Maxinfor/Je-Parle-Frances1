@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês A1 - Passaporte de Prêmios</title>
+    <title>Jornada Francês A1 - Nível 1 Completo</title>
     <style>
         :root {
             --primary: #3498db;
@@ -64,17 +64,17 @@
         }
         .trophy-container {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
         }
         .trophy-slot {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             background: #e2e8f0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.2em;
+            font-size: 2.3em;
             filter: grayscale(100%);
             opacity: 0.25;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25);
@@ -89,7 +89,7 @@
             border: 2px solid var(--warning);
         }
 
-        /* Alerta de Última Pergunta (Mecânica de Antecipação) */
+        /* Alerta de Última Pergunta (Antecipação) */
         .boss-alert {
             display: none;
             background: linear-gradient(135deg, #e74c3c, #f39c12);
@@ -187,36 +187,34 @@
 <div class="app-container">
     <!-- Tela Inicial -->
     <div id="start-screen">
-        <h1>🇫🇷 Sua Viagem Começa Aqui!</h1>
-        <p>Passe pelos níveis do currículo mundial de francês e conquiste os maiores monumentos da França para o seu armário de prêmios!</p>
-        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Entrar no Jogo ✈️</button>
+        <h1>🇫🇷 Nível 1: Comunicação Inicial</h1>
+        <p>Aprenda a cumprimentar, usar a polidez formal e se despedir de acordo com as normas mundiais de ensino <strong>(Padrão CECRL A1)</strong>.</p>
+        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Iniciar Módulo Completo 🚀</button>
     </div>
 
     <!-- Interface do Jogo -->
     <div id="game-ui" style="display:none;">
         <div class="status-bar">
             <span id="hearts-display" class="hearts">❤️❤️❤️</span>
-            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Nível 1 - 1/3</span>
+            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Etapa 1/6</span>
         </div>
 
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
 
-        <!-- Estante com os Grandes Prêmios Desejados -->
+        <!-- Estante de Prêmios -->
         <div class="trophy-section">
-            <div class="trophy-title">Seus Prêmios Históricos:</div>
+            <div class="trophy-title">Grande Prêmio do Nível 1:</div>
             <div class="trophy-container">
                 <div id="trophy-0" class="trophy-slot">🏛️</div>
-                <div id="trophy-1" class="trophy-slot">🗼</div>
-                <div id="trophy-2" class="trophy-slot">👑</div>
             </div>
         </div>
 
-        <!-- Alerta Dinâmico de Antecipação de Prêmio -->
+        <!-- Alerta Dinâmico de Prêmio -->
         <div id="boss-alert" class="boss-alert"></div>
         
-        <h3 id="titulo-fase">Carregando...</h3>
+        <h3 id="titulo-fase">Nível 1: Cumprimentos & Polidez</h3>
         
         <div class="character-zone">
             <div class="char-avatar" id="char-avatar"></div>
@@ -229,51 +227,69 @@
 
         <div id="choices" class="choices"></div>
         <div id="explanation-box" class="explanation-box"></div>
-        <button id="next-btn" onclick="avancarMissao()">Avançar ➔</button>
+        <button id="next-btn" onclick="avancarMissao()">Continuar ➔</button>
     </div>
 </div>
 
 <script>
     const avatar = {
         boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150", 
+        prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150",      
+        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",  
         policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150",  
-        viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150",
-        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",
-        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
+        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",     
+        garcom: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?w=150"    
     };
 
-    // Banco de Dados estruturado pelo Sistema Mundial de Ensino CECRL A1
-    const niveis = [
-        {
-            nome: "Nível 1: Cumprimentos & Polidez",
-            premioNome: "🏛️ O Museu do Louvre",
-            missoes: [
-                { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra na padaria pela manhã. Qual é o cumprimento obrigatório do padrão A1?", opcoes: [{t: "Salut!", c: false}, {t: "Bonjour!", c: true}], exp: "No padrão CECRL A1, 'Bonjour' é a base da polidez francesa ao entrar em comércios. 'Salut' é estritamente informal." },
-                { local: "Rua de Paris", npc: "Desconhecido", foto: avatar.passante, pergunta: "Como pedir informação a alguém mais velho na rua respeitando a gramática formal?", opcoes: [{t: "Pardon, vous Pouvez m'aider?", c: true}, {t: "Pardon, tu peux m'aider?", c: false}], exp: "A regra de ouro internacional do francês: use sempre o 'Vous' (formal) para falar com estranhos e autoridades locais." }
-            ]
-        },
-        {
-            nome: "Nível 2: Identidade & Nacionalidade",
-            premioNome: "🗼 A Torre Eiffel",
-            missoes: [
-                { local: "Alfândega", npc: "Agente Pierre", foto: avatar.policial, pergunta: "O guarda pede seu nome: 'Quel est votre nom?'. Responda corretamente:", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis chamado Idney.", c: false}], exp: "Estrutura oficial do francês para se apresentar exige o verbo pronominal reflexivo 'S'appeler' (Chamar-se)." },
-                { local: "Hostel", npc: "Thomas (Turista)", foto: avatar.amigo, pergunta: "Ele te pergunta sua idade. No sistema europeu, qual verbo usamos para falar a idade?", opcoes: [{t: "Je suis 25 ans.", c: false}, {t: "J'ai 25 ans.", c: true}], exp: "Erro de tradução clássico! Em francês, nós TEMOS anos (Verbo Avoir - J'ai), nunca dizemos que 'somos' a idade." }
-            ]
-        },
-        {
-            nome: "Nível 3: Números & Compras",
-            premioNome: "👑 O Palácio de Versalhes",
-            missoes: [
-                { local: "Feira de Rua", npc: "Vendedor", foto: avatar.boulanger, pergunta: "Você quer saber o valor de uma recordação da viagem. Como perguntar o preço?", opcoes: [{t: "C'est combien?", c: true}, {t: "Combien est?", c: false}], exp: "Para transações comerciais simples do nível A1, a expressão consagrada e correta é 'C'est combien?' (Custa quanto?)." },
-                { local: "Boutique de Paris", npc: "Atendente", foto: avatar.viajante, pergunta: "Você vai comprar presentes e precisa pedir exatamente TRÊS itens. Como se diz o número 3?", opcoes: [{t: "Trois itens.", c: true}, {t: "Deux itens.", c: false}], exp: "O vocabulário básico de contagem exige a fixação clara dos numerais cardinais: Un (1), Deux (2), Trois (3)." }
-            ]
-        }
-    ];
+    // Nível 1 Expandido com TODAS as vertentes do Padrão Mundial CECRL A1
+    const nivel1 = {
+        nome: "Nível 1: Cumprimentos & Polidez",
+        premioNome: "🏛️ O Museu do Louvre",
+        missoes: [
+            { 
+                local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, 
+                pergunta: "Você entra na padaria às 08:00 para comprar um doce. Qual é a abordagem inicial polida recomendada?", 
+                opcoes: [{t: "Salut !", c: false}, {t: "Bonjour !", c: true}], 
+                exp: "<strong>Interação Social Inicial:</strong> No referencial A1, 'Bonjour' é obrigatório ao entrar em qualquer estabelecimento comercial na França. 'Salut' só se usa com amigos próximos." 
+            },
+            { 
+                local: "Rua de Paris", npc: "Mme. Martin", foto: avatar.prof, 
+                pergunta: "Você encontra sua professora de francês na calçada. Como falar de forma polida e formal respeitando a hierarquia?", 
+                opcoes: [{t: "Bonjour, madame !", c: true}, {t: "Salut, prof !", c: false}], 
+                exp: "<strong>Registros de Língua:</strong> O padrão CECRL exige a distinção entre falar com conhecidos e superiores. Adicionar 'Madame' ou 'Monsieur' após o Bonjour demonstra respeito cultural profundo." 
+            },
+            { 
+                local: "Praça do Bairro", npc: "Lucas (Conhecido)", foto: avatar.amigo, 
+                pergunta: "São 18:30 e você encontra um conhecido no parque. Como alternar para o cumprimento correto de fim de dia?", 
+                opcoes: [{t: "Bonjour !", c: false}, {t: "Bonsoir !", c: true}], 
+                exp: "<strong>Uso do Tempo:</strong> A partir do final da tarde (geralmente quando o sol começa a se pôr ou após as 18:00), o 'Bonjour' dá lugar obrigatoriamente ao 'Bonsoir' (Boa noite de chegada)." 
+            },
+            { 
+                local: "Metrô", npc: "Desconhecido", foto: avatar.passante, 
+                pergunta: "Você precisa pedir ajuda para achar a plataforma certa a um desconhecido. Qual expressão de polidez abre essa conversa?", 
+                opcoes: [{t: "S'il te plaît...", c: false}, {t: "S'il vous plaît, excusez-moi...", c: true}], 
+                exp: "<strong>O Pronome de Tratamento:</strong> Para qualquer estranho na rua, usamos a estrutura formal 'S'il vous plaît' (Por favor) ligada ao pronome 'Vous'. 'S'il te plaît' é estritamente informal (Tu)." 
+            },
+            { 
+                local: "Boutique de Roupas", npc: "Chloé (Atendente)", foto: avatar.garcom, 
+                pergunta: "Você terminou de pagar uma compra e está cruzando a porta de saída. O que deve falar ao funcionário?", 
+                opcoes: [{t: "Merci, au revoir !", c: true}, {t: "Ciao, salut !", c: false}], 
+                exp: "<strong>Estrutura de Despedida:</strong> O encerramento de um contato comercial exige um agradecimento seguido da fórmula padrão de despedida: 'Merci, au revoir' (Obrigado, adeus/até logo)." 
+            },
+            { 
+                local: "Hotel de Ville", npc: "Agente Pierre", foto: avatar.policial, 
+                pergunta: "Você quer se desculpar com um oficial antes de interrompê-lo para tirar uma dúvida rápida. Qual é o termo correto?", 
+                opcoes: [{t: "Pardon, excusez-moi.", c: true}, {t: "Désolé, ça va.", c: false}], 
+                exp: "<strong>Fórmulas de Polidez:</strong> 'Pardon' e 'Excusez-moi' são usados para chamar a atenção de alguém ou pedir licença de forma educada. 'Désolé' serve para quando você comete um erro de fato." 
+            }
+        ]
+    };
 
-    let nivelAtual = 0;
     let indiceMissao = 0;
     let vidas = 3;
-    let premiosDesbloqueados = [];
+    let premioDesbloqueado = false;
+    let respostaDada = false;
+    let acertouRodada = false;
 
     function iniciarApp() {
         document.getElementById('start-screen').style.display = 'none';
@@ -284,28 +300,32 @@
     function renderizar() {
         document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         
-        // Atualiza visualmente a estante de prêmios no topo da tela
-        premiosDesbloqueados.forEach(idx => {
-            document.getElementById('trophy-' + idx).classList.add('unlocked');
-        });
+        if (premioDesbloqueado) {
+            document.getElementById('trophy-0').classList.add('unlocked');
+        }
 
-        // Fim do Jogo completo
-        if (nivelAtual >= niveis.length) {
-            document.getElementById('titulo-fase').innerText = "🏆 JORNADA COMPLETA!";
+        const totalMissoes = nivel1.missoes.length;
+
+        // Fim das missões do Nível 1
+        if (indiceMissao >= totalMissoes) {
+            document.getElementById('titulo-fase').innerText = "🏆 PARABÉNS !";
             document.getElementById('progress-bar').style.width = "100%";
             document.getElementById('boss-alert').style.display = 'none';
             document.getElementById('character-zone').style.display = 'none';
-            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; font-size:1.15em;'>Incroyable! Você passou pelos 3 níveis fundamentais da gramática mundial e conquistou o Louvre, a Torre Eiffel e o Palácio de Versalhes! 🏛️🗼👑</p>`;
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('choices').innerHTML = `
+                <p style='color:var(--success); font-weight:bold; font-size:1.15em; line-height: 1.5;'>
+                    Magnifique! Você completou todas as vertentes de Cumprimentos e Polidez do padrão internacional A1!<br><br>
+                    🏛️ O Museu do Louvre está oficialmente aberto em seu armário de conquistas!
+                </p>`;
             return;
         }
 
-        const nivel = niveis[nivelAtual];
-        const m = nivel.missoes[indiceMissao];
-        const totalMissoes = nivel.missoes.length;
+        const m = nivel1.missoes[indiceMissao];
 
-        // Atualização dos indicadores de texto e barras de progresso
-        document.getElementById('titulo-fase').innerText = nivel.nome;
-        document.getElementById('score-display').innerText = `Nível ${nivelAtual + 1} — Etapa ${indiceMissao + 1}/${totalMissoes}`;
+        // Atualização de interface e progresso
+        document.getElementById('titulo-fase').innerText = nivel1.nome;
+        document.getElementById('score-display').innerText = `Módulo 1 — Etapa ${indiceMissao + 1}/${totalMissoes}`;
         document.getElementById('progress-bar').style.width = ((indiceMissao / totalMissoes) * 100) + "%";
 
         document.getElementById('location-badge').innerText = m.local.toUpperCase();
@@ -313,22 +333,21 @@
         document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
         document.getElementById('pergunta').innerText = m.pergunta;
 
-        // Limpeza de estados de tela antigos
+        // Resetando elementos pós-mudança de etapa
         document.getElementById('explanation-box').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
+        respostaDada = false;
         
+        // MECÂNICA DE ANTECIPAÇÃO DA ÚLTIMA PERGUNTA
         const alertBox = document.getElementById('boss-alert');
-        
-        // MECÂNICA DE ANTECIPAÇÃO: Se for a última pergunta do nível, avisa o prêmio!
         if (indiceMissao === totalMissoes - 1) {
-            alertBox.innerHTML = `🔥 VALENDO PRÊMIO! Se você acertar esta última pergunta, desbloqueará: <strong>${nivel.premioNome}</strong>!`;
-            alertBox.style.style.display = 'block'; // Fallback em caso de erro na string de estilo
+            alertBox.innerHTML = `🔥 VALENDO PRÊMIO HISTÓRICO! Se você acertar esta última questão, desbloqueará: <strong>${nivel1.premioNome}</strong>!`;
             alertBox.style.display = 'block';
         } else {
             alertBox.style.display = 'none';
         }
 
-        // Renderização dos botões de opções
+        // Renderização dos botões
         const choicesDiv = document.getElementById('choices');
         choicesDiv.innerHTML = '';
         m.opcoes.forEach(opt => {
@@ -341,9 +360,13 @@
     }
 
     function verificar(correta, elemento, explicacao) {
-        // Bloqueia cliques adicionais nos botões da rodada
-        const botões = document.querySelectorAll('.choice-btn');
-        botões.forEach(b => b.disabled = true);
+        if (respostaDada) return; // Impede multiplos cliques
+        respostaDada = true;
+        acertouRodada = correta;
+
+        // Desativa visualmente os botões da escolha
+        const botoes = document.querySelectorAll('.choice-btn');
+        botoes.forEach(b => b.disabled = true);
 
         const expBox = document.getElementById('explanation-box');
         expBox.innerHTML = explicacao;
@@ -352,40 +375,34 @@
         if (correta) {
             elemento.classList.add('correct');
             
-            const nivel = niveis[nivelAtual];
-            // Verifica se acabou de acertar a última pergunta para liberar o prêmio
-            if (indiceMissao === nivel.missoes.length - 1) {
-                if (!premiosDesbloqueados.includes(nivelAtual)) {
-                    premiosDesbloqueados.push(nivelAtual);
-                }
-                // Ilumina o prêmio correspondente na estante imediatamente
-                document.getElementById('trophy-' + nivelAtual).classList.add('unlocked');
-                expBox.innerHTML += `<br><br><span style='color:var(--success); font-weight:bold;'>🎉 RECOMPENSA CONQUISTADA: Você ganhou o prêmio ${nivel.premioNome}!</span>`;
+            // Se for a última missão, destrava o prêmio
+            if (indiceMissao === nivel1.missoes.length - 1) {
+                premioDesbloqueado = true;
+                document.getElementById('trophy-0').classList.add('unlocked');
+                expBox.innerHTML += `<br><br><span style='color:var(--success); font-weight:bold;'>🎉 EXCELENTE! Você conquistou ${nivel1.premioNome}!</span>`;
             }
-            
-            document.getElementById('next-btn').style.display = 'block';
         } else {
             elemento.classList.add('wrong');
             vidas--;
-            
-            if (vidas <= 0) {
-                alert("Energia esgotada! Vamos reestudar este nível desde o começo.");
-                vidas = 3;
-                indiceMissao = 0;
-                renderizar();
-            } else {
-                document.getElementById('next-btn').style.display = 'block';
-            }
+            document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         }
+
+        // O BOTÃO CONTINUAR SEMPRE APARECE AQUI (Independente de acerto ou erro!)
+        document.getElementById('next-btn').style.display = 'block';
     }
 
     function avancarMissao() {
-        indiceMissao++;
-        // Se concluiu todas as missões do nível atual, passa para o próximo nível de ensino
-        if (indiceMissao >= niveis[nivelAtual].missoes.length) {
-            nivelAtual++;
+        if (vidas <= 0) {
+            alert("Suas energias acabaram! Vamos recomeçar o treinamento do Nível 1 para fixação.");
+            vidas = 3;
             indiceMissao = 0;
+            premioDesbloqueado = false;
+            document.getElementById('trophy-0').classList.remove('unlocked');
+            renderizar();
+            return;
         }
+
+        indiceMissao++;
         renderizar();
     }
 </script>

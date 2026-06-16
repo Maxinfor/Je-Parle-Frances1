@@ -2,91 +2,80 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Frances A1 - Lógica</title>
+    <title>Jornada Francês A1 - Nível 1</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 20px; text-align: center; }
-        .scene-text { font-size: 1.1em; margin-bottom: 20px; color: #34495e; }
-        .choices { display: flex; flex-direction: column; gap: 10px; }
-        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        button:hover { background: #2980b9; }
-        button:disabled { background: #bdc3c7; }
-        #feedback { margin-top: 15px; font-weight: bold; }
-        .hidden { display: none; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .passport-container { background: #fdf6e3; border: 2px solid #8b4513; padding: 15px; border-radius: 10px; display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .stamp { width: 50px; height: 50px; background: #e0d8c3; border: 2px dashed #8b4513; display: flex; align-items: center; justify-content: center; font-size: 1.5em; filter: grayscale(100%); opacity: 0.5; }
+        .stamp.earned { background: #fff; filter: grayscale(0%); border-style: solid; opacity: 1; }
+        .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        button { padding: 12px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
+    <h2>🇫🇷 Passaporte</h2>
+    <div id="passport-grid" class="passport-container">
+        <div id="croissant-stamp" class="stamp">🥐</div>
+    </div>
+    
     <div id="game-ui">
-        <h2 id="scene-title">Início</h2>
-        <p id="scene-desc" class="scene-text"></p>
-        <div id="choices-area" class="choices"></div>
-        <button id="speak-btn" class="hidden" onclick="startListening()">🎤 Tentar Falar</button>
-        <p id="feedback"></p>
+        <h3 id="local">Padaria</h3>
+        <p id="pergunta"></p>
+        <div id="choices" class="choices"></div>
+        <p id="feedback" style="font-weight:bold; margin-top:10px;"></p>
     </div>
 </div>
 
 <script>
-    const scenes = [
-        {
-            id: 'airport',
-            title: 'No Aeroporto de Paris',
-            desc: 'Você acaba de desembarcar e precisa pegar um táxi. O motorista olha para você. Como você o cumprimenta?',
-            options: [
-                { text: 'Salut!', target: 'salut', next: 'fail', feedback: 'O motorista parece ofendido com a informalidade. Ele não quer te ajudar.' },
-                { text: 'Bonjour!', target: 'bonjour', next: 'success', feedback: 'O motorista sorri. Ele te ajuda com as malas e pergunta para onde você vai.' }
-            ]
-        }
+    const missoes = [
+        { local: "Padaria", pergunta: "Você entra na padaria. O que diz para a atendente?", opcoes: [{t: "Un croissant!", c: false}, {t: "Bonjour, madame!", c: true}] },
+        { local: "Rua", pergunta: "Você encontra seu professor às 10h. O que diz?", opcoes: [{t: "Salut!", c: false}, {t: "Bonjour, monsieur!", c: true}] },
+        { local: "Restaurante", pergunta: "São 19h. Você entra no restaurante. O que diz?", opcoes: [{t: "Bonjour!", c: false}, {t: "Bonsoir!", c: true}] },
+        { local: "Loja", pergunta: "Você está saindo de uma loja. Como se despede?", opcoes: [{t: "Salut!", c: false}, {t: "Au revoir!", c: true}] }
     ];
 
-    let currentScene = scenes[0];
-    let selectedTarget = '';
+    let indiceMissao = 0;
+    let conquistados = JSON.parse(localStorage.getItem('conquistados')) || [];
 
-    function renderScene() {
-        document.getElementById('scene-title').innerText = currentScene.title;
-        document.getElementById('scene-desc').innerText = currentScene.desc;
-        const area = document.getElementById('choices-area');
-        area.innerHTML = '';
-        currentScene.options.forEach(opt => {
+    function renderizar() {
+        if (indiceMissao >= missoes.length) {
+            document.getElementById('game-ui').innerHTML = "<h3>Bravo! Você domina a etiqueta francesa.</h3>";
+            if (!conquistados.includes('🥐')) {
+                conquistados.push('🥐');
+                localStorage.setItem('conquistados', JSON.stringify(conquistados));
+            }
+            document.getElementById('croissant-stamp').classList.add('earned');
+            return;
+        }
+
+        const m = missoes[indiceMissao];
+        document.getElementById('local').innerText = "Missão: " + m.local;
+        document.getElementById('pergunta').innerText = m.pergunta;
+        const choicesDiv = document.getElementById('choices');
+        choicesDiv.innerHTML = '';
+        
+        m.opcoes.forEach(opt => {
             const btn = document.createElement('button');
-            btn.innerText = opt.text;
-            btn.onclick = () => prepareSpeak(opt);
-            area.appendChild(btn);
+            btn.innerText = opt.t;
+            btn.onclick = () => verificar(opt.c);
+            choicesDiv.appendChild(btn);
         });
     }
 
-    function prepareSpeak(option) {
-        selectedTarget = option.target;
-        document.getElementById('choices-area').classList.add('hidden');
-        document.getElementById('speak-btn').classList.remove('hidden');
-        document.getElementById('feedback').innerText = 'Agora fale a palavra correta: ' + option.text;
+    function verificar(correta) {
+        if (correta) {
+            document.getElementById('feedback').innerText = "✅ Perfeito!";
+            indiceMissao++;
+            setTimeout(() => { document.getElementById('feedback').innerText = ""; renderizar(); }, 1500);
+        } else {
+            document.getElementById('feedback').innerText = "❌ O francês valoriza a educação. Tente outra forma.";
+        }
     }
 
-    const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    rec.lang = 'fr-FR';
-
-    function startListening() { rec.start(); }
-
-    rec.onresult = (e) => {
-        const transcript = e.results[0][0].transcript.toLowerCase();
-        if (transcript.includes(selectedTarget)) {
-            document.getElementById('feedback').innerText = 'Parfait! Você escolheu a opção certa.';
-        } else {
-            document.getElementById('feedback').innerText = 'Tente novamente. Pronuncie claramente: ' + selectedTarget;
-        }
-    };
-
-    renderScene();
+    renderizar();
 </script>
 </body>
 </html>
-```eof
-
-### O que mudou nesta estrutura:
-1.  **Narrativa como base:** Em vez de uma lista de exercícios, temos "Cenas". A escolha da palavra agora é o meio para resolver uma situação social.
-2.  **Consequência cultural:** O feedback não é apenas "acerto ou erro", mas sim uma explicação do *porquê* aquela escolha foi socialmente correta (ou não) na França.
-3.  **Foco em decisão:** O aluno precisa decidir se é o momento de ser informal (*Salut*) ou formal (*Bonjour*) antes de sequer tentar pronunciar.
-
-O que você acha dessa mudança? Podemos expandir criando cenas que conectam o Aeroporto -> Hotel -> Restaurante, criando uma "história" contínua para o jogador.

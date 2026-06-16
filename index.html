@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês A1 - Nível 1 Completo</title>
+    <title>Jornada Francês A1 - Nível 1 Perfeito</title>
     <style>
         :root {
             --primary: #3498db;
@@ -78,7 +78,7 @@
             filter: grayscale(100%);
             opacity: 0.25;
             transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25);
-            border: 2px dashed #b5c2d1;
+            border: 2px solid #b5c2d1;
         }
         .trophy-slot.unlocked {
             filter: grayscale(0%);
@@ -300,11 +300,13 @@
         
         if (premioDesbloqueado) {
             document.getElementById('trophy-0').classList.add('unlocked');
+        } else {
+            document.getElementById('trophy-0').classList.remove('unlocked');
         }
 
         const totalMissoes = nivel1.missoes.length;
 
-        // Tela de Fim do Módulo 1
+        // Se passar da última etapa com sucesso
         if (indiceMissao >= totalMissoes) {
             document.getElementById('titulo-fase').innerText = "🏆 PARABÉNS !";
             document.getElementById('progress-bar').style.width = "100%";
@@ -312,8 +314,8 @@
             document.getElementById('character-zone').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
             document.getElementById('choices').innerHTML = `
-                <p style='color:var(--success); font-weight:bold; font-size:1.15em; line-height: 1.5;'>
-                    Magnifique! Você completou todas as vertentes de Cumprimentos e Polidez do padrão internacional A1!<br><br>
+                <p style='color:var(--success); font-weight:bold; font-size:1.15em; line-height: 1.5; text-align:center;'>
+                    Magnifique! Você completou todas as etapas de Cumprimentos e Polidez do padrão internacional A1!<br><br>
                     🏛️ O Museu do Louvre está oficialmente aberto em seu armário de conquistas!
                 </p>`;
             return;
@@ -321,7 +323,6 @@
 
         const m = nivel1.missoes[indiceMissao];
 
-        // Atualização de interface e progresso
         document.getElementById('titulo-fase').innerText = nivel1.nome;
         document.getElementById('score-display').innerText = `Módulo 1 — Etapa ${indiceMissao + 1}/${totalMissoes}`;
         document.getElementById('progress-bar').style.width = ((indiceMissao / totalMissoes) * 100) + "%";
@@ -331,12 +332,11 @@
         document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
         document.getElementById('pergunta').innerText = m.pergunta;
 
-        // Resetando elementos para a nova rodada
         document.getElementById('explanation-box').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         respostaDada = false;
         
-        // MECÂNICA DE ANTECIPAÇÃO DA ÚLTIMA PERGUNTA
+        // Alerta de antecipação na etapa final (Etapa 6)
         const alertBox = document.getElementById('boss-alert');
         if (indiceMissao === totalMissoes - 1) {
             alertBox.innerHTML = `🔥 VALENDO PRÊMIO HISTÓRICO! Se você acertar esta última questão, desbloqueará: <strong>${nivel1.premioNome}</strong>!`;
@@ -345,7 +345,6 @@
             alertBox.style.display = 'none';
         }
 
-        // Renderização dos botões
         const choicesDiv = document.getElementById('choices');
         choicesDiv.innerHTML = '';
         m.opcoes.forEach(opt => {
@@ -371,7 +370,7 @@
         if (correta) {
             elemento.classList.add('correct');
             
-            // Se acertou a última missão (Etapa 6), destrava o prêmio
+            // Destrava o prêmio se for o acerto da última etapa
             if (indiceMissao === nivel1.missoes.length - 1) {
                 premioDesbloqueado = true;
                 document.getElementById('trophy-0').classList.add('unlocked');
@@ -383,22 +382,22 @@
             document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         }
 
-        // Botão Continuar sempre surge após a escolha
+        // O botão continuar sempre surge para dar feedback do erro ou acerto
         document.getElementById('next-btn').style.display = 'block';
     }
 
     function avancarMissao() {
+        // CORREÇÃO AQUI: Se as vidas acabarem, reseta o jogo ANTES de mudar o índice da missão
         if (vidas <= 0) {
-            alert("Suas energias acabaram! Vamos recomeçar o treinamento do Nível 1 para fixação.");
+            alert("Suas energias acabaram! Vamos recomeçar o treinamento da Etapa 1 para fixação total.");
             vidas = 3;
             indiceMissao = 0;
             premioDesbloqueado = false;
-            document.getElementById('trophy-0').classList.remove('unlocked');
             renderizar();
             return;
         }
 
-        // Executa o incremento e limpa o fluxo de tela imediatamente
+        // Avança normalmente apenas se ainda tiver vidas
         indiceMissao++;
         renderizar();
     }

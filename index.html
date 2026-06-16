@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês Real — Premium 4 Opções</title>
+    <title>Jornada Francês Real — Premium Musique</title>
     <style>
         :root {
             --primary: #3498db;
@@ -317,7 +317,7 @@
 </div>
 
 <script>
-    // Áudio Nativo Suave e Harmônico
+    // Sistema de Áudio Avançado
     const som = {
         ctx: null,
         init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
@@ -353,6 +353,50 @@
             gain.connect(this.ctx.destination);
             osc.start(agora);
             osc.stop(agora + 0.26);
+        },
+        // Toca "La Vie en Rose" sintetizada de forma elegante
+        tocarMusicaFrancesa() {
+            this.init();
+            const agora = this.ctx.currentTime;
+            
+            // Notas da melodia clássica (Frequência, Tempo de início relativo, Duração)
+            const melodia = [
+                {f: 523.25, t: 0.0, d: 0.4},  // C5
+                {f: 587.33, t: 0.4, d: 0.4},  // D5
+                {f: 659.25, t: 0.8, d: 0.8},  // E5
+                {f: 659.25, t: 1.6, d: 0.4},  // E5
+                {f: 587.33, t: 2.0, d: 0.4},  // D5
+                {f: 523.25, t: 2.4, d: 0.8},  // C5
+                {f: 523.25, t: 3.2, d: 0.4},  // C5
+                {f: 493.88, t: 3.6, d: 0.4},  // B4
+                {f: 440.00, t: 4.0, d: 1.2},  // A4
+                
+                {f: 440.00, t: 5.4, d: 0.4},  // A4
+                {f: 493.88, t: 5.8, d: 0.4},  // B4
+                {f: 523.25, t: 6.2, d: 0.8},  // C5
+                {f: 523.25, t: 7.0, d: 0.4},  // C5
+                {f: 440.00, t: 7.4, d: 0.4},  // A4
+                {f: 392.00, t: 7.8, d: 1.5}   // G4
+            ];
+
+            melodia.forEach(nota => {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                // Tipo 'sine' misturado com envelope rápido simula uma charmosa caixinha de música
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(nota.f, agora + nota.t);
+                
+                gain.gain.setValueAtTime(0, agora + nota.t);
+                gain.gain.linearRampToValueAtTime(0.08, agora + nota.t + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, agora + nota.t + nota.d);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start(agora + nota.t);
+                osc.stop(agora + nota.t + nota.d + 0.05);
+            });
         }
     };
 
@@ -497,7 +541,7 @@
                     opcoes: [
                         {t: "J'ai une réservation au nom de Silva.", c: true}, 
                         {t: "Donne-moi ma chambre.", c: false}, 
-                        {t: "Je veux dormir ici ce soir.", c: false}, 
+                        {t: "Je veux dormir aqui ce soir.", c: false}, 
                         {t: "Où est mon lit ?", c: false}
                     ], 
                     exp: "Informar que você possui uma reserva ('J'ai une réservation') em seu nome é o procedimento correto." 
@@ -593,7 +637,7 @@
                         {t: "L'assurance est incluse dans le prix ?", c: true}, 
                         {t: "La voiture est sécurisée ?", c: false}, 
                         {t: "Il y a un accident gratuit ?", c: false}, 
-                        {t: "Le contrat protège la vie ?", c: false}
+                        {t: "Le contrat protege la vie ?", c: false}
                     ], 
                     exp: "'L'assurance est incluse' é a pergunta padrão em locadoras para verificar coberturas de proteção." 
                 },
@@ -615,7 +659,7 @@
                         {t: "C'est moins cher pour l'école ?", c: false}, 
                         {t: "Je étudie, quel prix ?", c: false}, 
                         {t: "Il y a un tarif étudiant ?", c: true}, 
-                        {t: "Avez-vous une promotion école ?", c: false}
+                        {t: "Avez-vous une promoção escola ?", c: false}
                     ], 
                     exp: "'Tarif étudiant' é o termo formal para preços reduzidos para a categoria estudantil." 
                 },
@@ -655,13 +699,13 @@
                         {t: "Je veux mettre de l'argent chez vous.", c: false}, 
                         {t: "Je voudrais ouvrir un compte de dépôt résident.", c: true}, 
                         {t: "Donnez-moi une carte de banque neuve.", c: false}, 
-                        {t: "Créer un profil d'argent ici.", c: false}
+                        {t: "Créer un profil d'argent aqui.", c: false}
                     ], 
                     exp: "'Ouvrir un compte de dépôt' ou 'compte courant' é o vocabulário adequado para o sistema bancário." 
                 },
                 { 
                     local: "Imobiliária", npc: "Agent", avatar: "🏢", 
-                    pergunta: "Ao alugar um imóvel, como pergunta se o condomínio e taxas estão inclusos no aluguel?", 
+                    pergunta: "Ao alugar um imóvel, como pergunta se o condomínio está incluso no aluguel?", 
                     opcoes: [
                         {t: "L'eau et l'électricité payent ensemble ?", c: false}, 
                         {t: "Les charges são grátis ?", c: false}, 
@@ -697,7 +741,7 @@
                     pergunta: "Em uma entrevista de emprego, como pergunta sobre os benefícios corporativos?", 
                     opcoes: [
                         {t: "Qu'est-ce que je gagne en plus ?", c: false}, 
-                        {t: "Il y a des cadeaux pour le travail ?", c: false}, 
+                        {t: "Il y a des cadeaux pour le trabalho ?", c: false}, 
                         {t: "Quels sont les avantages sociaux liés à ce poste ?", c: true}, 
                         {t: "Le salaire a des bonus d'argent ?", c: false}
                     ], 
@@ -767,7 +811,7 @@
     let temBronze = false, temPrata = false, temOuro = false;
 
     function definirMeta(minutos) {
-        minutosEscolhidos = minutes = minutos;
+        minutosEscolhidos = minutos;
         if(minutos === 5) mediaQuestoesAlvo = 3;
         if(minutos === 10) mediaQuestoesAlvo = 5;
         if(minutos === 15) mediaQuestoesAlvo = 7;
@@ -813,7 +857,7 @@
             document.getElementById('progress-bar').style.width = "100%";
             document.getElementById('character-zone').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
-            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; text-align:center; font-size:1.2em;'>Félicitations! Você provou domínio nas 30 situações com 4 opções e destravou tudo!</p>`;
+            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; text-align:center; font-size:1.2em;'>Félicitations! Você completou toda a jornada francesa!</p>`;
             return;
         }
 
@@ -865,14 +909,11 @@
         } else {
             som.tocarErro();
             elemento.classList.add('wrong');
-            // Destaca visualmente qual era a opção correta para ajudar no aprendizado
             document.querySelectorAll('.choice-btn').forEach(btn => {
                 const nivel = dadosJornada[nivelAtual];
                 const m = nivel.missoes[indiceMissao];
                 const correspondente = m.opcoes.find(o => o.t === btn.innerText);
-                if(correspondente && correspondente.c) {
-                    btn.classList.add('correct');
-                }
+                if(correspondente && correspondente.c) btn.classList.add('correct');
             });
         }
         document.getElementById('next-btn').style.display = 'block';
@@ -886,15 +927,16 @@
                 if (nivelAtual === 0) {
                     temBronze = true;
                     dispararShowDeFogos();
-                    alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos na raça! O Croissant de Bronze é seu! 🎆`);
+                    som.tocarMusicaFrancesa(); // Chamada da música francesa ao vivo!
+                    alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos! O Croissant de Bronze é seu ao som de La Vie en Rose! 🎆🎵`);
                 }
                 if (nivelAtual === 1) {
                     temPrata = true;
-                    alert(`🎉 Excelente! Avançou para o Nível Último! Croissant de Prata conquistado.`);
+                    alert(`🎉 Excelente! Avançou para o Nível 3! Croissant de Prata conquistado.`);
                 }
                 if (nivelAtual === 2) {
                     temOuro = true;
-                    alert(`🥇 Sensacional! Você se tornou um mestre absoluto do cotidiano francês! Todos os troféus liberados!`);
+                    alert(`🥇 Sensacional! Você se tornou um mestre absoluto! Todos os troféus liberados!`);
                 }
                 
                 nivelAtual++;

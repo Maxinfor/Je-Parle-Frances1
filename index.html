@@ -2,18 +2,20 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>App de Francês A1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Francês: Missões</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .app-container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        .hud { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        .app-container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
+        .hud { display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: bold; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; color: #2c3e50; }
         .screen { display: none; }
         .screen.active { display: block; }
-        .menu-btn { background-color: #3498db; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-bottom: 15px; }
-        .menu-btn:disabled { background-color: #bdc3c7; }
-        .mic-btn { background-color: #8e44ad; color: white; border: none; border-radius: 50%; width: 80px; height: 80px; font-size: 30px; cursor: pointer; }
+        .menu-btn { background-color: #3498db; color: white; border: none; padding: 15px; width: 100%; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-bottom: 15px; transition: 0.3s; }
+        .menu-btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+        .mic-btn { background-color: #8e44ad; color: white; border: none; border-radius: 50%; width: 80px; height: 80px; font-size: 30px; cursor: pointer; transition: 0.3s; margin-top: 15px; }
         .mic-btn.recording { background-color: #e74c3c; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(0.95); } 50% { transform: scale(1.05); } 100% { transform: scale(0.95); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        #feedback { margin-top: 15px; font-weight: bold; color: #7f8c8d; }
     </style>
 </head>
 <body>
@@ -24,58 +26,91 @@
         <span>⭐ XP: <span id="xp-count">0</span></span>
     </div>
 
-    <!-- Menu -->
+    <!-- Tela de Menu -->
     <div id="screen-menu" class="screen active">
-        <h2>Missões Diárias</h2>
-        <button class="menu-btn" onclick="startLevel(1)">Nível 1: La Chambre</button>
-        <button class="menu-btn" id="btn-lvl2" onclick="startLevel(2)" disabled>Nível 2: La Boulangerie 🔒</button>
+        <h2>Missões Disponíveis</h2>
+        <button class="menu-btn" onclick="openLevel(1)">Nível 1: La Chambre</button>
+        <button class="menu-btn" id="btn-lvl2" onclick="openLevel(2)" disabled>Nível 2: La Boulangerie 🔒</button>
     </div>
 
-    <!-- Nível 1 -->
-    <div id="screen-lvl1" class="screen">
-        <h2 id="title-lvl1">Nível 1</h2>
-        <div id="visual-lvl1" style="font-size: 60px;">⏰</div>
-        <p id="scenario-lvl1">Diga: <strong>Le réveil</strong></p>
-        <button class="mic-btn" onclick="startListening()">🎤</button>
-        <p id="feedback-lvl1">Clique para falar</p>
+    <!-- Tela de Jogo -->
+    <div id="screen-game" class="screen">
+        <h2 id="game-title">Nível 1</h2>
+        <div id="visual" style="font-size: 60px; margin: 15px 0;">⏰</div>
+        <p id="instruction">Carregue no microfone e diga:</p>
+        <p id="target-word" style="font-size: 1.5em; font-weight: bold; color: #8e44ad;">...</p>
+        <button class="mic-btn" id="mic-btn" onclick="startListening()">🎤</button>
+        <p id="feedback">Clique para falar</p>
+        <button class="menu-btn" style="background:#95a5a6; margin-top:20px;" onclick="goBack()">Voltar ao Menu</button>
     </div>
 </div>
 
 <script>
     let xp = 0;
     let currentLevel = 0;
-    let currentStep = 1;
+    let currentStep = 0;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.lang = 'fr-FR';
 
-    function startLevel(lvl) {
+    function openLevel(lvl) {
         currentLevel = lvl;
         currentStep = 1;
         document.getElementById('screen-menu').classList.remove('active');
-        document.getElementById('screen-lvl1').classList.add('active');
+        document.getElementById('screen-game').classList.add('active');
+        updateGameUI();
     }
 
-    function startListening() { recognition.start(); }
+    function updateGameUI() {
+        if(currentLevel === 1) {
+            document.getElementById('game-title').innerText = "Nível 1: La Chambre";
+            document.getElementById('target-word').innerText = currentStep === 1 ? "Le réveil" : "Le lit";
+        } else {
+            document.getElementById('game-title').innerText = "Nível 2: La Boulangerie";
+            document.getElementById('target-word').innerText = currentStep === 1 ? "Bonjour" : "Un croissant";
+        }
+    }
+
+    function startListening() {
+        recognition.start();
+        document.getElementById('mic-btn').classList.add('recording');
+        document.getElementById('feedback').innerText = "A ouvir...";
+    }
 
     recognition.onresult = (e) => {
+        document.getElementById('mic-btn').classList.remove('recording');
         const transcript = e.results[0][0].transcript.toLowerCase();
         
         if (currentLevel === 1) {
             if (currentStep === 1 && transcript.includes('réveil')) {
                 currentStep = 2; xp += 50;
-                document.getElementById('xp-count').innerText = xp;
-                document.getElementById('scenario-lvl1').innerHTML = "Diga: <strong>Le lit</strong>";
+                document.getElementById('feedback').innerText = "Muito bem!";
+                updateGameUI();
             } else if (currentStep === 2 && transcript.includes('lit')) {
                 xp += 100;
-                document.getElementById('xp-count').innerText = xp;
                 document.getElementById('btn-lvl2').disabled = false;
                 document.getElementById('btn-lvl2').innerText = "Nível 2: La Boulangerie";
-                location.reload(); // Volta ao menu
+                goBack();
+            }
+        } else if (currentLevel === 2) {
+            if (currentStep === 1 && transcript.includes('bonjour')) {
+                currentStep = 2; xp += 50;
+                updateGameUI();
+            } else if (currentStep === 2 && transcript.includes('croissant')) {
+                xp += 150;
+                alert("Nível Concluído! XP Total: " + xp);
+                goBack();
             }
         }
+        document.getElementById('xp-count').innerText = xp;
     };
+
+    function goBack() {
+        document.getElementById('screen-game').classList.remove('active');
+        document.getElementById('screen-menu').classList.add('active');
+    }
 </script>
+
 </body>
 </html>

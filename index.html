@@ -312,7 +312,7 @@
 
         <div id="choices" class="choices"></div>
         <div id="explanation-box" class="explanation-box"></div>
-        <button id="next-btn" onclick="avancarMissao()">Continuar ➔</button>
+        <button id="next-btn" onclick="triggerAvancarMissao()">Continuar ➔</button>
     </div>
 </div>
 
@@ -320,7 +320,15 @@
     // Sistema de Áudio Avançado
     const som = {
         ctx: null,
-        init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+        init() { 
+            if(!this.ctx) {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            // Força o contexto de áudio a sair do estado suspenso imposto pelos navegadores
+            if (this.ctx && this.ctx.state === 'suspended') {
+                this.ctx.resume();
+            }
+        },
         tocarSucesso() {
             this.init();
             const agora = this.ctx.currentTime;
@@ -354,41 +362,39 @@
             osc.start(agora);
             osc.stop(agora + 0.26);
         },
-        // Toca "La Vie en Rose" sintetizada de forma elegante
         tocarMusicaFrancesa() {
             this.init();
             const agora = this.ctx.currentTime;
             
-            // Notas da melodia clássica (Frequência, Tempo de início relativo, Duração)
+            // La Vie en Rose - Ajuste milimétrico de compasso para caixinha de música nativa
             const melodia = [
-                {f: 523.25, t: 0.0, d: 0.4},  // C5
-                {f: 587.33, t: 0.4, d: 0.4},  // D5
-                {f: 659.25, t: 0.8, d: 0.8},  // E5
-                {f: 659.25, t: 1.6, d: 0.4},  // E5
-                {f: 587.33, t: 2.0, d: 0.4},  // D5
-                {f: 523.25, t: 2.4, d: 0.8},  // C5
-                {f: 523.25, t: 3.2, d: 0.4},  // C5
-                {f: 493.88, t: 3.6, d: 0.4},  // B4
-                {f: 440.00, t: 4.0, d: 1.2},  // A4
+                {f: 523.25, t: 0.0, d: 0.4},  
+                {f: 587.33, t: 0.4, d: 0.4},  
+                {f: 659.25, t: 0.8, d: 0.8},  
+                {f: 659.25, t: 1.6, d: 0.4},  
+                {f: 587.33, t: 2.0, d: 0.4},  
+                {f: 523.25, t: 2.4, d: 0.8},  
+                {f: 523.25, t: 3.2, d: 0.4},  
+                {f: 493.88, t: 3.6, d: 0.4},  
+                {f: 440.00, t: 4.0, d: 1.2},  
                 
-                {f: 440.00, t: 5.4, d: 0.4},  // A4
-                {f: 493.88, t: 5.8, d: 0.4},  // B4
-                {f: 523.25, t: 6.2, d: 0.8},  // C5
-                {f: 523.25, t: 7.0, d: 0.4},  // C5
-                {f: 440.00, t: 7.4, d: 0.4},  // A4
-                {f: 392.00, t: 7.8, d: 1.5}   // G4
+                {f: 440.00, t: 5.4, d: 0.4},  
+                {f: 493.88, t: 5.8, d: 0.4},  
+                {f: 523.25, t: 6.2, d: 0.8},  
+                {f: 523.25, t: 7.0, d: 0.4},  
+                {f: 440.00, t: 7.4, d: 0.4},  
+                {f: 392.00, t: 7.8, d: 1.5}   
             ];
 
             melodia.forEach(nota => {
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
                 
-                // Tipo 'sine' misturado com envelope rápido simula uma charmosa caixinha de música
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(nota.f, agora + nota.t);
                 
                 gain.gain.setValueAtTime(0, agora + nota.t);
-                gain.gain.linearRampToValueAtTime(0.08, agora + nota.t + 0.02);
+                gain.gain.linearRampToValueAtTime(0.12, agora + nota.t + 0.02); // Leve aumento de volume base
                 gain.gain.exponentialRampToValueAtTime(0.001, agora + nota.t + nota.d);
                 
                 osc.connect(gain);
@@ -451,7 +457,7 @@
         animarFogos();
     }
 
-    // BANCO DE DADOS ATUALIZADO: 10 QUESTÕES COM 4 OPÇÕES CADA
+    // BANCO DE DADOS DAS QUESTÕES
     const dadosJornada = [
         {
             nome: "Nível 1 — Rotina Prática & Saudações",
@@ -590,7 +596,7 @@
                     local: "Estação", npc: "Guichet", avatar: "🎫", 
                     pergunta: "Você quer alterar o horário da sua passagem de trem. O que diz?", 
                     opcoes: [
-                        {t: "Je veux un autre train.", c: false}, 
+                        {t: "Je veux un outro train.", c: false}, 
                         {t: "Je voudrais changer l'heure de ma voiture.", c: false}, 
                         {t: "Je voudrais échanger mon billet de train.", c: true}, 
                         {t: "Donnez-moi un ticket neuf.", c: false}
@@ -654,10 +660,10 @@
                 },
                 { 
                     local: "Museu", npc: "Guichetier", avatar: "🎟️", 
-                    pergunta: "Como perguntar se estudantes têm direito a desconto no ingresso?", 
+                    pergunta: "Como perguntar if estudantes têm direito a desconto no ingresso?", 
                     opcoes: [
                         {t: "C'est moins cher pour l'école ?", c: false}, 
-                        {t: "Je étudie, quel prix ?", c: false}, 
+                        {t: "Je étudie, quel preço ?", c: false}, 
                         {t: "Il y a un tarif étudiant ?", c: true}, 
                         {t: "Avez-vous une promoção escola ?", c: false}
                     ], 
@@ -773,7 +779,7 @@
                     local: "Oficina", npc: "Mécanicien", avatar: "🔧", 
                     pergunta: "Como pedir um orçamento impresso por escrito dos consertos mecânicos?", 
                     opcoes: [
-                        {t: "Dites-moi le prix sur papier.", c: false}, 
+                        {t: "Dites-moi le preço sur papier.", c: false}, 
                         {t: "Je voudrais um papel de custos.", c: false}, 
                         {t: "Je voudrais un devis détaillé pour les réparations.", c: true}, 
                         {t: "Combien coûte le garage ?", c: false}
@@ -821,6 +827,9 @@
         document.getElementById('txt-meta-questoes').innerText = mediaQuestoesAlvo;
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('game-ui').style.display = 'block';
+        
+        // Ativa o áudio imediatamente no primeiro clique de configuração da meta
+        som.init();
         renderizar();
     }
 
@@ -919,6 +928,12 @@
         document.getElementById('next-btn').style.display = 'block';
     }
 
+    // Intercepta o clique físico do usuário para validar o desbloqueio do áudio no navegador
+    function triggerAvancarMissao() {
+        som.init(); 
+        avancarMissao();
+    }
+
     function avancarMissao() {
         indiceMissao++;
         
@@ -927,8 +942,10 @@
                 if (nivelAtual === 0) {
                     temBronze = true;
                     dispararShowDeFogos();
-                    som.tocarMusicaFrancesa(); // Chamada da música francesa ao vivo!
-                    alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos! O Croissant de Bronze é seu ao som de La Vie en Rose! 🎆🎵`);
+                    som.tocarMusicaFrancesa(); // Roda perfeitamente agora por estar atrelada ao clique direto
+                    setTimeout(() => {
+                        alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos! O Croissant de Bronze é seu ao som de La Vie en Rose! 🎆🎵`);
+                    }, 100);
                 }
                 if (nivelAtual === 1) {
                     temPrata = true;

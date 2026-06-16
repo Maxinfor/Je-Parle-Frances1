@@ -2,75 +2,66 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francês A1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornada Frances A1 - Lógica</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; min-height: 100vh; margin: 0; }
-        .app-container { background: white; width: 100%; max-width: 400px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 15px; }
-        .level-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 12px; background: #fff; display: flex; flex-direction: column; }
-        .locked { opacity: 0.6; background: #f9f9f9; }
-        .goal-text { font-size: 0.85em; color: #7f8c8d; font-style: italic; margin-top: 5px; }
-        .screen { display: none; }
-        .screen.active { display: block; }
-        button { padding: 12px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 20px; text-align: center; }
+        .scene-text { font-size: 1.1em; margin-bottom: 20px; color: #34495e; }
+        .choices { display: flex; flex-direction: column; gap: 10px; }
+        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:hover { background: #2980b9; }
         button:disabled { background: #bdc3c7; }
-        #cert-btn { background: #e67e22; }
+        #feedback { margin-top: 15px; font-weight: bold; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
-    <!-- Menu -->
-    <div id="screen-menu" class="screen active">
-        <h2>🇫🇷 Jornada Francês A1</h2>
-        <div id="levels-list"></div>
-    </div>
-
-    <!-- Jogo -->
-    <div id="screen-game" class="screen">
-        <h2 id="game-title">Exercício</h2>
-        <p id="question" style="font-weight: bold;"></p>
-        <button id="mic-btn" onclick="startListening()">🎤 Responder Agora</button>
-        <p id="feedback" style="text-align:center; color: #e74c3c;"></p>
-        <button onclick="goBack()" style="background:#95a5a6;">Voltar ao Menu</button>
+    <div id="game-ui">
+        <h2 id="scene-title">Início</h2>
+        <p id="scene-desc" class="scene-text"></p>
+        <div id="choices-area" class="choices"></div>
+        <button id="speak-btn" class="hidden" onclick="startListening()">🎤 Tentar Falar</button>
+        <p id="feedback"></p>
     </div>
 </div>
 
 <script>
-    let levels = JSON.parse(localStorage.getItem('levels')) || [
-        { id: 0, title: "1. Cumprimentos", goal: "Aprender a saudar e despedir-se.", target: "salut", q: "Como dizer 'Oi'?", hint: "Dica: O 't' final é mudo. Pronuncie 'sa-lü'.", locked: false },
-        { id: 1, title: "2. Informações", goal: "Saber dizer nome e nacionalidade.", target: "nationalité", q: "Diga a palavra 'nacionalidade'.", hint: "Dica: Foque no final 'té'.", locked: true },
-        { id: 2, title: "3. Os Números", goal: "Dominar a base numérica (0-10).", target: "un deux trois", q: "Diga 1, 2 e 3.", hint: "Dica: O 's' final de 'trois' não é pronunciado.", locked: true },
-        { id: 3, title: "4. As Horas", goal: "Aplicar números para dizer a hora.", target: "quelle heure", q: "Pergunte 'Que horas são'?", hint: "Dica: Use a pergunta que aprendemos.", locked: true },
-        { id: 4, title: "5. A Família", goal: "Descrever membros da família.", target: "père", q: "Como dizer 'O pai'?", hint: "Dica: O 'r' é gutural.", locked: true },
-        { id: 5, title: "6. Rotina", goal: "Expressar ações do dia a dia.", target: "réveil", q: "Como dizer 'despertador'?", hint: "Dica: Foque no som 'véi'.", locked: true },
-        { id: 6, title: "7. Restaurante", goal: "Fazer pedidos e interagir.", target: "croissant", q: "Peça um 'croissant'.", hint: "Dica: Nasalize bem o 'on'.", locked: true },
-        { id: 7, title: "8. Quanto custa?", goal: "Saber perguntar preços.", target: "combien", q: "Pergunte 'Quanto custa'?", hint: "Dica: Junte os sons: 'combien'.", locked: true }
+    const scenes = [
+        {
+            id: 'airport',
+            title: 'No Aeroporto de Paris',
+            desc: 'Você acaba de desembarcar e precisa pegar um táxi. O motorista olha para você. Como você o cumprimenta?',
+            options: [
+                { text: 'Salut!', target: 'salut', next: 'fail', feedback: 'O motorista parece ofendido com a informalidade. Ele não quer te ajudar.' },
+                { text: 'Bonjour!', target: 'bonjour', next: 'success', feedback: 'O motorista sorri. Ele te ajuda com as malas e pergunta para onde você vai.' }
+            ]
+        }
     ];
 
-    let currentId = 0;
+    let currentScene = scenes[0];
+    let selectedTarget = '';
 
-    function render() {
-        const list = document.getElementById('levels-list');
-        list.innerHTML = '';
-        levels.forEach(lvl => {
-            list.innerHTML += `
-                <div class="level-card ${lvl.locked ? 'locked' : ''}">
-                    <strong>${lvl.title}</strong>
-                    <span class="goal-text">Objetivo: ${lvl.goal}</span>
-                    <button onclick="openGame(${lvl.id})" ${lvl.locked ? 'disabled' : ''}>${lvl.locked ? '🔒 Bloqueado' : '▶️ Iniciar'}</button>
-                </div>
-            `;
+    function renderScene() {
+        document.getElementById('scene-title').innerText = currentScene.title;
+        document.getElementById('scene-desc').innerText = currentScene.desc;
+        const area = document.getElementById('choices-area');
+        area.innerHTML = '';
+        currentScene.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.innerText = opt.text;
+            btn.onclick = () => prepareSpeak(opt);
+            area.appendChild(btn);
         });
-        checkCompletion();
     }
 
-    function openGame(id) {
-        currentId = id;
-        document.getElementById('screen-menu').classList.remove('active');
-        document.getElementById('screen-game').classList.add('active');
-        document.getElementById('game-title').innerText = levels[id].title;
-        document.getElementById('question').innerText = levels[id].q;
-        document.getElementById('feedback').innerText = "";
+    function prepareSpeak(option) {
+        selectedTarget = option.target;
+        document.getElementById('choices-area').classList.add('hidden');
+        document.getElementById('speak-btn').classList.remove('hidden');
+        document.getElementById('feedback').innerText = 'Agora fale a palavra correta: ' + option.text;
     }
 
     const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -80,36 +71,22 @@
 
     rec.onresult = (e) => {
         const transcript = e.results[0][0].transcript.toLowerCase();
-        if (transcript.includes(levels[currentId].target)) {
-            if (levels[currentId + 1]) levels[currentId + 1].locked = false;
-            localStorage.setItem('levels', JSON.stringify(levels));
-            alert("Correto! Bravo! 🇫🇷");
-            goBack();
+        if (transcript.includes(selectedTarget)) {
+            document.getElementById('feedback').innerText = 'Parfait! Você escolheu a opção certa.';
         } else {
-            document.getElementById('feedback').innerText = levels[currentId].hint;
+            document.getElementById('feedback').innerText = 'Tente novamente. Pronuncie claramente: ' + selectedTarget;
         }
     };
 
-    function checkCompletion() {
-        if (levels.every(lvl => !lvl.locked) && !document.getElementById('cert-btn')) {
-            const btn = document.createElement('button');
-            btn.id = 'cert-btn';
-            btn.innerText = '🎓 Gerar Certificado';
-            btn.onclick = () => {
-                const win = window.open();
-                win.document.write(`<h1>Certificado A1 Francês</h1><p>Parabéns, você completou todos os níveis!</p>`);
-            };
-            document.getElementById('screen-menu').appendChild(btn);
-        }
-    }
-
-    function goBack() {
-        document.getElementById('screen-game').classList.remove('active');
-        document.getElementById('screen-menu').classList.add('active');
-        render();
-    }
-
-    render();
+    renderScene();
 </script>
 </body>
 </html>
+```eof
+
+### O que mudou nesta estrutura:
+1.  **Narrativa como base:** Em vez de uma lista de exercícios, temos "Cenas". A escolha da palavra agora é o meio para resolver uma situação social.
+2.  **Consequência cultural:** O feedback não é apenas "acerto ou erro", mas sim uma explicação do *porquê* aquela escolha foi socialmente correta (ou não) na França.
+3.  **Foco em decisão:** O aluno precisa decidir se é o momento de ser informal (*Salut*) ou formal (*Bonjour*) antes de sequer tentar pronunciar.
+
+O que você acha dessa mudança? Podemos expandir criando cenas que conectam o Aeroporto -> Hotel -> Restaurante, criando uma "história" contínua para o jogador.

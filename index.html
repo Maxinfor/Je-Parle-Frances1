@@ -2,16 +2,17 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francês A1</title>
+    <title>Jornada Francês A1 - Passaporte</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; text-align: center; }
-        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .passport-container { background: #fdf6e3; border: 2px solid #8b4513; padding: 15px; border-radius: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stamp { width: 50px; height: 50px; background: #e0d8c3; border: 2px dashed #8b4513; display: flex; align-items: center; justify-content: center; font-size: 1.5em; filter: grayscale(100%); opacity: 0.5; }
-        .stamp.earned { background: #fff; filter: grayscale(0%); border-style: solid; opacity: 1; }
-        .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        button { padding: 15px; border-radius: 8px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; font-size: 1em; }
-        #start-btn { background: #27ae60; font-size: 1.2em; width: 100%; margin-top: 20px; }
+        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .passport-container { background: #fdf6e3; border: 2px solid #8b4513; padding: 15px; border-radius: 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+        .stamp { width: 70px; height: 70px; background: #e0d8c3; border: 2px dashed #8b4513; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); opacity: 0.5; background-size: 60%; background-repeat: no-repeat; background-position: center; transition: all 0.3s; }
+        .stamp.earned { filter: grayscale(0%) drop-shadow(0 0 10px #f1c40f); border: 3px solid #f1c40f; opacity: 1; transform: scale(1.1); }
+        .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; font-size: 1em; }
+        #start-btn { background: #27ae60; font-size: 1.2em; width: 100%; }
+        #revisao-btn { background: #e67e22; margin-top: 15px; width: 100%; display: none; }
     </style>
 </head>
 <body>
@@ -19,39 +20,56 @@
 <div class="app-container">
     <div id="start-screen">
         <h1>🇫🇷 Bem-vindo à França</h1>
-        <p>Prepare o seu ouvido e seu passaporte.</p>
+        <p>Complete as missões, ganhe seus carimbos e domine o francês!</p>
         <button id="start-btn" onclick="iniciarApp()">Entrar na França 🇫🇷</button>
     </div>
 
     <div id="game-ui" style="display:none;">
-        <h2>Passaporte A1</h2>
+        <h2>Meu Passaporte</h2>
         <div id="passport-grid" class="passport-container">
-            <div id="stamp-0" class="stamp">🥐</div>
-            <div id="stamp-1" class="stamp">🇫🇷</div>
-            <div id="stamp-2" class="stamp">🎫</div>
-            <div id="stamp-3" class="stamp">🍷</div>
+            <div id="stamp-0" class="stamp"></div>
+            <div id="stamp-1" class="stamp"></div>
+            <div id="stamp-2" class="stamp"></div>
+            <div id="stamp-3" class="stamp"></div>
         </div>
-        <h3 id="titulo-fase"></h3>
+        <h3 id="titulo-fase">Carregando...</h3>
         <p id="pergunta"></p>
         <div id="choices" class="choices"></div>
-        <p id="feedback" style="font-weight:bold; margin-top:10px;"></p>
+        <p id="feedback" style="font-weight:bold; margin-top:10px; color: #c0392b;"></p>
+        <button id="revisao-btn" onclick="iniciarRevisao()">Modo Revisão 🔄</button>
     </div>
 </div>
 
 <script>
     const audioPlayer = new Audio();
     const niveis = [
-        { nome: "Nível 1: Cumprimentos", premio: "🥐", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", missoes: [
-            { local: "Padaria", pergunta: "O que diz ao entrar?", opcoes: [{t: "Un croissant!", c: false}, {t: "Bonjour, madame!", c: true}] }
+        { nome: "Nível 1: Cumprimentos", img: "https://cdn-icons-png.flaticon.com/128/2921/2921226.png", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", missoes: [
+            { local: "Padaria", pergunta: "O que diz ao entrar?", opcoes: [{t: "Un pain!", c: false}, {t: "Bonjour!", c: true}] },
+            { local: "Rua", pergunta: "Encontro com professor:", opcoes: [{t: "Salut prof!", c: false}, {t: "Bonjour, monsieur!", c: true}] },
+            { local: "Tarde", pergunta: "São 17h, como cumprimentar?", opcoes: [{t: "Bonsoir!", c: true}, {t: "Bonjour!", c: false}] },
+            { local: "Saída", pergunta: "Despedida polida:", opcoes: [{t: "Salut!", c: false}, {t: "Merci, au revoir!", c: true}] },
+            { local: "Formal", pergunta: "Como tratar estranhos?", opcoes: [{t: "Com 'Tu'.", c: false}, {t: "Com 'Vous'.", c: true}] }
         ]},
-        { nome: "Nível 2: Apresentação", premio: "🇫🇷", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", missoes: [
-            { local: "Imigração", pergunta: "O oficial pergunta seu nome.", opcoes: [{t: "Je suis Idney.", c: false}, {t: "Je m'appelle Idney.", c: true}] }
+        { nome: "Nível 2: Apresentação", img: "https://cdn-icons-png.flaticon.com/128/197/197560.png", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", missoes: [
+            { local: "Imigração", pergunta: "Como dizer seu nome?", opcoes: [{t: "Je suis Idney.", c: false}, {t: "Je m'appelle Idney.", c: true}] },
+            { local: "Conversa", pergunta: "Como perguntar 'E você?':", opcoes: [{t: "Et vous?", c: true}, {t: "C'est toi?", c: false}] },
+            { local: "Nacionalidade", pergunta: "Você é brasileiro(a):", opcoes: [{t: "Je suis Brésilien.", c: true}, {t: "J'ai Brésilien.", c: false}] },
+            { local: "Conhecer", pergunta: "Prazer em conhecê-lo:", opcoes: [{t: "Enchanté.", c: true}, {t: "Au revoir.", c: false}] },
+            { local: "Trabalho", pergunta: "Sou servidor público:", opcoes: [{t: "Je suis fonctionnaire.", c: true}, {t: "J'habite fonctionnaire.", c: false}] }
         ]},
-        { nome: "Nível 3: Números", premio: "🎫", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", missoes: [
-            { local: "Padaria", pergunta: "Você quer 2 croissants.", opcoes: [{t: "Un croissant.", c: false}, {t: "Deux croissants.", c: true}] }
+        { nome: "Nível 3: Números", img: "https://cdn-icons-png.flaticon.com/128/1175/1175134.png", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", missoes: [
+            { local: "Padaria", pergunta: "Quero 2 croissants:", opcoes: [{t: "Un croissant.", c: false}, {t: "Deux croissants.", c: true}] },
+            { local: "Caixa", pergunta: "O valor é 3 euros:", opcoes: [{t: "C'est trois euros.", c: true}, {t: "Il a três euros.", c: false}] },
+            { local: "Telefone", pergunta: "Como dizer o número 4?", opcoes: [{t: "Quatre.", c: true}, {t: "Cinq.", c: false}] },
+            { local: "Preço", pergunta: "Quanto custa?", opcoes: [{t: "C'est combien?", c: true}, {t: "Combien c'est?", c: false}] },
+            { local: "Quantidade", pergunta: "Como pedir 5 baguetes?", opcoes: [{t: "Cinq baguettes.", c: true}, {t: "Deux baguettes.", c: false}] }
         ]},
-        { nome: "Nível 4: Restaurante", premio: "🍷", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", missoes: [
-            { local: "Entrada", pergunta: "Como pede uma mesa para dois?", opcoes: [{t: "Une table pour deux.", c: true}, {t: "Je veux deux.", c: false}] }
+        { nome: "Nível 4: Restaurante", img: "https://cdn-icons-png.flaticon.com/128/3063/3063185.png", musica: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3", missoes: [
+            { local: "Entrada", pergunta: "Mesa para dois:", opcoes: [{t: "Une table pour deux.", c: true}, {t: "Je veux deux.", c: false}] },
+            { local: "Pedido", pergunta: "Gostaria de um café:", opcoes: [{t: "Je voudrais un café.", c: true}, {t: "J'ai un café.", c: false}] },
+            { local: "Conta", pergunta: "Pedindo a conta:", opcoes: [{t: "La note, s'il vous plaît.", c: true}, {t: "Donnez-moi ça.", c: false}] },
+            { local: "Água", pergunta: "Pode trazer água?", opcoes: [{t: "De l'eau, s'il vous plaît.", c: true}, {t: "Je veux l'eau.", c: false}] },
+            { local: "Menu", pergunta: "Onde está o menu?", opcoes: [{t: "Le menu, s'il vous plaît.", c: true}, {t: "Où est le plat?", c: false}] }
         ]}
     ];
 
@@ -65,21 +83,16 @@
         renderizar();
     }
 
-    function tocarMusica(url) {
-        audioPlayer.src = url;
-        audioPlayer.loop = true;
-        audioPlayer.volume = 0.2;
-        audioPlayer.play();
-    }
-
     function renderizar() {
         if (nivelAtual >= niveis.length) {
-            document.getElementById('game-ui').innerHTML = "<h3>Parabéns, viajante! Você concluiu a jornada! 🇫🇷</h3>";
+            document.getElementById('game-ui').innerHTML = "<h3>Parabéns, você domina o A1! 🇫🇷</h3>";
             return;
         }
 
         const nivel = niveis[nivelAtual];
-        tocarMusica(nivel.musica);
+        audioPlayer.src = nivel.musica;
+        audioPlayer.play().catch(()=>{});
+        
         document.getElementById('titulo-fase').innerText = nivel.nome;
         const m = nivel.missoes[indiceMissao];
         document.getElementById('pergunta').innerText = `(${m.local}) ${m.pergunta}`;
@@ -94,26 +107,45 @@
         });
 
         // Atualiza carimbos
-        conquistados.forEach((c, index) => {
-            document.getElementById('stamp-'+index).classList.add('earned');
+        niveis.forEach((n, i) => {
+            const stamp = document.getElementById('stamp-' + i);
+            stamp.style.backgroundImage = `url('${n.img}')`;
+            if (conquistados.includes(n.nome)) stamp.classList.add('earned');
         });
+
+        if (conquistados.length > 0) document.getElementById('revisao-btn').style.display = 'block';
     }
 
     function verificar(correta) {
         if (correta) {
             indiceMissao++;
             if (indiceMissao >= niveis[nivelAtual].missoes.length) {
-                conquistados.push(niveis[nivelAtual].premio);
+                conquistados.push(niveis[nivelAtual].nome);
                 localStorage.setItem('conquistados', JSON.stringify(conquistados));
                 nivelAtual++;
                 localStorage.setItem('nivelAtual', nivelAtual);
                 indiceMissao = 0;
-                alert("Bravo! Você ganhou um novo carimbo!");
+                alert("Bravo! Você ganhou um carimbo!");
             }
+            document.getElementById('feedback').innerText = "";
             renderizar();
         } else {
             document.getElementById('feedback').innerText = "❌ Tente outra vez!";
         }
+    }
+
+    function iniciarRevisao() {
+        let n = niveis[Math.floor(Math.random() * niveis.length)];
+        let m = n.missoes[Math.floor(Math.random() * n.missoes.length)];
+        document.getElementById('titulo-fase').innerText = "REVISÃO: " + n.nome;
+        document.getElementById('pergunta').innerText = m.pergunta;
+        document.getElementById('choices').innerHTML = '';
+        m.opcoes.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.innerText = opt.t;
+            btn.onclick = () => { alert(opt.c ? "C'est ça!" : "Non..."); renderizar(); };
+            document.getElementById('choices').appendChild(btn);
+        });
     }
 </script>
 </body>

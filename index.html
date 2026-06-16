@@ -1,75 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Jornada Francês A1 - Com Personagens</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; text-align: center; }
-        .app-container { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
-        .passport-container { background: #fdf6e3; border: 2px solid #8b4513; padding: 10px; border-radius: 15px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 20px; }
-        .stamp { width: 50px; height: 50px; background: #e0d8c3; border: 2px dashed #8b4513; display: flex; align-items: center; justify-content: center; filter: grayscale(100%); opacity: 0.5; background-size: 60%; background-repeat: no-repeat; background-position: center; transition: all 0.3s; }
-        .stamp.earned { filter: grayscale(0%) drop-shadow(0 0 5px #f1c40f); border: 3px solid #f1c40f; opacity: 1; }
-        
-        /* --- ESTILO DOS PERSONAGENS --- */
-        .character-zone { display: flex; align-items: center; margin: 20px 0; background: #f9f9f9; padding: 15px; border-radius: 15px; border-left: 5px solid #3498db; text-align: left; }
-        .char-avatar { width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-right: 15px; background-size: cover; background-position: center; flex-shrink: 0; }
-        .dialogue-box { flex-grow: 1; }
-        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.9em; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .char-bubble { font-size: 1.05em; color: #34495e; margin: 0; position: relative; }
-        .location-badge { display: inline-block; background: #e8f4fd; color: #2980b9; padding: 2px 8px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 5px; }
-        
-        .choices { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-        button { padding: 15px; border-radius: 10px; border: none; background: #3498db; color: white; cursor: pointer; font-weight: bold; font-size: 1em; transition: transform 0.1s, background 0.2s; }
-        button:active { transform: scale(0.98); }
-        button:hover { background: #2980b9; }
-        #start-btn { background: #27ae60; font-size: 1.2em; width: 100%; }
-        #start-btn:hover { background: #219150; }
-        #revisao-btn { background: #e67e22; margin-top: 15px; width: 100%; display: none; }
-        #revisao-btn:hover { background: #d35400; }
-    </style>
-</head>
-<body>
 
-<div class="app-container">
-    <div id="start-screen">
-        <h1>🇫🇷 Bem-vindo!</h1>
-        <p>Prepare-se para sua jornada interativa na França.</p>
-        <button id="start-btn" onclick="iniciarApp()">Entrar na França 🇫🇷</button>
-    </div>
-
-    <div id="game-ui" style="display:none;">
-        <h3>Meu Passaporte</h3>
-        <div id="passport-grid" class="passport-container">
-            <div id="stamp-0" class="stamp"></div><div id="stamp-1" class="stamp"></div>
-            <div id="stamp-2" class="stamp"></div><div id="stamp-3" class="stamp"></div>
-            <div id="stamp-4" class="stamp"></div>
-        </div>
-        
-        <h4 id="titulo-fase">Carregando...</h4>
-        
-        <!-- Zona Dinâmica do Personagem -->
-        <div class="character-zone" id="character-zone">
-            <div class="char-avatar" id="char-avatar"></div>
-            <div class="dialogue-box">
-                <span class="location-badge" id="location-badge">PADARIA</span>
-                <div class="char-name" id="char-name">Nome do NPC</div>
-                <p class="char-bubble" id="pergunta">Fala do personagem aqui...</p>
-            </div>
-        </div>
-
-        <div id="choices" class="choices"></div>
-        <button id="revisao-btn" onclick="iniciarRevisao()">Modo Revisão 🔄</button>
-    </div>
-</div>
-
-<script>
-    // Banco de avatares gratuitos e expressivos do Unsplash
-    const avatar = {
-        boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150&auto=format&fit=crop&q=60", // Padeiro/Trabalhador
-        prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=60",      // Professora
-        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60",  // Homem na rua
-        policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150&auto=format&fit=crop&q=60",  // Oficial/Imigração
-        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=60",     // Jovem/Amigo
         garcom: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?w=150&auto=format&fit=crop&q=60",    // Garçom/Atendente
         viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&auto=format&fit=crop&q=60"   // Moça na estação
     };
@@ -77,8 +6,8 @@
     const niveis = [
         { nome: "Nível 1: Cumprimentos", img: "https://cdn-icons-png.flaticon.com/128/2921/2921226.png", missoes: [
             { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra para comprar um doce. O que diz ao padeiro?", opcoes: [{t: "Un pain!", c: false}, {t: "Bonjour!", c: true}] },
-            { local: "Rua", npc: "Mme. Martin", foto: avatar.prof, pergunta: "Você encontra sua professora de francês na calçada:", opcoes: [{t: "Salut prof!", c: false}, {t: "Bonjour, monsieur!", c: true}] },
-            { local: "Café à tarde", npc: "Lucas", foto: avatar.amigo, pergunta: "São 17h, você encontra um conhecido. Como cumprimentar?", opcoes: [{t: "Bonsoir!", c: true}, {t: "Bonjour!", c: false}] },
+            { local: "Rua", npc: "Mme. Martin", foto: avatar.prof, pergunta: "Você encontra sua professora de francês na calçada:", opcoes: [{t: "Salut prof!", c: true}, {t: "Bonjour, monsieur!", c: false}] },
+            { local: "Café à tarde", npc: "Lucas", foto: avatar.amigo, pergunta: "São 17h, você encontra um conhecido. Como cumprimentar?", opcoes: [{t: "Bonsoir!", c: false}, {t: "Bonjour!", c: true}] },
             { local: "Loja de Souvenirs", npc: "Chloé (Atendente)", foto: avatar.garcom, pergunta: "Você pagou e está saindo da loja de forma polida:", opcoes: [{t: "Merci, au revoir!", c: true}, {t: "Salut!", c: false}] },
             { local: "Metrô", npc: "Desconhecido", foto: avatar.passante, pergunta: "Para pedir informação a um estranho na plataforma, você o trata:", opcoes: [{t: "Com 'Vous' (Formal).", c: true}, {t: "Com 'Tu' (Informal).", c: false}] }
         ]},

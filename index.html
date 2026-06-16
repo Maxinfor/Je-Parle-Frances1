@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês Real - Vida Cotidiana</title>
+    <title>Jornada Francês Real — Premium 4 Opções</title>
     <style>
         :root {
             --primary: #3498db;
@@ -222,10 +222,22 @@
         }
         button:hover { background: var(--primary-dark); }
         
-        .choice-btn.correct { background: var(--success) !important; }
-        .choice-btn.wrong { background: var(--error) !important; }
+        .choice-btn {
+            background: #f1f5f9;
+            color: #334155;
+            border: 2px solid #cbd5e1;
+            text-align: left;
+            padding: 14px;
+        }
+        .choice-btn:hover:not([disabled]) {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
         
-        #next-btn { background: var(--warning); width: 100%; margin-top: 12px; display: none; }
+        .choice-btn.correct { background: var(--success) !important; color: white !important; border-color: var(--success) !important; }
+        .choice-btn.wrong { background: var(--error) !important; color: white !important; border-color: var(--error) !important; }
+        
+        #next-btn { background: var(--warning); width: 100%; margin-top: 12px; display: none; color: white; }
 
         @keyframes bounce {
             0% { transform: scale(0.3); opacity: 0; }
@@ -241,7 +253,7 @@
 <div class="app-container">
     <div id="start-screen">
         <h1>🇫🇷 Escolha sua Meta Diária</h1>
-        <p>Selecione seu tempo disponível. Você precisa de <strong>80% de acertos (24 questões)</strong> para passar de nível e ganhar os prêmios!</p>
+        <p>Selecione seu tempo disponível. Você precisa de <strong>80% de acertos (8 questões)</strong> para passar de nível!</p>
         
         <div class="grid-time">
             <button style="background:#27ae60;" onclick="definirMeta(5)">⏱️ 5 minutos</button>
@@ -253,13 +265,13 @@
 
     <div id="game-ui" style="display:none;">
         <div class="daily-goal-panel" id="daily-panel">
-            <div>🎯 Meta do Dia: <strong><span id="txt-meta-min">0</span> min</strong></div>
+            <div>🎯 Meta: <strong><span id="txt-meta-min">0</span> min</strong></div>
             <div>Média ideal: <strong><span id="txt-meta-questoes">0</span> qts</strong></div>
             <div id="txt-status-diario" style="font-weight: bold; color: #15803d;">Pendente</div>
         </div>
 
         <div class="status-bar">
-            <span id="score-display" style="color: var(--primary);">Nível 1 — Pergunta 1/30</span>
+            <span id="score-display" style="color: var(--primary);">Nível 1 — 1/10</span>
             <span id="hits-display" style="color: var(--success);">Acertos: 0</span>
         </div>
 
@@ -274,7 +286,7 @@
                 <div id="croissant-prata" class="trophy-slot">🥐<span style="color:#7f8c8d">Prata</span></div>
                 <div id="croissant-ouro" class="trophy-slot">🥐<span style="color:#d4af37">Ouro</span></div>
             </div>
-            <div class="trophy-title" style="margin-top:10px; margin-bottom:4px;">🏛️ Brindes da França:</div>
+            <div class="trophy-title" style="margin-top:10px; margin-bottom:4px;">🏛️ Brindes Desbloqueados:</div>
             <div class="trophy-container">
                 <div id="monumento-louvre" class="trophy-slot">🏛️<span>Louvre</span></div>
                 <div id="monumento-eiffel-b" class="trophy-slot">🗼<span>Eiffel Br</span></div>
@@ -305,28 +317,46 @@
 </div>
 
 <script>
-    // Sintetizador de Áudio Nativo
+    // Áudio Nativo Suave e Harmônico
     const som = {
         ctx: null,
         init() { if(!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
         tocarSucesso() {
-            this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-            osc.connect(gain); gain.connect(this.ctx.destination);
-            osc.type = 'sine'; osc.frequency.setValueAtTime(587.33, this.ctx.currentTime);
-            osc.frequency.setValueAtTime(880, this.ctx.currentTime + 0.08);
-            gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-            osc.start(); osc.stop(this.ctx.currentTime + 0.2);
+            this.init();
+            const agora = this.ctx.currentTime;
+            const notas = [523.25, 659.25, 783.99, 1046.50]; 
+            notas.forEach((freq, i) => {
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, agora + (i * 0.06));
+                gain.gain.setValueAtTime(0, agora + (i * 0.06));
+                gain.gain.linearRampToValueAtTime(0.05, agora + (i * 0.06) + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.001, agora + (i * 0.06) + 0.4);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(agora + (i * 0.06));
+                osc.stop(agora + (i * 0.06) + 0.45);
+            });
         },
         tocarErro() {
-            this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-            osc.connect(gain); gain.connect(this.ctx.destination);
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(130.81, this.ctx.currentTime);
-            gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
-            osc.start(); osc.stop(this.ctx.currentTime + 0.25);
+            this.init();
+            const agora = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(180, agora);
+            osc.frequency.linearRampToValueAtTime(120, agora + 0.25);
+            gain.gain.setValueAtTime(0.12, agora);
+            gain.gain.exponentialRampToValueAtTime(0.001, agora + 0.25);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(agora);
+            osc.stop(agora + 0.26);
         }
     };
 
-    // Animação de Fogos de Artifício (Canvas)
+    // Fogos de Artifício (Canvas)
     const canvas = document.getElementById('canvas-fogos');
     const ctx = canvas.getContext('2d');
     let particulas = [];
@@ -377,120 +407,357 @@
         animarFogos();
     }
 
-    // BANCO DE QUESTÕES DO COTIDIANO (30 POR NÍVEL - SEM REPETIÇÃO)
+    // BANCO DE DADOS ATUALIZADO: 10 QUESTÕES COM 4 OPÇÕES CADA
     const dadosJornada = [
         {
-            nome: "Nível 1 - Situações Iniciais Básicas",
-            regiao: "Norte - Lille",
+            nome: "Nível 1 — Rotina Prática & Saudações",
+            regiao: "Norte — Lille",
             fotoRegiao: "https://images.unsplash.com/photo-1605270103728-66236b222533?w=500",
             missoes: [
-                { local: "Padaria", npc: "Boulanger", avatar: "🥖", pergunta: "Você quer comprar uma baguete de manhã. O que diz ao entrar?", opcoes: [{t: "Bonjour, une baguette s'il vous plaît.", c: true}, {t: "Salut, je veux du pain.", c: false}], exp: "Diga 'Bonjour' e use 's'il vous plaît' para ser educado." },
-                { local: "Rua de Lille", npc: "Passante", avatar: "🚶", pergunta: "Como perguntar as horas para alguém na rua de forma educada?", opcoes: [{t: "Quelle heure est-il ?", c: false}, {t: "Excusez-moi, vous avez l'heure s'il vous plaît ?", c: true}], exp: "'Excusez-moi' aborda estranhos com respeito." },
-                { local: "Café", npc: "Serveur", avatar: "☕", pergunta: "O garçom traz o café. O que você diz para agradecer?", opcoes: [{t: "Merci beaucoup !", c: true}, {t: "De rien.", c: false}], exp: "Use 'Merci beaucoup' para demonstrar gratidão." },
-                { local: "Supermercado", npc: "Caissier", avatar: "🛒", pergunta: "A atendente diz o preço das compras. Como você pergunta se aceita cartão?", opcoes: [{t: "Vous acceptez la carte bancaire ?", c: true}, {t: "Où est l'argent ?", c: false}], exp: "Carte bancaire é o termo comum para cartão na França." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🍽️", pergunta: "Você quer pedir a conta no restaurante. Qual é a frase correta?", opcoes: [{t: "L'addition, s'il vous plaît.", c: true}, {t: "Le compte, s'il te plaît.", c: false}], exp: "Conta de restaurante/café chama-se obrigatoriamente 'L'addition'." },
-                { local: "Loja de Roupas", npc: "Vendeur", avatar: "👕", pergunta: "Você quer saber o preço de uma camiseta. O que pergunta?", opcoes: [{t: "C'est combien ?", c: true}, {t: "Quel argent ?", c: false}], exp: "'C'est combien ?' é a forma mais natural de perguntar o preço." },
-                { local: "Metrô", npc: "Agente", avatar: "🚇", pergunta: "Como pedir um bilhete de metrô guichê?", opcoes: [{t: "Un ticket de métro, s'il vous plaît.", c: true}, {t: "Je veux voyager.", c: false}], exp: "Passagem de transporte urbano se chama 'ticket'." },
-                { local: "Hotel", npc: "Réceptionniste", avatar: "🏨", pergunta: "Ao chegar para fazer o seu check-in, o que você diz?", opcoes: [{t: "J'ai une réservation au nom de Silva.", c: true}, {t: "Donne-moi ma chambre.", c: false}], exp: "Dizer que tem uma reserva em seu nome é o padrão." },
-                { local: "Praça", npc: "Turista", avatar: "📸", pergunta: "Você quer pedir para alguém tirar uma foto sua. Como diz?", opcoes: [{t: "Prends ma photo !", c: false}, {t: "Pouvez-vous prendre une photo, s'il vous plaît ?", c: true}], exp: "O uso do 'Pouvez-vous' torna o pedido muito polido." },
-                { local: "Ponto de Ônibus", npc: "Passageiro", avatar: "🚌", pergunta: "Como perguntar se o ônibus para o centro já passou?", opcoes: [{t: "Le bus pour le centre est déjà passé ?", c: true}, {t: "Où est le bus ?", c: false}], exp: "Frase simples e direta para conferir horários na rua." },
-                // Adicionadas questões de 11 a 30 para fechar o Nível 1
-                { local: "Feira", npc: "Marchand", avatar: "🍎", pergunta: "Você quer um quilo de maçãs na feira. Como pede?", opcoes: [{t: "Un kilo de pommes, s'il vous plaît.", c: true}, {t: "Donne-moi des pommes.", c: false}], exp: "Jeito simples e correto de comprar itens por peso." },
-                { local: "Farmácia", npc: "Pharmacien", avatar: "💊", pergunta: "Você está com dor de cabeça. Como explica ao farmacêutico?", opcoes: [{t: "J'ai mal à la tête.", c: true}, {t: "Ma tête est mauvaise.", c: false}], exp: "'Avoir mal à' é a estrutura usada para dores." },
-                { local: "Cinema", npc: "Guichetière", avatar: "🎬", pergunta: "Você quer dois ingressos para o filme. O que diz?", opcoes: [{t: "Deux places pour le film, s'il vous plaît.", c: true}, {t: "Je veux voir le film.", c: false}], exp: "Ingressos de cinema ou teatro são chamados de 'places'." },
-                { local: "Livraria", npc: "Libraire", avatar: "📚", pergunta: "Como perguntar se eles têm um mapa da cidade?", opcoes: [{t: "Vous avez un plan de la ville ?", c: true}, {t: "Où est la carte ?", c: false}], exp: "Mapas urbanos de papel chamam-se 'plan'." },
-                { local: "Rua", npc: "Passante", avatar: "🗺️", pergunta: "Você está perdido e procura o museu. O que diz?", opcoes: [{t: "Où est le musée, s'il vous plaît ?", c: true}, {t: "Je cherche le musée.", c: false}], exp: "Uma pergunta direta acompanhada de cortesia é perfeita." },
-                { local: "Correios", npc: "Agent", avatar: "✉️", pergunta: "Você quer enviar uma carta para o Brasil. Como diz?", opcoes: [{t: "Un timbre para le Brésil, s'il vous plaît.", c: false}, {t: "Je voudrais envoyer cette lettre au Brésil.", c: true}], exp: "'Je voudrais' expressa um desejo de forma educada." },
-                { local: "Parque", npc: "Gardien", avatar: "🌳", pergunta: "Como perguntar a que horas o parque fecha?", opcoes: [{t: "À quelle heure ferme le parc ?", c: true}, {t: "Quand le parc finit ?", c: false}], exp: "Perguntar o horário de fechamento corretamente." },
-                { local: "Táxi", npc: "Chauffeur", avatar: "🚕", pergunta: "Você entra no táxi e quer ir para o aeroporto. O que diz?", opcoes: [{t: "À l'aéroport, s'il vous plaît.", c: true}, {t: "Roulez vers l'avion.", c: false}], exp: "Basta indicar o destino final seguido de s'il vous plaît." },
-                { local: "Tabacaria", npc: "Vendeur", avatar: "📰", pergunta: "Você quer comprar um jornal. Como pede?", opcoes: [{t: "Un journal, s'il vous plaît.", c: true}, {t: "Je veux lire.", c: false}], exp: "Forma curta e objetiva do cotidiano comercial." },
-                { local: "Café", npc: "Serveur", avatar: "☕", pergunta: "O garçom pergunta o que você quer beber. Como pede um copo d'água?", opcoes: [{t: "Un verre d'eau, s'il vous plaît.", c: true}, {t: "Je veux de l'eau.", c: false}], exp: "'Un verre d'eau' é a expressão exata para copo d'água." },
-                { local: "Estação", npc: "Voyageur", avatar: "🚉", pergunta: "Como perguntar de qual plataforma sai o trem?", opcoes: [{t: "Le train part de quel quai ?", c: true}, {t: "Où est le train ?", c: false}], exp: "Plataforma de trem na França se chama 'quai'." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🥩", pergunta: "Como pedir a carne bem passada?", opcoes: [{t: "Bien cuite, s'il vous plaît.", c: true}, {t: "Très cuite.", c: false}], exp: "'Bien cuite' é o termo gastronômico correto." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🥩", pergunta: "E se preferir a carne ao ponto?", opcoes: [{t: "À point, s'il vous plaît.", c: true}, {t: "Milieu.", c: false}], exp: "'À point' significa carne ao ponto." },
-                { local: "Loja", npc: "Vendeur", avatar: "🛍️", pergunta: "Como pedir uma sacola para carregar as compras?", opcoes: [{t: "Un sac, s'il vous plaît.", c: true}, {t: "Une valise.", c: false}], exp: "Sacolas de compras comuns chamam-se apenas 'sac'." },
-                { local: "Rua", npc: "Passante", avatar: "🚶", pergunta: "Como dizer obrigado quando alguém te ajuda na rua?", opcoes: [{t: "Merci pour votre aide.", c: true}, {t: "Merci pour toi.", c: false}], exp: "Forma elegante de agradecer pelo suporte recebido." },
-                { local: "Banheiro público", npc: "Agent", avatar: "🚾", pergunta: "Como perguntar onde ficam os banheiros?", opcoes: [{t: "Où sont les toilettes, s'il vous plaît ?", c: true}, {t: "Où est la salle de bain ?", c: false}], exp: "Em locais públicos, use sempre 'les toilettes'." },
-                { local: "Padaria", npc: "Boulanger", avatar: "🥐", pergunta: "Como pedir dois croissants fresquinhos?", opcoes: [{t: "Deux croissants, s'il vous plaît.", c: true}, {t: "Donne-moi deux pains.", c: false}], exp: "Simples, claro e muito usado todas as manhãs." },
-                { local: "Loja", npc: "Caissier", avatar: "💳", pergunta: "Você quer o recibo de pagamento. O que você pede?", opcoes: [{t: "Le ticket de caisse, s'il vous plaît.", c: true}, {t: "Le papier d'argent.", c: false}], exp: "Nota ou cupom fiscal de compras se chama 'ticket de caisse'." },
-                { local: "Rua", npc: "Passante", avatar: "🏢", pergunta: "Como perguntar se há um banco por perto?", opcoes: [{t: "Il y a une banque près d'ici ?", c: true}, {t: "Où est l'argent proche ?", c: false}], exp: "'Il y a... près d'ici' serve para localizar serviços próximos." },
-                { local: "Ao se despedir", npc: "Comerciante", avatar: "👋", pergunta: "O que você diz ao sair de uma loja desejando um bom dia?", opcoes: [{t: "Au revoir, bonne journée !", c: true}, {t: "Salut, ciao.", c: false}], exp: "Despedida clássica e simpática do comércio francês." }
+                { 
+                    local: "Padaria", npc: "Boulanger", avatar: "🥖", 
+                    pergunta: "Você vai comprar uma baguete de manhã. O que diz ao entrar?", 
+                    opcoes: [
+                        {t: "Salut, je veux du pain.", c: false}, 
+                        {t: "Bonjour, une baguette s'il vous plaît.", c: true}, 
+                        {t: "Bonsoir, je veux une table.", c: false}, 
+                        {t: "Au revoir, merci.", c: false}
+                    ], 
+                    exp: "Diga 'Bonjour' e use 's'il vous plaît' para demonstrar educação básica logo pela manhã." 
+                },
+                { 
+                    local: "Rua", npc: "Passante", avatar: "🚶", 
+                    pergunta: "Como perguntar as horas para alguém de forma polida?", 
+                    opcoes: [
+                        {t: "Quelle heure est-il ?", c: false}, 
+                        {t: "Tu as l'heure ?", c: false}, 
+                        {t: "Excusez-moi, vous avez l'heure s'il vous plaît ?", c: true}, 
+                        {t: "Où est la montre ?", c: false}
+                    ], 
+                    exp: "'Excusez-moi' e o tratamento por 'vous' abordam estranhos com o respeito ideal na rua." 
+                },
+                { 
+                    local: "Café", npc: "Serveur", avatar: "☕", 
+                    pergunta: "O garçom traz seu café na mesa. Como você agradece de forma simpática?", 
+                    opcoes: [
+                        {t: "De rien.", c: false}, 
+                        {t: "Merci beaucoup !", c: true}, 
+                        {t: "S'il vous plaît.", c: false}, 
+                        {t: "Pas de problème.", c: false}
+                    ], 
+                    exp: "Use 'Merci beaucoup' para expressar gratidão legítima pelo serviço prestado." 
+                },
+                { 
+                    local: "Supermercado", npc: "Caissier", avatar: "🛒", 
+                    pergunta: "No caixa, como você pergunta se aceitam pagamento com cartão?", 
+                    opcoes: [
+                        {t: "Où est l'argent ?", c: false}, 
+                        {t: "Vous acceptez la carte bancaire ?", c: true}, 
+                        {t: "Je peux payer avec du papier ?", c: false}, 
+                        {t: "La machine est ici ?", c: false}
+                    ], 
+                    exp: "'Carte bancaire' (ou simplesmente CB) é o termo oficial e comum para cartões na França." 
+                },
+                { 
+                    local: "Restaurante", npc: "Serveur", avatar: "🍽️", 
+                    pergunta: "Você quer pedir a conta ao garçom. Qual a frase correta?", 
+                    opcoes: [
+                        {t: "Le compte, s'il te plaît.", c: false}, 
+                        {t: "Je veux payer maintenant.", c: false}, 
+                        {t: "L'addition, s'il vous plaît.", c: true}, 
+                        {t: "Donne-moi le papier.", c: false}
+                    ], 
+                    exp: "A conta de consumo em restaurantes, bares e cafés chama-se estritamente 'L'addition'." 
+                },
+                { 
+                    local: "Loja", npc: "Vendeur", avatar: "👕", 
+                    pergunta: "Como perguntar o preço de um item de forma natural e simples?", 
+                    opcoes: [
+                        {t: "C'est combien ?", c: true}, 
+                        {t: "Quel argent ?", c: false}, 
+                        {t: "Combien de monnaie ?", c: false}, 
+                        {t: "Quel é le valor ?", c: false}
+                    ], 
+                    exp: "'C'est combien ?' é a estrutura padrão e mais usada do dia a dia para descobrir valores." 
+                },
+                { 
+                    local: "Metrô", npc: "Agente", avatar: "🚇", 
+                    pergunta: "Como pedir uma passagem de metrô no guichê de atendimento?", 
+                    opcoes: [
+                        {t: "Je veux voyager.", c: false}, 
+                        {t: "Un billet de train, s'il vous plaît.", c: false}, 
+                        {t: "Une carte de voyage, s'il vous plaît.", c: false}, 
+                        {t: "Un ticket de métro, s'il vous plaît.", c: true}
+                    ], 
+                    exp: "Passagens de transporte urbano local (metrô, bonde, ônibus) são chamadas de 'ticket'." 
+                },
+                { 
+                    local: "Hotel", npc: "Réceptionniste", avatar: "🏨", 
+                    pergunta: "Ao chegar para fazer o check-in, o que você diz de forma polida?", 
+                    opcoes: [
+                        {t: "J'ai une réservation au nom de Silva.", c: true}, 
+                        {t: "Donne-moi ma chambre.", c: false}, 
+                        {t: "Je veux dormir ici ce soir.", c: false}, 
+                        {t: "Où est mon lit ?", c: false}
+                    ], 
+                    exp: "Informar que você possui uma reserva ('J'ai une réservation') em seu nome é o procedimento correto." 
+                },
+                { 
+                    local: "Feira", npc: "Marchand", avatar: "🍎", 
+                    pergunta: "Você quer comprar um quilo de maçãs. Como pede?", 
+                    opcoes: [
+                        {t: "Donne-moi des pommes.", c: false}, 
+                        {t: "Un quilo de pommes, s'il vous plaît.", c: false}, 
+                        {t: "Un kilo de pommes, s'il vous plaît.", c: true}, 
+                        {t: "Je veux manger des pommes.", c: false}
+                    ], 
+                    exp: "Escreve-se 'kilo' com k. 'Un kilo de... s'il vous plaît' é a forma perfeita para compras por peso." 
+                },
+                { 
+                    local: "Loja", npc: "Comerciante", avatar: "👋", 
+                    pergunta: "O que você diz ao sair de uma loja desejando um bom dia ao atendente?", 
+                    opcoes: [
+                        {t: "Salut, ciao.", c: false}, 
+                        {t: "Au revoir, bonne journée !", c: true}, 
+                        {t: "Bonne nuit, monsieur.", c: false}, 
+                        {t: "À bientôt, mon ami.", c: false}
+                    ], 
+                    exp: "'Au revoir, bonne journée !' é a despedida mais polida e valorizada no comércio francês." 
+                }
             ]
         },
         {
-            nome: "Nível 2 - Diálogos e Situações Intermediárias",
-            regiao: "Sul - Nice & Marseille",
+            nome: "Nível 2 — Diálogos de Viagem e Incidentes",
+            regiao: "Sul — Nice & Marseille",
             fotoRegiao: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=500",
             missoes: [
-                { local: "Hotel", npc: "Réceptionniste", avatar: "🛎️", pergunta: "O chuveiro do quarto não está funcionando. Como reclama na recepção?", opcoes: [{t: "La douche de ma chambre ne fonctionne pas.", c: true}, {t: "Pas d'eau dans le lit.", c: false}], exp: "A2 exige reportar problemas cotidianos de forma clara." },
-                { local: "Estação", npc: "Guichet", avatar: "🎫", pergunta: "Você quer trocar o horário do seu bilhete de trem. O que diz?", opcoes: [{t: "Je voudrais échanger mon billet de train.", c: true}, {t: "Je veux un autre train.", c: false}], exp: "'Échanger' é o verbo correto para trocar passagens." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🍷", pergunta: "Como pedir uma recomendação de vinho que combine com o prato?", opcoes: [{t: "Qu'est-ce que vous conseillez comme vin ?", c: true}, {t: "Donne-moi un bon vin.", c: false}], exp: "Pedir conselhos gastronômicos de maneira natural." },
-                { local: "Rua", npc: "Gendarme", avatar: "👮", pergunta: "Como explicar para o policial que você perdeu sua carteira de identidade?", opcoes: [{t: "J'ai perdu ma carte d'identité.", c: true}, {t: "Mon papier est parti.", c: false}], exp: "Expressar perdas burocráticas no passado composto." },
-                { local: "Mercado", npc: "Client", avatar: "🧀", pergunta: "Você quer provar um pedaço de queijo antes de comprar. O que diz?", opcoes: [{t: "Je peux goûter ce fromage ?", c: true}, {t: "Je veux manger ça.", c: false}], exp: "'Je peux goûter...?' pede permissão para experimentar alimentos." },
-                // Adicionadas questões de 6 a 30 do Nível 2
-                { local: "Farmácia", npc: "Pharmacien", avatar: "🩹", pergunta: "Você quer algo para queimadura de sol. Como pede?", opcoes: [{t: "Une crème pour les coups de soleil, s'il vous plaît.", c: true}, {t: "J'ai chaud sur la peau.", c: false}], exp: "Coup de soleil significa queimadura solar." },
-                { local: "Aluguel de Carros", npc: "Agent", avatar: "🚗", pergunta: "Como perguntar se o seguro do carro já está incluído no preço?", opcoes: [{t: "L'assurance est incluse dans le prix ?", c: true}, {t: "La voiture est sécurisée ?", c: false}], exp: "Terminologia comum para locações em viagens." },
-                { local: "Rua", npc: "Passante", avatar: "🚶", pergunta: "Como perguntar a distância a pé até a praia?", opcoes: [{t: "La plage est loin à pied ?", c: true}, {t: "Combien de mètres pour marcher ?", c: false}], exp: "Perguntar se um local fica distante ('loin') caminhando." },
-                { local: "Café", npc: "Serveur", avatar: "🥛", pergunta: "Você quer leite vegetal no seu café. Como pede?", opcoes: [{t: "Avec du lait de soja, s'il vous plaît.", c: true}, {t: "Avec du faux lait.", c: false}], exp: "Especificação simples de dietas comuns." },
-                { local: "Consultório", npc: "Médecin", avatar: "🩺", pergunta: "Você precisa marcar uma consulta médica urgente. O que fala?", opcoes: [{t: "Je voudrais prendre un rendez-vous urgent.", c: true}, {t: "Je veux voir le docteur vite.", c: false}], exp: "'Prendre un rendez-vous' é marcar um compromisso." },
-                { local: "Museu", npc: "Guichetier", avatar: "🎟️", pergunta: "Como perguntar se há desconto para estudantes?", opcoes: [{t: "Il y a un tarif étudiant ?", c: true}, {t: "C'est moins cher pour l'école ?", c: false}], exp: "'Tarif étudiant' é a expressão formal para descontos acadêmicos." },
-                { local: "Ônibus", npc: "Chauffeur", avatar: "🚌", pergunta: "Como perguntar se este ônibus vai até o aeroporto?", opcoes: [{t: "Ce bus va jusqu'à l'aéroport ?", c: true}, {t: "Vous allez à l'avion ?", c: false}], exp: "'Jusqu'à' define o limite final do trajeto." },
-                { local: "Lavanderia", npc: "Gérant", avatar: "🧺", pergunta: "Como perguntar quanto tempo demora para lavar as roupas?", opcoes: [{t: "Ça prend combien de temps ?", c: true}, {t: "Quand les vêtements finissent ?", c: false}], exp: "Expressão padrão para medir duração de serviços." },
-                { local: "Boutique", npc: "Vendeuse", avatar: "👗", pergunta: "O tamanho da roupa ficou pequeno. Como pedir um maior?", opcoes: [{t: "Vous avez la taille au-dessus ?", c: true}, {t: "Je veux une plus grande.", c: false}], exp: "'La taille au-dessus' refere-se ao tamanho maior seguinte." },
-                { local: "Correios", npc: "Agent", avatar: "📦", pergunta: "Como avisar que você quer enviar um pacote frágil?", opcoes: [{t: "C'est un colis fragile, s'il vous plaît.", c: true}, {t: "Attention, ça casse.", c: false}], exp: "Pacotes ou encomendas postais chamam-se 'colis'." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🌱", pergunta: "Como perguntar se um prato do cardápio contém carne?", opcoes: [{t: "Est-ce qu'il y a de la viande dans ce plat ?", c: true}, {t: "Ce plat est mort ?", c: false}], exp: "Forma clara de checar restrições alimentares." },
-                { local: "Cinema", npc: "Agent", avatar: "🍿", pergunta: "Como perguntar se o filme passará com áudio original e legendas?", opcoes: [{t: "Le film est en version originale (VO) ?", c: true}, {t: "C'est la vraie voix ?", c: false}], exp: "'VO' significa versão original legendada na França." },
-                { local: "Loja", npc: "Vendeur", avatar: "👞", pergunta: "Como dizer que você vai dar uma olhada e depois decide?", opcoes: [{t: "Je vais réfléchir, merci.", c: true}, {t: "Je ne veux pas.", c: false}], exp: "Forma educada de recusar uma venda imediata." },
-                { local: "Rua", npc: "Passante", avatar: "📍", pergunta: "Como perguntar onde fica a banca de jornais mais próxima?", opcoes: [{t: "Où est le kiosque le plus proche ?", c: true}, {t: "Où est le journal d'ici ?", c: false}], exp: "'Le plus proche' localiza a estrutura mais vizinha." },
-                { local: "Agência de Viagens", npc: "Conseiller", avatar: "✈️", pergunta: "Como pedir informações sobre passeios guiados?", opcoes: [{t: "Je voudrais des renseignements sur les visites.", c: true}, {t: "Donne-moi des idées de voyage.", c: false}], exp: "'Renseignements' é o termo correto para informações e detalhes." },
-                { local: "Restaurante", npc: "Serveur", avatar: "🪑", pergunta: "Você quer mudar para uma mesa na janela. Como pede?", opcoes: [{t: "On peut changer pour la table près de la fenêtre ?", c: true}, {t: "Je veux voir la rue.", c: false}], exp: "Pedido comum e natural de remanejamento." },
-                { local: "Supermercado", npc: "Caissier", avatar: "💰", pergunta: "Você quer pagar em dinheiro físico. O que você diz?", opcoes: [{t: "Je paye en espèces.", c: true}, {t: "Je paye avec du papier.", c: false}], exp: "Dinheiro vivo/espécie se diz 'en espèces'." },
-                { local: "Aeroporto", npc: "Hôtesse", avatar: "🧳", pergunta: "Como informar que sua mala de viagem não apareceu na esteira?", opcoes: [{t: "Ma valise n'est pas arrivée.", c: true}, {t: "J'ai perdu mon sac d'avion.", c: false}], exp: "Vocabulário básico para incidentes de viagem." },
-                { local: "Metrô", npc: "Passager", avatar: "🎫", pergunta: "Como perguntar se este bilhete ainda é válido para esta zona?", opcoes: [{t: "Ce ticket est encore valable ?", c: true}, {t: "Le papier marche encore ?", c: false}], exp: "'Valable' determina a validade técnica do passe." },
-                { local: "Boutique", npc: "Vendeur", avatar: "🕶️", pergunta: "Você quer saber se há garantia para os óculos. O que diz?", opcoes: [{t: "Il y a une garantie sur cet article ?", c: true}, {t: "C'est protégé ?", c: false}], exp: "Garantia de produtos comerciais na Europa." },
-                { local: "Teatro", npc: "Ouvreur", avatar: "🎭", pergunta: "Como perguntar se o espetáculo já vai começar?", opcoes: [{t: "Le spectacle commence bientôt ?", c: true}, {t: "Le temps est maintenant ?", c: false}], exp: "'Bientôt' expressa a proximidade temporal (em breve)." },
-                { local: "Rua", npc: "Passante", avatar: "🚲", pergunta: "Como perguntar onde se pode alugar uma bicicleta pública?", opcoes: [{t: "Où se trouve la station de vélos ?", c: true}, {t: "Je veux un vélo gratuit.", c: false}], exp: "Estações de aluguel urbano de bike." },
-                { local: "Café", npc: "Serveur", avatar: "🥐", pergunta: "Você quer que embrulhe o doce para comer em casa. O que diz?", opcoes: [{t: "Pour emporter, s'il vous plaît.", c: true}, {t: "Pour manger dehors.", c: false}], exp: "'Pour emporter' é o nosso famoso 'para levar'." },
-                { local: "Livraria", npc: "Vendeur", avatar: "📖", pergunta: "Como perguntar se eles têm livros em estoque ou se acabou?", opcoes: [{t: "C'est en rupture de stock ?", c: true}, {t: "Le livre est mort ?", c: false}], exp: "Termo comercial para falta de mercadoria." },
-                { local: "Hotel", npc: "Réceptionniste", avatar: "🔑", pergunta: "Como pedir para deixar as malas guardadas após o término da estadia?", opcoes: [{t: "Je peux laisser meus bagages ici ?", c: true}, {t: "Gardez mes sacs.", c: false}], exp: "Solicitação padrão de cortesia de final de hospedagem." }
+                { 
+                    local: "Hotel", npc: "Réceptionniste", avatar: "🛎️", 
+                    pergunta: "O chuveiro do quarto não funciona. Como reclama de forma polida na recepção?", 
+                    opcoes: [
+                        {t: "La douche de ma chambre ne fonctionne pas.", c: true}, 
+                        {t: "Pas d'eau dans le lit.", c: false}, 
+                        {t: "Ma douche est morte.", c: false}, 
+                        {t: "Le bain ne marche plus du tout.", c: false}
+                    ], 
+                    exp: "Usar o verbo 'ne fonctionne pas' expressa com clareza técnica e educação que algo quebrou." 
+                },
+                { 
+                    local: "Estação", npc: "Guichet", avatar: "🎫", 
+                    pergunta: "Você quer alterar o horário da sua passagem de trem. O que diz?", 
+                    opcoes: [
+                        {t: "Je veux un autre train.", c: false}, 
+                        {t: "Je voudrais changer l'heure de ma voiture.", c: false}, 
+                        {t: "Je voudrais échanger mon billet de train.", c: true}, 
+                        {t: "Donnez-moi un ticket neuf.", c: false}
+                    ], 
+                    exp: "'Échanger mon billet' é o termo correto para trocar uma passagem comprada." 
+                },
+                { 
+                    local: "Restaurante", npc: "Serveur", avatar: "🍷", 
+                    pergunta: "Como pedir uma sugestão de vinho para acompanhar seu prato?", 
+                    opcoes: [
+                        {t: "Donne-moi un bon vin.", c: false}, 
+                        {t: "Qu'est-ce que vous conseillez comme vin ?", c: true}, 
+                        {t: "Quel vin est cher ici ?", c: false}, 
+                        {t: "Je veux boire du rouge.", c: false}
+                    ], 
+                    exp: "'Qu'est-ce que vous conseillez...?' é a maneira nativa de pedir sugestões ao garçom." 
+                },
+                { 
+                    local: "Rua", npc: "Policial", avatar: "👮", 
+                    pergunta: "Como explicar às autoridades que você perdeu sua identidade?", 
+                    opcoes: [
+                        {t: "Mon papel est parti.", c: false}, 
+                        {t: "J'ai perdu ma carte d'identité.", c: true}, 
+                        {t: "Je n'ai pas de nom aujourd'hui.", c: false}, 
+                        {t: "Ma carte de vie est perdue.", c: false}
+                    ], 
+                    exp: "'Carte d'identité' é o termo exato. Usamos o passado composto 'J'ai perdu' para relatar o sumiço." 
+                },
+                { 
+                    local: "Mercado", npc: "Feirante", avatar: "🧀", 
+                    pergunta: "Você quer provar um pedaço de queijo antes de comprar. O que diz?", 
+                    opcoes: [
+                        {t: "Je veux manger ça.", c: false}, 
+                        {t: "Je peux tester le lait ?", c: false}, 
+                        {t: "C'est bon ce truc ?", c: false}, 
+                        {t: "Je peux goûter ce fromage ?", c: true}
+                    ], 
+                    exp: "O verbo 'goûter' significa provar/degustar comida. Solicita permissão de forma sutil." 
+                },
+                { 
+                    local: "Aluguel", npc: "Agent", avatar: "🚗", 
+                    pergunta: "Como checar se o seguro veicular já está embutido no valor da diária?", 
+                    opcoes: [
+                        {t: "L'assurance est incluse dans le prix ?", c: true}, 
+                        {t: "La voiture est sécurisée ?", c: false}, 
+                        {t: "Il y a un accident gratuit ?", c: false}, 
+                        {t: "Le contrat protège la vie ?", c: false}
+                    ], 
+                    exp: "'L'assurance est incluse' é a pergunta padrão em locadoras para verificar coberturas de proteção." 
+                },
+                { 
+                    local: "Farmácia", npc: "Pharmacien", avatar: "🩹", 
+                    pergunta: "Você quer um creme para queimadura de sol. Como pede?", 
+                    opcoes: [
+                        {t: "J'ai chaud sur la peau.", c: false}, 
+                        {t: "Une crème pour les coups de soleil, s'il vous plaît.", c: true}, 
+                        {t: "Un médicament pour le soleil chaud.", c: false}, 
+                        {t: "Pommade pour le feu de plage.", c: false}
+                    ], 
+                    exp: "'Coup de soleil' é a expressão idiomática francesa para insolação ou queimadura solar." 
+                },
+                { 
+                    local: "Museu", npc: "Guichetier", avatar: "🎟️", 
+                    pergunta: "Como perguntar se estudantes têm direito a desconto no ingresso?", 
+                    opcoes: [
+                        {t: "C'est moins cher pour l'école ?", c: false}, 
+                        {t: "Je étudie, quel prix ?", c: false}, 
+                        {t: "Il y a un tarif étudiant ?", c: true}, 
+                        {t: "Avez-vous une promotion école ?", c: false}
+                    ], 
+                    exp: "'Tarif étudiant' é o termo formal para preços reduzidos para a categoria estudantil." 
+                },
+                { 
+                    local: "Café", npc: "Serveur", avatar: "🥐", 
+                    pergunta: "Você quer levar o doce para comer em casa. O que diz ao fazer o pedido?", 
+                    opcoes: [
+                        {t: "Pour manger dehors.", c: false}, 
+                        {t: "Pour emporter, s'il vous plaît.", c: true}, 
+                        {t: "Prendre à la maison.", c: false}, 
+                        {t: "Pain pour voyager.", c: false}
+                    ], 
+                    exp: "'Pour emporter' é o equivalente exato a 'para levar' usado em restaurantes e lanchonetes." 
+                },
+                { 
+                    local: "Aeroporto", npc: "Hôtesse", avatar: "🧳", 
+                    pergunta: "Sua mala de viagem não apareceu na esteira. Como relata o problema?", 
+                    opcoes: [
+                        {t: "J'ai perdu mon sac d'avion.", c: false}, 
+                        {t: "Ma valise n'est pas arrivée.", c: true}, 
+                        {t: "Où est caché mon coffre ?", c: false}, 
+                        {t: "Mon bagage s'est enfui.", c: false}
+                    ], 
+                    exp: "Dizer que a mala não chegou ('Ma valise n'est pas arrivée') descreve perfeitamente o extravio." 
+                }
             ]
         },
         {
-            nome: "Nível 3 - Conversas Avançadas de Negócios e Contratos",
-            regiao: "Oeste - Bordeaux",
+            nome: "Nível 3 — Burocracia, Negócios e Contratos",
+            regiao: "Oeste — Bordeaux",
             fotoRegiao: "https://images.unsplash.com/photo-1590514472304-ad0c7eb6441b?w=500",
             missoes: [
-                { local: "Banco", npc: "Banquier", avatar: "💼", pergunta: "Você quer abrir uma conta bancária de residente. Como diz?", opcoes: [{t: "Je voudrais ouvrir un compte de dépôt résident.", c: true}, {t: "Je veux mettre de l'argent chez vous.", c: false}], exp: "Terminologia bancária avançada do cotidiano administrativo." },
-                { local: "Imobiliária", npc: "Agent", avatar: "🏢", pergunta: "Ao alugar um apartamento, como perguntar se o condomínio está incluso?", opcoes: [{t: "Les charges sont-elles comprises dans le loyer ?", c: true}, {t: "L'eau et l'électricité payent ensemble ?", c: false}], exp: "No aluguel francês, despesas de condomínio chamam-se 'charges'." },
-                { local: "Prefeitura", npc: "Fonctionnaire", avatar: "📜", pergunta: "Você vai renovar seu visto. Como solicitar a lista de documentos obrigatórios?", opcoes: [{t: "Quelle est la liste des pièces à fournir ?", c: true}, {t: "Quels papiers je donne ?", c: false}], exp: "Documentação oficial exigida se chama 'pièces à fournir'." },
-                { local: "Seguradora", npc: "Courtier", avatar: "🛡️", pergunta: "Como declarar que você quer cancelar um contrato de serviço?", opcoes: [{t: "Je souhaite résilier mon contrat de plein droit.", c: true}, {t: "Je veux finir le papier.", c: false}], exp: "'Résilier un contrat' é o verbo jurídico para rescindir/cancelar." },
-                { local: "Empresa", npc: "Directeur", avatar: "👔", pergunta: "Durante uma entrevista, como perguntar sobre os benefícios do cargo?", opcoes: [{t: "Quels são les avantages sociaux liés à ce poste ?", c: true}, {t: "Qu'est-ce que je gagne en plus ?", c: false}], exp: "Benefícios corporativos chamam-se 'avantages sociaux'." },
-                // Adicionadas questões de 6 a 30 do Nível 3 para fechar as 90 exclusivas
-                { local: "Tribunal/Cartório", npc: "Notaire", avatar: "⚖️", pergunta: "Como pedir uma cópia autenticada de um documento?", opcoes: [{t: "Une copie certifiée conforme, s'il vous plaît.", c: true}, {t: "Une photocopie légale.", c: false}], exp: "Termo legal correto para autenticações." },
-                { local: "Imobiliária", npc: "Propriétaire", avatar: "🔑", pergunta: "Como perguntar o valor do depósito caução exigido para o imóvel?", opcoes: [{t: "Quel est le montant du dépôt de garantie ?", c: true}, {t: "Combien d'argent de sécurité ?", c: false}], exp: "Caução residencial chama-se 'dépôt de garantie'." },
-                { local: "Empresa", npc: "RH", avatar: "📄", pergunta: "Como dizer que você anexou seu currículo na mensagem de candidatura?", opcoes: [{t: "Veuillez trouver ci-joint mon CV.", c: true}, {t: "Mon CV est collé ici.", c: false}], exp: "'Ci-joint' é a fórmula culta para anexos de e-mail." },
-                { local: "Loja Eletrônica", npc: "Technicien", avatar: "💻", pergunta: "O aparelho quebrou no período de cobertura. Como exigir o conserto gratuito?", opcoes: [{t: "Je souhaite faire jouer la garantie de l'appareil.", c: true}, {t: "Réparez gratuitement mon truc.", c: false}], exp: "'Faire jouer la garantie' ativa os direitos de reparo legal." },
-                { local: "Escritório", npc: "Comptable", avatar: "📊", pergunta: "Como solicitar o demonstrativo de pagamento salarial do mês?", opcoes: [{t: "Je voudrais mon bulletin de paie, s'il vous plaît.", c: true}, {t: "Donne-moi le papier de mon salaire.", c: false}], exp: "Holerite/Contracheque se diz 'bulletin de paie'." },
-                { local: "Fisco", npc: "Agent", avatar: "🏛️", pergunta: "Como perguntar o prazo final para declarar os impostos anuais?", opcoes: [{t: "Quelle est la date limite pour la déclaration d'impôts ?", c: true}, {t: "Quand s'arrête la taxe ?", c: false}], exp: "Burocracia fiscal diária dos residentes europeus." },
-                { local: "Delegacia", npc: "Officier", avatar: "🚔", pergunta: "Como dizer que você quer fazer uma queixa oficial por roubo?", opcoes: [{t: "Je viens déposer une plainte pour vol.", c: true}, {t: "Je veux dénoncer un méchant.", c: false}], exp: "'Déposer une plainte' é o registro formal de crime." },
-                { local: "Concessionária", npc: "Garage", avatar: "🔧", pergunta: "Como pedir um orçamento impresso por escrito dos reparos do carro?", opcoes: [{t: "Je voudrais um devis détaillé pour les réparations.", c: true}, {t: "Dites-moi le prix sur papier.", c: false}], exp: "Orçamentos de serviços em geral chamam-se 'devis'." },
-                { local: "Evento", npc: "Organisateur", avatar: "🎫", pergunta: "Como solicitar o reembolso de um ingresso cancelado pela organização?", opcoes: [{t: "Je demande le remboursement intégral du billet.", c: true}, {t: "Je veux mon argent de retour.", c: false}], exp: "'Remboursement' é a palavra técnica para estorno." },
-                { local: "Consultório", npc: "Secrétaire", avatar: "🗂️", pergunta: "Como pedir um atestado de presença médica para justificar falta no trabalho?", opcoes: [{t: "Un certificat médical de présence, s'il vous plaît.", c: true}, {t: "Un papier pour mon patron.", c: false}], exp: "Justificativa oficial de saúde." },
-                { local: "Banco", npc: "Conseiller", avatar: "💳", pergunta: "Como solicitar o bloqueio emergencial do seu cartão por perda?", opcoes: [{t: "Je souhaite mettre ma carte en opposition.", c: true}, {t: "Bloquez ma carte bancaire.", c: false}], exp: "'Mettre en opposition' é o termo técnico para cancelamento por perda/roubo." },
-                { local: "Universidade", npc: "Secrétariat", avatar: "🎓", pergunta: "Como solicitar o histórico de notas oficial do ano letivo?", opcoes: [{t: "Je voudrais mon relevé de notes, s'il vous plaît.", c: true}, {t: "Je veux voir mes résultats.", c: false}], exp: "Histórico escolar se chama 'relevé de notes'." },
-                { local: "Correios", npc: "Guichetier", avatar: "📦", pergunta: "Como solicitar o envio de uma carta com aviso de recebimento assinado?", opcoes: [{t: "En recommandé avec accusé de réception, s'il vous plaît.", c: true}, {t: "Une lettre très importante.", c: false}], exp: "Formato padrão francês para envios jurídicos e sérios." },
-                { local: "Agência Digital", npc: "Client", avatar: "🖥️", pergunta: "Como pedir uma prorrogação do prazo de entrega de um projeto corporativo?", opcoes: [{t: "Serait-il possible d'obtenir un délai supplémentaire ?", c: true}, {t: "Je veux livrer plus tard.", c: false}], exp: "'Délai supplémentaire' é a extensão de prazo oficial." },
-                { local: "Assembleia", npc: "Syndic", avatar: "🏠", pergunta: "Como manifestar seu voto contrário a uma decisão do prédio?", opcoes: [{t: "Je m'oppose formellement à cette résolution.", c: true}, {t: "Je vote non.", c: false}], exp: "Vocabulário de reuniões condominiais e decisões locais." },
-                { local: "Loja", npc: "Directeur", avatar: "🔄", pergunta: "O produto veio com defeito oculto de fabricação. Como exigir a troca imediata?", opcoes: [{t: "Il s'agit d'un vice caché de fabrication.", c: true}, {t: "La machine est cassée de l'intérieur.", c: false}], exp: "'Vice caché' é a expressão jurídica para defeitos ocultos de fábrica." },
-                { local: "Trabalho", npc: "Collègue", avatar: "💼", pergunta: "Como agendar uma reunião de alinhamento com a equipe de marketing?", opcoes: [{t: "Fixons un point d'étape pour faire le bilan.", c: true}, {t: "Faisons une réunion de parlote.", c: false}], exp: "'Point d'étape' é o termo moderno para reuniões de alinhamento." },
-                { local: "Comércio", npc: "Fournisseur", avatar: "📦", pergunta: "Como notificar que faltam mercadorias na caixa entregue?", opcoes: [{t: "Nous constatons un défaut de livraison sur cette commande.", c: true}, {t: "Il manque des choses ici.", c: false}], exp: "Termo técnico corporativo para erros de logística." },
-                { local: "Imobiliária", npc: "Agent", avatar: "🔑", pergunta: "Como formalizar verbalmente que você quer renovar seu contrato de moradia?", opcoes: [{t: "Je souhaite procéder au renouvellement do bail.", c: true}, {t: "Je veux habiter ici encore.", c: false}], exp: "Contrato de locação residencial se chama 'bail'." },
-                { local: "Prefeitura", npc: "Guichet", avatar: "📝", pergunta: "Como perguntar qual o imposto de selo cobrado para emitir a autorização?", opcoes: [{t: "Quel é le montant des timbres fiscaux à acheter ?", c: true}, {t: "Combien coûte la taxe de papier ?", c: false}], exp: "Selos oficiais de pagamento governamental são os 'timbres fiscaux'." },
-                { local: "Entrevista", npc: "Recruteur", avatar: "🤝", pergunta: "Como dizer que você está disponível imediatamente para começar a trabalhar?", opcoes: [{t: "Je suis disponible immédiatement pour ce poste.", c: true}, {t: "Je peux travailler demain.", c: false}], exp: "Apresentação profissional de alta performance." },
-                { local: "Hotel", npc: "Directeur", avatar: "🏨", pergunta: "Como solicitar formalmente o livro de reclamações legais do estabelecimento?", opcoes: [{t: "Je demande à consigner cet incident dans le registre.", c: true}, {t: "Donnez-moi le cahier des plaintes.", c: false}], exp: "Ação formal de defesa do consumidor europeu." },
-                { local: "Seguradora", npc: "Agent", avatar: "🚗", pergunta: "Como informar que você sofreu um acidente de trânsito leve para acionar o seguro?", opcoes: [{t: "Je dois remplir un constat à l'amiable.", c: true}, {t: "J'ai tapé ma voiture dehors.", c: false}], exp: "'Constat à l'amiable' é o documento padrão europeu de acidentes de trânsito." },
-                { local: "Tribunal", npc: "Avocat", avatar: "⚖️", pergunta: "Como declarar que você quer revogar uma procuração assinada anteriormente?", opcoes: [{t: "Je révoque la procuration accordée à mon mandataire.", c: true}, {t: "Le papier signé ne marche plus.", c: false}], exp: "Linguagem avançada de direitos civis do bloco A3." },
-                { local: "Fim do Desafio", npc: "Maitre", avatar: "🥇", pergunta: "Última questão! Qual estrutura consolida um encerramento diplomático profissional?", opcoes: [{t: "Je vous prie d'agréer, Monsieur, mes salutations distinguées.", c: true}, {t: "Merci pour tout, au revoir.", c: false}], exp: "A mais clássica e respeitada fórmula de encerramento corporativo da França." }
+                { 
+                    local: "Banco", npc: "Banquier", avatar: "💼", 
+                    pergunta: "Você quer abrir uma conta corrente de residente. Como diz formalmente?", 
+                    opcoes: [
+                        {t: "Je veux mettre de l'argent chez vous.", c: false}, 
+                        {t: "Je voudrais ouvrir un compte de dépôt résident.", c: true}, 
+                        {t: "Donnez-moi une carte de banque neuve.", c: false}, 
+                        {t: "Créer un profil d'argent ici.", c: false}
+                    ], 
+                    exp: "'Ouvrir un compte de dépôt' ou 'compte courant' é o vocabulário adequado para o sistema bancário." 
+                },
+                { 
+                    local: "Imobiliária", npc: "Agent", avatar: "🏢", 
+                    pergunta: "Ao alugar um imóvel, como pergunta se o condomínio e taxas estão inclusos no aluguel?", 
+                    opcoes: [
+                        {t: "L'eau et l'électricité payent ensemble ?", c: false}, 
+                        {t: "Les charges são grátis ?", c: false}, 
+                        {t: "Les charges sont-elles comprises dans le loyer ?", c: true}, 
+                        {t: "Tout le bâtiment est payé ?", c: false}
+                    ], 
+                    exp: "Em locações, as taxas administrativas/condomínio são chamadas de 'charges'. Elas podem ser 'comprises' (inclusas)." 
+                },
+                { 
+                    local: "Prefeitura", npc: "Fonctionnaire", avatar: "📜", 
+                    pergunta: "Como solicitar a lista de documentos necessários para renovar seu visto?", 
+                    opcoes: [
+                        {t: "Quels papiers je donne ?", c: false}, 
+                        {t: "Quelle est la liste des pièces à fournir ?", c: true}, 
+                        {t: "Donnez-moi le protocole du visa.", c: false}, 
+                        {t: "Qu'est-ce que je dois écrire ?", c: false}
+                    ], 
+                    exp: "Documentos exigidos por órgãos públicos ou processos oficiais são denominados 'pièces à fournir'." 
+                },
+                { 
+                    local: "Seguradora", npc: "Courtier", avatar: "🛡️", 
+                    pergunta: "Como declarar formalmente que deseja rescindir um contrato de serviços?", 
+                    opcoes: [
+                        {t: "Je veux finir le papier.", c: false}, 
+                        {t: "Je souhaite résilier mon contrat de plein droit.", c: true}, 
+                        {t: "Casser le deal d'assurance.", c: false}, 
+                        {t: "Arrêter le document s'il vous plaît.", c: false}
+                    ], 
+                    exp: "'Résilier un contrat' é o termo jurídico padrão para cancelamento ou quebra legal de contratos." 
+                },
+                { 
+                    local: "Empresa", npc: "RH", avatar: "👔", 
+                    pergunta: "Em uma entrevista de emprego, como pergunta sobre os benefícios corporativos?", 
+                    opcoes: [
+                        {t: "Qu'est-ce que je gagne en plus ?", c: false}, 
+                        {t: "Il y a des cadeaux pour le travail ?", c: false}, 
+                        {t: "Quels sont les avantages sociaux liés à ce poste ?", c: true}, 
+                        {t: "Le salaire a des bonus d'argent ?", c: false}
+                    ], 
+                    exp: "Benefícios extras fornecidos por lei ou pela empresa (vale-refeição, plano) chamam-se 'avantages sociaux'." 
+                },
+                { 
+                    local: "Imobiliária", npc: "Propriétaire", avatar: "🔑", 
+                    pergunta: "Como perguntar o valor exato do depósito caução do apartamento?", 
+                    opcoes: [
+                        {t: "Combien d'argent de sécurité ?", c: false}, 
+                        {t: "Quel est le montant du dépôt de garantie ?", c: true}, 
+                        {t: "Quel prix pour bloquer la clé ?", c: false}, 
+                        {t: "La caution coûte combien de monnaie ?", c: false}
+                    ], 
+                    exp: "O termo formal e legal utilizado em contratos imobiliários para o caução é 'dépôt de garantie'." 
+                },
+                { 
+                    local: "Fisco", npc: "Agent", avatar: "🏛️", 
+                    pergunta: "Como perguntar o prazo limite da declaração anual de impostos?", 
+                    opcoes: [
+                        {t: "Quelle est la date limite pour la déclaration d'impôts ?", c: true}, 
+                        {t: "Quand s'arrête la taxe ?", c: false}, 
+                        {t: "Le jour de payer l'état c'est quand ?", c: false}, 
+                        {t: "Fin du contrat de l'argent public ?", c: false}
+                    ], 
+                    exp: "Perguntar pela 'date limite' (prazo limite) da 'déclaration d'impôts' é essencial para residentes fiscais." 
+                },
+                { 
+                    local: "Oficina", npc: "Mécanicien", avatar: "🔧", 
+                    pergunta: "Como pedir um orçamento impresso por escrito dos consertos mecânicos?", 
+                    opcoes: [
+                        {t: "Dites-moi le prix sur papier.", c: false}, 
+                        {t: "Je voudrais um papel de custos.", c: false}, 
+                        {t: "Je voudrais un devis détaillé pour les réparations.", c: true}, 
+                        {t: "Combien coûte le garage ?", c: false}
+                    ], 
+                    exp: "Orçamentos formais de prestadores de serviços, obras ou reparos chamam-se estritamente 'devis'." 
+                },
+                { 
+                    local: "Delegacia", npc: "Officier", avatar: "🚔", 
+                    pergunta: "Como informar que você quer registrar uma queixa oficial por roubo?", 
+                    opcoes: [
+                        {t: "Je veux dénoncer un méchant.", c: false}, 
+                        {t: "Je viens déposer une plainte pour vol.", c: true}, 
+                        {t: "On a pris mes affaires en route.", c: false}, 
+                        {t: "Faire un papier contre un voleur.", c: false}
+                    ], 
+                    exp: "'Déposer une plainte' é o termo jurídico oficial para registrar um boletim de ocorrência." 
+                },
+                { 
+                    local: "Fim do Desafio", npc: "Maitre", avatar: "🥇", 
+                    pergunta: "Qual estrutura consolida um encerramento profissional impecável por carta comercial?", 
+                    opcoes: [
+                        {t: "Merci pour tout, au revoir.", c: false}, 
+                        {t: "Je vous prie d'agréer, Monsieur, mes salutations distinguées.", c: true}, 
+                        {t: "Cordialement, à la prochaine.", c: false}, 
+                        {t: "Avec tout mon respect, bisous.", c: false}
+                    ], 
+                    exp: "A fórmula 'Je vous prie d'agréer...' é a mais tradicional e respeitada saudação de encerramento formal corporativo." 
+                }
             ]
         }
     ];
@@ -500,11 +767,11 @@
     let temBronze = false, temPrata = false, temOuro = false;
 
     function definirMeta(minutos) {
-        minutosEscolhidos = minutos;
-        if(minutos === 5) mediaQuestoesAlvo = 8;
-        if(minutos === 10) mediaQuestoesAlvo = 15;
-        if(minutos === 15) mediaQuestoesAlvo = 22;
-        if(minutos === 30) mediaQuestoesAlvo = 30;
+        minutosEscolhidos = minutes = minutos;
+        if(minutos === 5) mediaQuestoesAlvo = 3;
+        if(minutos === 10) mediaQuestoesAlvo = 5;
+        if(minutos === 15) mediaQuestoesAlvo = 7;
+        if(minutos === 30) mediaQuestoesAlvo = 10;
 
         document.getElementById('txt-meta-min').innerText = minutosEscolhidos;
         document.getElementById('txt-meta-questoes').innerText = mediaQuestoesAlvo;
@@ -542,11 +809,11 @@
         }
 
         if (nivelAtual >= dadosJornada.length) {
-            document.getElementById('titulo-fase').innerText = "🏆 DOMÍNIO TOTAL!";
+            document.getElementById('titulo-fase').innerText = "🏆 DOMÍNIO COMPLETO!";
             document.getElementById('progress-bar').style.width = "100%";
             document.getElementById('character-zone').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
-            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; text-align:center; font-size:1.2em;'>Félicitations! Você provou sua maestria nas 90 situações cotidianas e faturou todos os brindes!</p>`;
+            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; text-align:center; font-size:1.2em;'>Félicitations! Você provou domínio nas 30 situações com 4 opções e destravou tudo!</p>`;
             return;
         }
 
@@ -557,8 +824,8 @@
         document.getElementById('city-banner').style.backgroundImage = `url('${nivel.fotoRegiao}')`;
         document.getElementById('city-label').innerText = nivel.regiao;
         document.getElementById('titulo-fase').innerText = nivel.nome;
-        document.getElementById('score-display').innerText = `Nível ${nivelAtual + 1} — Pergunta ${indiceMissao + 1}/${totalMissoes}`;
-        document.getElementById('hits-display').innerText = `Acertos: ${acertosNoNivel}/30`;
+        document.getElementById('score-display').innerText = `Nível ${nivelAtual + 1} — Questão ${indiceMissao + 1}/${totalMissoes}`;
+        document.getElementById('hits-display').innerText = `Acertos: ${acertosNoNivel}/10`;
         document.getElementById('progress-bar').style.width = ((indiceMissao / totalMissoes) * 100) + "%";
 
         document.getElementById('location-badge').innerText = m.local.toUpperCase();
@@ -594,10 +861,19 @@
             som.tocarSucesso();
             elemento.classList.add('correct');
             acertosNoNivel++;
-            document.getElementById('hits-display').innerText = `Acertos: ${acertosNoNivel}/30`;
+            document.getElementById('hits-display').innerText = `Acertos: ${acertosNoNivel}/10`;
         } else {
             som.tocarErro();
             elemento.classList.add('wrong');
+            // Destaca visualmente qual era a opção correta para ajudar no aprendizado
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                const nivel = dadosJornada[nivelAtual];
+                const m = nivel.missoes[indiceMissao];
+                const correspondente = m.opcoes.find(o => o.t === btn.innerText);
+                if(correspondente && correspondente.c) {
+                    btn.classList.add('correct');
+                }
+            });
         }
         document.getElementById('next-btn').style.display = 'block';
     }
@@ -606,26 +882,26 @@
         indiceMissao++;
         
         if (indiceMissao >= dadosJornada[nivelAtual].missoes.length) {
-            if (acertosNoNivel >= 24) { 
+            if (acertosNoNivel >= 8) { 
                 if (nivelAtual === 0) {
                     temBronze = true;
-                    dispararShowDeFogos(); // Ativa a festa na tela!
-                    alert(`🎉 Magnifique! Você acertou ${acertosNoNivel}/30 questões! Conquistou o Croissant de Bronze e ativou os fogos de comemoração! 🎆`);
+                    dispararShowDeFogos();
+                    alert(`🎉 Magnifique! Você conseguiu ${acertosNoNivel}/10 acertos na raça! O Croissant de Bronze é seu! 🎆`);
                 }
                 if (nivelAtual === 1) {
                     temPrata = true;
-                    alert(`🎉 Excelente! Passou no Nível 2 com ${acertosNoNivel} acertos. Croissant de Prata desbloqueado!`);
+                    alert(`🎉 Excelente! Avançou para o Nível Último! Croissant de Prata conquistado.`);
                 }
                 if (nivelAtual === 2) {
                     temOuro = true;
-                    alert(`🥇 Inacreditável! Você zerou o Nível 3! Croissant de Ouro na conta e portas abertas para o Louvre e as Torres Eiffel!`);
+                    alert(`🥇 Sensacional! Você se tornou um mestre absoluto do cotidiano francês! Todos os troféus liberados!`);
                 }
                 
                 nivelAtual++;
                 indiceMissao = 0;
                 acertosNoNivel = 0;
             } else {
-                alert(`⛔ Desempenho abaixo de 80% (${acertosNoNivel}/30 acertos). Regra estrita: Você errou além do limite e foi rebaixado para a estaca zero (Nível 1, Pergunta 1).`);
+                alert(`⛔ Você fez ${acertosNoNivel}/10 acertos. O mínimo exigido é de 8 acertos (80%). Retornando ao Nível 1 para praticar mais.`);
                 nivelAtual = 0;
                 indiceMissao = 0;
                 acertosNoNivel = 0;

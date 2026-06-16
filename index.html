@@ -241,7 +241,6 @@
         garcom: "https://images.unsplash.com/photo-1581092918056-0c4c3dad3785?w=150"    
     };
 
-    // Nível 1 Expandido com TODAS as vertentes do Padrão Mundial CECRL A1
     const nivel1 = {
         nome: "Nível 1: Cumprimentos & Polidez",
         premioNome: "🏛️ O Museu do Louvre",
@@ -289,7 +288,6 @@
     let vidas = 3;
     let premioDesbloqueado = false;
     let respostaDada = false;
-    let acertouRodada = false;
 
     function iniciarApp() {
         document.getElementById('start-screen').style.display = 'none';
@@ -306,7 +304,7 @@
 
         const totalMissoes = nivel1.missoes.length;
 
-        // Fim das missões do Nível 1
+        // Tela de Fim do Módulo 1
         if (indiceMissao >= totalMissoes) {
             document.getElementById('titulo-fase').innerText = "🏆 PARABÉNS !";
             document.getElementById('progress-bar').style.width = "100%";
@@ -333,7 +331,7 @@
         document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
         document.getElementById('pergunta').innerText = m.pergunta;
 
-        // Resetando elementos pós-mudança de etapa
+        // Resetando elementos para a nova rodada
         document.getElementById('explanation-box').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         respostaDada = false;
@@ -360,11 +358,9 @@
     }
 
     function verificar(correta, elemento, explicacao) {
-        if (respostaDada) return; // Impede multiplos cliques
+        if (respostaDada) return; 
         respostaDada = true;
-        acertouRodada = correta;
 
-        // Desativa visualmente os botões da escolha
         const botoes = document.querySelectorAll('.choice-btn');
         botoes.forEach(b => b.disabled = true);
 
@@ -375,7 +371,7 @@
         if (correta) {
             elemento.classList.add('correct');
             
-            // Se for a última missão, destrava o prêmio
+            // Se acertou a última missão (Etapa 6), destrava o prêmio
             if (indiceMissao === nivel1.missoes.length - 1) {
                 premioDesbloqueado = true;
                 document.getElementById('trophy-0').classList.add('unlocked');
@@ -387,7 +383,7 @@
             document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
         }
 
-        // O BOTÃO CONTINUAR SEMPRE APARECE AQUI (Independente de acerto ou erro!)
+        // Botão Continuar sempre surge após a escolha
         document.getElementById('next-btn').style.display = 'block';
     }
 
@@ -402,6 +398,7 @@
             return;
         }
 
+        // Executa o incremento e limpa o fluxo de tela imediatamente
         indiceMissao++;
         renderizar();
     }

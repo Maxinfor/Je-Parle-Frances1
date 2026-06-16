@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês A1 - Troféus da França</title>
+    <title>Jornada Francês A1 - Passaporte de Prêmios</title>
     <style>
         :root {
             --primary: #3498db;
@@ -11,7 +11,7 @@
             --success: #27ae60;
             --error: #e74c3c;
             --warning: #f39c12;
-            --bg: #f0f3f5;
+            --bg: #f4f7f6;
             --card-bg: #ffffff;
         }
 
@@ -31,7 +31,7 @@
             background: var(--card-bg); 
             width: 100%; 
             max-width: 480px; 
-            padding: 30px; 
+            padding: 25px; 
             border-radius: 24px; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
         }
@@ -45,59 +45,64 @@
 
         .hearts { font-size: 1.3em; letter-spacing: 2px; }
 
-        /* Galeria de Prêmios/Monumentos */
-        .trophy-title {
-            font-size: 0.85em;
-            font-weight: bold;
-            color: #7f8c8d;
-            text-transform: uppercase;
-            margin: 10px 0 5px 0;
-            text-align: left;
-        }
-        .trophy-container {
-            display: flex;
-            justify-content: space-between;
+        /* Estante de Prêmios Famosos */
+        .trophy-section {
             background: #f8fafc;
-            padding: 12px;
-            border-radius: 16px;
+            padding: 15px;
+            border-radius: 18px;
             border: 2px solid #e2e8f0;
             margin-bottom: 20px;
         }
+        .trophy-title {
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .trophy-container {
+            display: flex;
+            justify-content: space-around;
+        }
         .trophy-slot {
-            width: 55px;
-            height: 55px;
+            width: 70px;
+            height: 70px;
             background: #e2e8f0;
-            border-radius: 12px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8em;
+            font-size: 2.2em;
             filter: grayscale(100%);
-            opacity: 0.3;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+            opacity: 0.25;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+            border: 2px dashed #b5c2d1;
         }
         .trophy-slot.unlocked {
             filter: grayscale(0%);
             opacity: 1;
             background: #fff;
-            box-shadow: 0 8px 15px rgba(243, 156, 18, 0.2);
-            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(243, 156, 18, 0.3);
+            transform: scale(1.12) rotate(4deg);
             border: 2px solid var(--warning);
         }
-        /* Mini tooltip com o nome do prêmio */
-        .trophy-slot::after {
-            content: attr(data-name);
-            position: absolute;
-            bottom: -22px;
-            font-size: 9px;
+
+        /* Alerta de Última Pergunta (Mecânica de Antecipação) */
+        .boss-alert {
+            display: none;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
             font-weight: bold;
-            color: #34495e;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+            animation: pulse 1s infinite alternate;
         }
-        .trophy-slot.unlocked::after { opacity: 1; }
 
         .progress-container {
             background: #eee;
@@ -125,18 +130,18 @@
             text-align: left; 
         }
         .char-avatar { 
-            width: 75px; 
-            height: 75px; 
+            width: 70px; 
+            height: 70px; 
             border-radius: 50%; 
             border: 3px solid #fff; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             margin-right: 15px; 
             background-size: cover; 
             background-position: center; 
             flex-shrink: 0; 
         }
         .dialogue-box { flex-grow: 1; }
-        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.85em; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .char-name { font-weight: bold; color: #2c3e50; font-size: 0.85em; margin-bottom: 3px; text-transform: uppercase; }
         .char-bubble { font-size: 1.05em; color: #34495e; margin: 0; line-height: 1.4; }
         .location-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 6px; }
         
@@ -150,26 +155,11 @@
             text-align: left;
             font-size: 0.9em;
             color: #7e5109;
-            line-height: 1.4;
-        }
-        .explanation-box strong { color: #b7950b; }
-
-        /* Animação de Alerta de Prêmio */
-        .reward-alert {
-            display: none;
-            background: linear-gradient(135deg, #f39c12, #f1c40f);
-            color: white;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 0.95em;
-            animation: bounce 0.5s ease infinite alternate;
         }
 
         .choices { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
         button { 
-            padding: 16px; 
+            padding: 15px; 
             border-radius: 14px; 
             border: none; 
             background: var(--primary); 
@@ -177,52 +167,56 @@
             cursor: pointer; 
             font-weight: bold; 
             font-size: 1em; 
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        button:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        button:hover { background: var(--primary-dark); }
         
         .choice-btn.correct { background: var(--success) !important; }
         .choice-btn.wrong { background: var(--error) !important; }
         
         #next-btn { background: var(--warning); width: 100%; margin-top: 15px; display: none; }
-        #next-btn:hover { background: #d35400; }
 
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-4px); }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
         }
     </style>
 </head>
 <body>
 
 <div class="app-container">
+    <!-- Tela Inicial -->
     <div id="start-screen">
-        <h1>🇫🇷 Método Oficial CECRL - A1</h1>
-        <p>Explore a França! Conquiste os maiores monumentos do país acertando as estruturas de <strong>Identidade e Perfil</strong>.</p>
-        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Iniciar Viagem e Ganhar Prêmios 🏆</button>
+        <h1>🇫🇷 Sua Viagem Começa Aqui!</h1>
+        <p>Passe pelos níveis do currículo mundial de francês e conquiste os maiores monumentos da França para o seu armário de prêmios!</p>
+        <button style="background: var(--success); width:100%" onclick="iniciarApp()">Entrar no Jogo ✈️</button>
     </div>
 
+    <!-- Interface do Jogo -->
     <div id="game-ui" style="display:none;">
         <div class="status-bar">
             <span id="hearts-display" class="hearts">❤️❤️❤️</span>
-            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Fase 1/5</span>
+            <span id="score-display" style="font-weight: bold; color: #7f8c8d;">Nível 1 - 1/3</span>
         </div>
 
         <div class="progress-container">
             <div id="progress-bar" class="progress-bar"></div>
         </div>
 
-        <!-- Seção de Prêmios Desbloqueáveis -->
-        <div class="trophy-title">Conquistas da Viagem:</div>
-        <div class="trophy-container">
-            <div id="reward-0" class="trophy-slot" data-name="Bilhete Metrô">🎫</div>
-            <div id="reward-1" class="trophy-slot" data-name="Croissant Ouro">🥐</div>
-            <div id="reward-2" class="trophy-slot" data-name="Musée Louvre">🏛️</div>
-            <div id="reward-3" class="trophy-slot" data-name="Tour Eiffel">🗼</div>
-            <div id="reward-4" class="trophy-slot" data-name="Arc Triomphe">🎖️</div>
+        <!-- Estante com os Grandes Prêmios Desejados -->
+        <div class="trophy-section">
+            <div class="trophy-title">Seus Prêmios Históricos:</div>
+            <div class="trophy-container">
+                <div id="trophy-0" class="trophy-slot">🏛️</div>
+                <div id="trophy-1" class="trophy-slot">🗼</div>
+                <div id="trophy-2" class="trophy-slot">👑</div>
+            </div>
         </div>
+
+        <!-- Alerta Dinâmico de Antecipação de Prêmio -->
+        <div id="boss-alert" class="boss-alert"></div>
         
-        <h3 id="titulo-fase">Nível 2: Identidade e Perfil</h3>
+        <h3 id="titulo-fase">Carregando...</h3>
         
         <div class="character-zone">
             <div class="char-avatar" id="char-avatar"></div>
@@ -234,66 +228,52 @@
         </div>
 
         <div id="choices" class="choices"></div>
-
-        <!-- Alerta de Prêmio ganho -->
-        <div id="reward-alert" class="reward-alert">🏆 Você desbloqueou um novo Monumento/Prêmio!</div>
-
         <div id="explanation-box" class="explanation-box"></div>
-
-        <button id="next-btn" onclick="avancarMissao()">Continuar Viagem ➔</button>
+        <button id="next-btn" onclick="avancarMissao()">Avançar ➔</button>
     </div>
 </div>
 
 <script>
     const avatar = {
-        policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150&auto=format&fit=crop&q=60",  
-        viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&auto=format&fit=crop&q=60",
-        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=60",
-        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60",
-        prof: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=60"
+        boulanger: "https://images.unsplash.com/photo-1579038773843-c5a5ae27546c?w=150", 
+        policial: "https://images.unsplash.com/photo-1600180758890-6b945f9a2ba6?w=150",  
+        viajante: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150",
+        amigo: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150",
+        passante: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150"
     };
 
-    const missoes = [
-        { 
-            local: "Imigração (Aeroporto)", npc: "Agente Pierre", foto: avatar.policial, 
-            pergunta: "O oficial pede sua identificação: 'Quel est votre nom ?'. Responda usando o verbo pronominal correto para o nível A1:", 
-            opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis chamado Idney.", c: false}],
-            exp: "<strong>Foco Gramatical (CECRL A1):</strong> Para se apresentar, o francês usa o verbo pronominal reflexivo <i>S'appeler</i>. A estrutura literal é 'Eu me chamo'. A construção 'Je suis chamado' não existe no idioma.",
-            premio: "🎫 Passagem liberada! Você ganhou seu bilhete de acesso ilimitado ao Metrô de Paris!"
+    // Banco de Dados estruturado pelo Sistema Mundial de Ensino CECRL A1
+    const niveis = [
+        {
+            nome: "Nível 1: Cumprimentos & Polidez",
+            premioNome: "🏛️ O Museu do Louvre",
+            missoes: [
+                { local: "Boulangerie", npc: "Jean (Padeiro)", foto: avatar.boulanger, pergunta: "Você entra na padaria pela manhã. Qual é o cumprimento obrigatório do padrão A1?", opcoes: [{t: "Salut!", c: false}, {t: "Bonjour!", c: true}], exp: "No padrão CECRL A1, 'Bonjour' é a base da polidez francesa ao entrar em comércios. 'Salut' é estritamente informal." },
+                { local: "Rua de Paris", npc: "Desconhecido", foto: avatar.passante, pergunta: "Como pedir informação a alguém mais velho na rua respeitando a gramática formal?", opcoes: [{t: "Pardon, vous Pouvez m'aider?", c: true}, {t: "Pardon, tu peux m'aider?", c: false}], exp: "A regra de ouro internacional do francês: use sempre o 'Vous' (formal) para falar com estranhos e autoridades locais." }
+            ]
         },
-        { 
-            local: "Balcão de Informações", npc: "Sarah (Atendente)", foto: avatar.viajante, 
-            pergunta: "Ela pergunta sua nacionalidade: 'Quelle est votre nationalité?'. Sabendo que você é homem (masculino), qual é a estrutura oficial?", 
-            opcoes: [{t: "Je suis brésilien.", c: true}, {t: "Je suis brésilienne.", c: false}],
-            exp: "<strong>Acordo de Gênero (CECRL A1):</strong> Os adjetivos de nacionalidade mudam no francês! Se você for homem, diz <i>brésilien</i>. Se for mulher, diz <i>brésilienne</i>.",
-            premio: "🥐 Magnifique! Você desbloqueou o lendário Croissant de Ouro da melhor boulangerie de Paris!"
+        {
+            nome: "Nível 2: Identidade & Nacionalidade",
+            premioNome: "🗼 A Torre Eiffel",
+            missoes: [
+                { local: "Alfândega", npc: "Agente Pierre", foto: avatar.policial, pergunta: "O guarda pede seu nome: 'Quel est votre nom?'. Responda corretamente:", opcoes: [{t: "Je m'appelle Idney.", c: true}, {t: "Je suis chamado Idney.", c: false}], exp: "Estrutura oficial do francês para se apresentar exige o verbo pronominal reflexivo 'S'appeler' (Chamar-se)." },
+                { local: "Hostel", npc: "Thomas (Turista)", foto: avatar.amigo, pergunta: "Ele te pergunta sua idade. No sistema europeu, qual verbo usamos para falar a idade?", opcoes: [{t: "Je suis 25 ans.", c: false}, {t: "J'ai 25 ans.", c: true}], exp: "Erro de tradução clássico! Em francês, nós TEMOS anos (Verbo Avoir - J'ai), nunca dizemos que 'somos' a idade." }
+            ]
         },
-        { 
-            local: "Hostel (Check-in)", npc: "Thomas (Recepcionista)", foto: avatar.amigo, 
-            pergunta: "Para o cadastro, ele pergunta sua idade. Como dizer 'Eu tenho 30 anos' seguindo a gramática francesa?", 
-            opcoes: [{t: "J'ai 30 ans.", c: true}, {t: "Je suis 30 ans.", c: false}],
-            exp: "<strong>Erro Clássico Intermediário:</strong> Em francês, nós <strong>TEMOS</strong> anos (verbo <i>Avoir</i>: J'ai), nós não 'somos' a idade (verbo <i>Être</i>). Lembre-se sempre: <i>J'ai [X] ans</i>.",
-            premio: "🏛️ Incrível! Você ganhou uma entrada VIP para explorar o Museu do Louvre!"
-        },
-        { 
-            local: "Café / Na Cidade", npc: "Marc (Estudante)", foto: avatar.passante, 
-            pergunta: "Ele pergunta onde você mora: 'Où habites-tu ?'. Responda corretamente usando a preposição de cidade exigida no A1:", 
-            opcoes: [{t: "J'habite à Paris.", c: true}, {t: "J'habite en Paris.", c: false}],
-            exp: "<strong>Preposições de Lugar (CECRL A1):</strong> Antes de nomes de <b>cidades</b>, a regra mundial exige o uso da preposição <b>À</b> (<i>à Paris, à Rio</i>). 'En' é para países femininos!",
-            premio: "🗼 Oh lá lá! Você acabou de subir até o topo da majestosa Torre Eiffel!"
-        },
-        { 
-            local: "Conversa de Albergue", npc: "Mme. Martin", foto: avatar.prof, 
-            pergunta: "Perguntaram sua profissão. Qual é o padrão estrutural correto ao declarar o seu cargo?", 
-            opcoes: [{t: "Je suis fonctionnaire.", c: true}, {t: "Je suis un fonctionnaire.", c: false}],
-            exp: "<strong>Sintaxe de Profissões:</strong> Diferente do português, em francês <b>não usamos artigos</b> (un/une) antes de profissões com o verbo être. Diz-se apenas: <i>Je suis fonctionnaire</i>.",
-            premio: "🎖️ Vitória Total! Você alcançou o Arco do Triunfo e concluiu o módulo com honras!"
+        {
+            nome: "Nível 3: Números & Compras",
+            premioNome: "👑 O Palácio de Versalhes",
+            missoes: [
+                { local: "Feira de Rua", npc: "Vendedor", foto: avatar.boulanger, pergunta: "Você quer saber o valor de uma recordação da viagem. Como perguntar o preço?", opcoes: [{t: "C'est combien?", c: true}, {t: "Combien est?", c: false}], exp: "Para transações comerciais simples do nível A1, a expressão consagrada e correta é 'C'est combien?' (Custa quanto?)." },
+                { local: "Boutique de Paris", npc: "Atendente", foto: avatar.viajante, pergunta: "Você vai comprar presentes e precisa pedir exatamente TRÊS itens. Como se diz o número 3?", opcoes: [{t: "Trois itens.", c: true}, {t: "Deux itens.", c: false}], exp: "O vocabulário básico de contagem exige a fixação clara dos numerais cardinais: Un (1), Deux (2), Trois (3)." }
+            ]
         }
     ];
 
+    let nivelAtual = 0;
     let indiceMissao = 0;
     let vidas = 3;
-    let premiosGanhos = [];
+    let premiosDesbloqueados = [];
 
     function iniciarApp() {
         document.getElementById('start-screen').style.display = 'none';
@@ -303,50 +283,67 @@
 
     function renderizar() {
         document.getElementById('hearts-display').innerText = "❤️".repeat(vidas) + "🖤".repeat(3 - vidas);
-        document.getElementById('reward-alert').style.display = 'none';
-
-        // Atualiza o estado visual dos prêmios na tela
-        premiosGanhos.forEach(id => {
-            const slot = document.getElementById('reward-' + id);
-            if (slot) slot.classList.add('unlocked');
+        
+        // Atualiza visualmente a estante de prêmios no topo da tela
+        premiosDesbloqueados.forEach(idx => {
+            document.getElementById('trophy-' + idx).classList.add('unlocked');
         });
 
-        if (indiceMissao >= missoes.length) {
-            document.getElementById('titulo-fase').innerText = "🎉 Jornada Concluída!";
+        // Fim do Jogo completo
+        if (nivelAtual >= niveis.length) {
+            document.getElementById('titulo-fase').innerText = "🏆 JORNADA COMPLETA!";
             document.getElementById('progress-bar').style.width = "100%";
-            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; font-size: 1.1em;'>Félicitations! Você provou sua identidade no padrão A1 e conquistou todos os monumentos históricos da França! 🗼🏛️🥐</p>`;
-            document.getElementById('explanation-box').style.display = 'none';
-            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('boss-alert').style.display = 'none';
+            document.getElementById('character-zone').style.display = 'none';
+            document.getElementById('choices').innerHTML = `<p style='color:var(--success); font-weight:bold; font-size:1.15em;'>Incroyable! Você passou pelos 3 níveis fundamentais da gramática mundial e conquistou o Louvre, a Torre Eiffel e o Palácio de Versalhes! 🏛️🗼👑</p>`;
             return;
         }
 
-        const m = missoes[indiceMissao];
-        const pct = (indiceMissao / missoes.length) * 100;
-        document.getElementById('progress-bar').style.width = pct + "%";
-        document.getElementById('score-display').innerText = `Fase ${indiceMissao + 1}/${missoes.length}`;
+        const nivel = niveis[nivelAtual];
+        const m = nivel.missoes[indiceMissao];
+        const totalMissoes = nivel.missoes.length;
+
+        // Atualização dos indicadores de texto e barras de progresso
+        document.getElementById('titulo-fase').innerText = nivel.nome;
+        document.getElementById('score-display').innerText = `Nível ${nivelAtual + 1} — Etapa ${indiceMissao + 1}/${totalMissoes}`;
+        document.getElementById('progress-bar').style.width = ((indiceMissao / totalMissoes) * 100) + "%";
 
         document.getElementById('location-badge').innerText = m.local.toUpperCase();
         document.getElementById('char-name').innerText = m.npc;
         document.getElementById('char-avatar').style.backgroundImage = `url('${m.foto}')`;
         document.getElementById('pergunta').innerText = m.pergunta;
 
-        const choicesDiv = document.getElementById('choices');
-        choicesDiv.innerHTML = '';
+        // Limpeza de estados de tela antigos
         document.getElementById('explanation-box').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
+        
+        const alertBox = document.getElementById('boss-alert');
+        
+        // MECÂNICA DE ANTECIPAÇÃO: Se for a última pergunta do nível, avisa o prêmio!
+        if (indiceMissao === totalMissoes - 1) {
+            alertBox.innerHTML = `🔥 VALENDO PRÊMIO! Se você acertar esta última pergunta, desbloqueará: <strong>${nivel.premioNome}</strong>!`;
+            alertBox.style.style.display = 'block'; // Fallback em caso de erro na string de estilo
+            alertBox.style.display = 'block';
+        } else {
+            alertBox.style.display = 'none';
+        }
 
+        // Renderização dos botões de opções
+        const choicesDiv = document.getElementById('choices');
+        choicesDiv.innerHTML = '';
         m.opcoes.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'choice-btn';
             btn.innerText = opt.t;
-            btn.onclick = (e) => verificar(opt.c, e.target, m.exp, m.premio);
+            btn.onclick = (e) => verificar(opt.c, e.target, m.exp);
             choicesDiv.appendChild(btn);
         });
     }
 
-    function verificar(correta, elemento, explicacao, textoPremio) {
-        const botoes = document.querySelectorAll('.choice-btn');
-        botoes.forEach(b => b.disabled = true);
+    function verificar(correta, elemento, explicacao) {
+        // Bloqueia cliques adicionais nos botões da rodada
+        const botões = document.querySelectorAll('.choice-btn');
+        botões.forEach(b => b.disabled = true);
 
         const expBox = document.getElementById('explanation-box');
         expBox.innerHTML = explicacao;
@@ -355,28 +352,26 @@
         if (correta) {
             elemento.classList.add('correct');
             
-            // Ativa o prêmio na lista e exibe o banner animado
-            if (!premiosGanhos.includes(indiceMissao)) {
-                premiosGanhos.push(indiceMissao);
+            const nivel = niveis[nivelAtual];
+            // Verifica se acabou de acertar a última pergunta para liberar o prêmio
+            if (indiceMissao === nivel.missoes.length - 1) {
+                if (!premiosDesbloqueados.includes(nivelAtual)) {
+                    premiosDesbloqueados.push(nivelAtual);
+                }
+                // Ilumina o prêmio correspondente na estante imediatamente
+                document.getElementById('trophy-' + nivelAtual).classList.add('unlocked');
+                expBox.innerHTML += `<br><br><span style='color:var(--success); font-weight:bold;'>🎉 RECOMPENSA CONQUISTADA: Você ganhou o prêmio ${nivel.premioNome}!</span>`;
             }
-            const alertBox = document.getElementById('reward-alert');
-            alertBox.innerText = "🏆 NOVO PRÊMIO: " + textoPremio;
-            alertBox.style.display = 'block';
             
-            // Ilumina o prêmio imediatamente para dar feedback visual
-            document.getElementById('reward-' + indiceMissao).classList.add('unlocked');
-
             document.getElementById('next-btn').style.display = 'block';
         } else {
             elemento.classList.add('wrong');
             vidas--;
+            
             if (vidas <= 0) {
-                alert("Módulo reiniciado para revisão da imigração! Vamos reabrir seu passaporte.");
+                alert("Energia esgotada! Vamos reestudar este nível desde o começo.");
                 vidas = 3;
                 indiceMissao = 0;
-                premiosGanhos = [];
-                // Tira a cor de todos os slots de prêmio
-                for(let i=0; i<5; i++) document.getElementById('reward-'+i).classList.remove('unlocked');
                 renderizar();
             } else {
                 document.getElementById('next-btn').style.display = 'block';
@@ -386,6 +381,11 @@
 
     function avancarMissao() {
         indiceMissao++;
+        // Se concluiu todas as missões do nível atual, passa para o próximo nível de ensino
+        if (indiceMissao >= niveis[nivelAtual].missoes.length) {
+            nivelAtual++;
+            indiceMissao = 0;
+        }
         renderizar();
     }
 </script>

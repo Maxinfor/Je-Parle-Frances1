@@ -1,54 +1,5 @@
-<script>
-    const trilha = [
-        { nome: "Medalha", icon: "🏅", max: 5, cat: "gramatica" },
-        { nome: "Xícara", icon: "☕", max: 5, cat: "conv" },
-        { nome: "Café Francês", icon: "🥐☕", max: 10, cat: "cultura" }
-    ];
-
-    const banco = {
-        gramatica: [
-            {id: 1, q: "Passé Composé de 'manger' (Eu)", o: ["J'ai mangé", "Je mangeais"], c: 0},
-            {id: 2, q: "Plural de 'Le journal'?", o: ["Les journaux", "Les journals"], c: 0}
-        ],
-        conv: [
-            {id: 3, q: "Quel âge as-tu?", o: ["J'ai 20 ans", "Je suis 20 ans"], c: 0}
-        ],
-        cultura: [
-            {id: 4, q: "Onde fica o Louvre?", o: ["Paris", "Lyon"], c: 0}
-        ]
-    };
-
-    // Recupera ou inicializa o usuário com segurança
-    let user = JSON.parse(localStorage.getItem('es_user'));
-    if (!user || user.fase >= trilha.length) {
-        user = { fase: 0, nivel: 0, pts: 0, respondidas: [] };
-    }
-
-    function render() {
-        const f = trilha[user.fase];
-        const niveis = ["Bronze", "Prata", "Ouro"];
-
-        // Atualiza os textos da interface
-        document.getElementById('icon-display').innerText = f.icon;
-        document.getElementById('fase-nome').innerText = f.nome;
-        document.getElementById('nivel-txt').innerText = `Nível: ${niveis[user.nivel]} | Progresso: ${user.pts}/${f.max}`;
-
-        // Verifica se a categoria existe
-        if (!banco[f.cat]) {
-            document.getElementById('pergunta').innerText = "Erro: Categoria não encontrada.";
-            return;
-        }
-
-        // Filtra questões
-        let disponiveis = banco[f.cat].filter(q => !user.respondidas.includes(q.id));
-        
-        if (disponiveis.length === 0) {
-            user.respondidas = [];
-            disponiveis = banco[f.cat];
-        }
-
+  
         const q = disponiveis[Math.floor(Math.random() * disponiveis.length)];
-        
         document.getElementById('pergunta').innerText = q.q;
         document.getElementById('opcoes').innerHTML = q.o.map((txt, i) => 
             `<button class="btn" onclick="check(${i}, ${q.c}, ${q.id})">${txt}</button>`
@@ -62,21 +13,18 @@
             if(user.pts >= trilha[user.fase].max) {
                 user.nivel++;
                 user.pts = 0;
-                if(user.nivel >= 3) { 
-                    user.fase++; 
-                    user.nivel = 0; 
-                }
-                alert("Parabéns! Nível conquistado!");
+                if(user.nivel > 2) { user.fase++; user.nivel = 0; }
+                alert("Evolução incrível! Parabéns!");
             }
             localStorage.setItem('es_user', JSON.stringify(user));
             render();
         } else {
-            alert("Errou! Foco total.");
+            alert("Errou! Respire e tente novamente.");
         }
     }
 
     function resetar() {
-        if(confirm("Apagar todo o progresso?")) {
+        if(confirm("Deseja apagar sua jornada?")) {
             localStorage.removeItem('es_user');
             location.reload();
         }
@@ -84,3 +32,5 @@
 
     render();
 </script>
+</body>
+</html>

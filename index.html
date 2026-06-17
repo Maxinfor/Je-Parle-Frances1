@@ -2,87 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa | Elite System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite System | Jornada Francesa</title>
     <style>
-        :root { --bg: #050b1a; --bronze: #CD7F32; --silver: #C0C0C0; --gold: #FFD700; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 40px 20px; min-height: 100vh; margin: 0; }
-        .container { width: 100%; max-width: 800px; }
+        /* CSS focado em performance e legibilidade */
+        :root { --bg: #050b1a; --primary: #00f2fe; --bronze: #CD7F32; --silver: #C0C0C0; --gold: #FFD700; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0; }
         
-        .medal-case { display: flex; justify-content: space-around; background: #0a1128; padding: 40px; border-radius: 40px; border: 2px solid #222; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .medal { 
-            width: 120px; height: 120px; border-radius: 50%; border: 8px solid #333; 
-            display: flex; align-items: center; justify-content: center; font-size: 3em; font-weight: bold;
-            background: #111; color: #444; transition: 0.6s;
-        }
-        /* Estados das medalhas */
-        .medal.bronze { border-color: var(--bronze); color: var(--bronze); background: #25170d; box-shadow: 0 0 20px var(--bronze); }
-        .medal.prata { border-color: var(--silver); color: var(--silver); background: #222; box-shadow: 0 0 20px var(--silver); }
-        .medal.ouro { border-color: var(--gold); color: var(--gold); background: #332a00; box-shadow: 0 0 40px var(--gold); }
+        .container { width: 100%; max-width: 500px; }
+        
+        /* Estilo das Medalhas */
+        .medal-case { display: flex; justify-content: space-around; padding: 20px 0; }
+        .medal { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #333; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .active-bronze { border-color: var(--bronze); box-shadow: 0 0 10px var(--bronze); }
+        .active-silver { border-color: var(--silver); box-shadow: 0 0 10px var(--silver); }
+        .active-gold { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
 
-        .card { background: rgba(255,255,255,0.05); padding: 60px; border-radius: 50px; text-align: center; border: 1px solid #333; }
-        .btn { display: block; width: 100%; padding: 35px; margin: 25px 0; background: #1a2235; border: 4px solid #444; color: #fff; border-radius: 25px; cursor: pointer; font-size: 1.6em; font-weight: 700; transition: 0.3s; }
-        .btn:hover { border-color: #00f2fe; background: #25304a; }
-        h1 { font-size: 2.8em; color: #00f2fe; margin-bottom: 30px; }
-        #progresso-txt { font-size: 1.5em; color: #888; margin-bottom: 20px; }
+        /* Card de Jogo */
+        .card { background: #0a1128; padding: 30px; border-radius: 20px; border: 1px solid #1a2235; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #111; border: 2px solid #333; color: white; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+        .btn:hover { border-color: var(--primary); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="medal-case">
-        <div class="medal" id="m-gramatica">G</div>
-        <div class="medal" id="m-conv">C</div>
-        <div class="medal" id="m-cultura">A</div>
+    <div class="medal-case" id="medal-board">
+        <div class="medal" id="medal-gramatica">G</div>
+        <div class="medal" id="medal-conv">C</div>
+        <div class="medal" id="medal-cultura">A</div>
     </div>
-    <div class="card">
-        <h1 id="titulo">Selecione o Treino</h1>
-        <div id="progresso-txt"></div>
-        <div id="game-area">
-            <button class="btn" onclick="iniciar('gramatica')">Gramática (A2)</button>
-            <button class="btn" onclick="iniciar('conv')">Conversação (A2)</button>
-            <button class="btn" onclick="iniciar('cultura')">Cultura (Quiz)</button>
+
+    <div class="card" id="app">
+        <h2 id="titulo">Bem-vindo ao Elite System</h2>
+        <div id="content">
+            <button class="btn" onclick="render('gramatica')">Gramática</button>
+            <button class="btn" onclick="render('conv')">Conversação</button>
+            <button class="btn" onclick="render('cultura')">Cultura</button>
         </div>
     </div>
 </div>
 
 <script>
+    // Banco de dados centralizado
     const db = {
-        gramatica: [{q: "Eu comi (Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0}, {q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0}, {q: "Tu (ir - aller) no presente", o: ["Tu vas", "Tu as"], c: 0}, {q: "Negativo: Je ___ mange pas", o: ["ne", "n'"], c: 1}, {q: "Plural de 'Le journal'", o: ["Les journaux", "Les journals"], c: 0}],
-        conv: [{q: "Tu veux un café?", o: ["Oui, merci!", "Le chat est bleu."], c: 0}, {q: "Quel âge as-tu?", o: ["J'ai 20 ans", "Je suis 20 ans"], c: 0}, {q: "Comment ça va?", o: ["Ça va bien", "Il est bien"], c: 0}, {q: "Où habites-tu?", o: ["J'habite à Paris", "J'ai à Paris"], c: 0}, {q: "Quel est ton métier?", o: ["Je suis médecin", "J'ai médecin"], c: 0}],
-        cultura: [{q: "Capital da França:", o: ["Paris", "Lyon"], c: 0}, {q: "O Louvre é um:", o: ["Museu", "Palácio"], c: 0}, {q: "O que é um Croissant?", o: ["Pão folhado", "Um queijo"], c: 0}, {q: "Rio que corta Paris:", o: ["Sena", "Tâmisa"], c: 0}, {q: "Dia Nacional da França:", o: ["14 de Julho", "7 de Setembro"], c: 0}]
+        gramatica: [{q: "Passé Composé de 'manger' (Eu)", o: ["J'ai mangé", "Je mangeais"], c: 0}],
+        conv: [{q: "Como se diz 'quantos anos você tem'?", o: ["Quel âge as-tu?", "Comment tu as?"], c: 0}],
+        cultura: [{q: "Capital da França?", o: ["Paris", "Lyon"], c: 0}]
     };
 
-    let prog = { 
-        gramatica: {pts: 0, nivel: 0}, 
-        conv: {pts: 0, nivel: 0}, 
-        cultura: {pts: 0, nivel: 0} 
-    };
+    let progresso = JSON.parse(localStorage.getItem('es_prog')) || { gramatica: 0, conv: 0, cultura: 0 };
 
-    function iniciar(tipo) {
-        let q = db[tipo][Math.floor(Math.random() * db[tipo].length)];
-        let status = ["Iniciante", "Bronze", "Prata", "Ouro"][prog[tipo].nivel];
+    function render(modulo) {
+        const content = document.getElementById('content');
+        const q = db[modulo][0]; // Exemplo simples
         
-        document.getElementById('titulo').innerText = tipo.toUpperCase();
-        document.getElementById('progresso-txt').innerText = `Nível Atual: ${status} | ${prog[tipo].pts}/5 para o próximo nível`;
-        
-        document.getElementById('game-area').innerHTML = `<p style="font-size:2em; margin-bottom:40px;">${q.q}</p>` + 
-            q.o.map((txt, i) => `<button class='btn' onclick='verificar("${tipo}", ${i}, ${q.c})'>${txt}</button>`).join('');
+        document.getElementById('titulo').innerText = modulo.toUpperCase();
+        content.innerHTML = `<p>${q.q}</p>` + 
+            q.o.map((txt, i) => `<button class="btn" onclick="check('${modulo}', ${i}, ${q.c})">${txt}</button>`).join('');
     }
 
-    function verificar(tipo, sel, corr) {
+    function check(modulo, sel, corr) {
         if(sel === corr) {
-            prog[tipo].pts++;
-            // Lógica de evolução: 5 pontos para cada nível
-            if(prog[tipo].pts >= 5 && prog[tipo].nivel < 3) {
-                prog[tipo].nivel++;
-                prog[tipo].pts = 0;
-                document.getElementById('m-' + tipo).className = 'medal ' + ['bronze', 'prata', 'ouro'][prog[tipo].nivel-1];
-                alert("Parabéns! Nova medalha conquistada!");
-            }
-            iniciar(tipo);
+            progresso[modulo]++;
+            localStorage.setItem('es_prog', JSON.stringify(progresso));
+            alert("Correto!");
+            render(modulo);
         } else {
-            alert("Errou! Foco total.");
-            iniciar(tipo);
+            alert("Errado! Tente de novo.");
         }
     }
 </script>

@@ -2,77 +2,78 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa | Evolução Total</title>
+    <title>Jornada Francesa | Elite OS</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap');
-        :root { 
-            --bg: #050b1a; --glass: rgba(255, 255, 255, 0.05);
-            --bronze: #cd7f32; --prata: #c0c0c0; --ouro: #ffd700;
-        }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0; }
-        .container { width: 100%; max-width: 650px; }
+        :root { --bg: #050b1a; --neon: #00f2fe; --bronze: #cd7f32; --prata: #c0c0c0; --ouro: #ffd700; }
+        body { background: var(--bg); color: #fff; font-family: 'Orbitron', sans-serif; display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 600px; }
         
-        /* Painel Central de Medalhas */
-        .badge-panel { display: flex; justify-content: center; gap: 20px; background: rgba(0,0,0,0.4); padding: 25px; border-radius: 25px; border: 1px solid #333; margin-bottom: 30px; }
-        .badge-box { text-align: center; }
-        .badge { font-size: 2.5em; filter: grayscale(1) opacity(0.2); transition: 0.5s; margin-bottom: 5px; }
-        .label { font-size: 0.7em; letter-spacing: 1px; color: #888; }
-        
-        /* Estilos de Evolução */
-        .badge.bronze { filter: grayscale(0) drop-shadow(0 0 8px var(--bronze)); color: var(--bronze); }
-        .badge.prata { filter: grayscale(0) drop-shadow(0 0 8px var(--prata)); color: var(--prata); }
+        .badge-panel { display: flex; justify-content: space-around; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; border: 1px solid #222; margin-bottom: 20px; }
+        .badge { font-size: 2.5em; filter: grayscale(1) opacity(0.3); transition: 0.5s; }
+        .badge.bronze { filter: grayscale(0) drop-shadow(0 0 10px var(--bronze)); color: var(--bronze); }
+        .badge.prata { filter: grayscale(0) drop-shadow(0 0 10px var(--prata)); color: var(--prata); }
         .badge.ouro { filter: grayscale(0) drop-shadow(0 0 15px var(--ouro)); color: var(--ouro); transform: scale(1.2); }
 
-        .card { background: var(--glass); backdrop-filter: blur(20px); padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-opt { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #1a2235; border: 1px solid #444; border-radius: 12px; cursor: pointer; color: white; transition: 0.3s; }
-        .btn-opt:hover { border-color: #00f2fe; }
+        .card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #1a2235; border: 1px solid #444; color: #fff; border-radius: 10px; cursor: pointer; }
+        .btn:hover { border-color: var(--neon); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Painel de Insígnias Unificado -->
     <div class="badge-panel">
-        <div class="badge-box"><div class="badge" id="b-gramatica">🏅</div><div class="label">GRAMÁTICA</div></div>
-        <div class="badge-box"><div class="badge" id="b-conv">🏅</div><div class="label">CONVERSA</div></div>
-        <div class="badge-box"><div class="badge" id="b-cultura">🏅</div><div class="label">CULTURA</div></div>
+        <div class="badge" id="b-gramatica">🏅</div>
+        <div class="badge" id="b-conv">🏅</div>
+        <div class="badge" id="b-cultura">🏅</div>
     </div>
 
     <div class="card">
-        <h2 id="titulo">Iniciando Jornada...</h2>
-        <p id="pergunta"></p>
-        <div id="opcoes"></div>
+        <h2 id="titulo">Selecione o Módulo</h2>
+        <div id="game-area">
+            <button class="btn" onclick="iniciar('gramatica')">Módulo: Gramática (A2)</button>
+            <button class="btn" onclick="iniciar('conv')">Módulo: Conversação (A2)</button>
+            <button class="btn" onclick="iniciar('cultura')">Módulo: Cultura (Quiz)</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // Estrutura de progresso: 0 = Zero, 1 = Bronze, 2 = Prata, 3 = Ouro
-    const progresso = { gramatica: 0, conv: 0, cultura: 0 };
+    const data = {
+        gramatica: [
+            { q: "Eu comi (manger - Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0 },
+            { q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0 }
+        ],
+        conv: [
+            { q: "A: Tu veux un café?", o: ["Oui, merci!", "Le chat est bleu."], c: 0 },
+            { q: "A: Quel âge as-tu?", o: ["J'ai 20 ans.", "Je suis à Paris."], c: 0 }
+        ],
+        cultura: [
+            { q: "A Torre Eiffel fica em:", o: ["Paris", "Lyon"], c: 0 },
+            { q: "O Louvre é um famoso:", o: ["Museu", "Mercado"], c: 0 }
+        ]
+    };
+
+    let prog = { gramatica: 0, conv: 0, cultura: 0 };
     const classes = ['', 'bronze', 'prata', 'ouro'];
 
-    function atualizarMedalha(tipo, id) {
-        progresso[tipo]++;
-        const el = document.getElementById(id);
-        el.className = 'badge ' + classes[progresso[tipo]];
-        
-        if (progresso[tipo] === 3) {
-            console.log(tipo + " alcançou o Ouro!");
-            // Aqui você pode adicionar um efeito especial ou liberar o próximo módulo
-        }
+    function iniciar(tipo) {
+        let q = data[tipo][Math.floor(Math.random() * data[tipo].length)];
+        document.getElementById('titulo').innerText = tipo.toUpperCase();
+        document.getElementById('game-area').innerHTML = `<p>${q.q}</p>` + 
+            q.o.map((txt, i) => `<button class='btn' onclick='verificar("${tipo}", ${i}, ${q.c})'>${txt}</button>`).join('');
     }
 
-    // Exemplo de como chamar:
-    // Ao acertar uma pergunta de Gramática:
-    // atualizarMedalha('gramatica', 'b-gramatica');
-
-    // Inicialização mock para demonstrar
-    document.getElementById('titulo').innerText = "Simulador de Evolução";
-    document.getElementById('pergunta').innerText = "Clique para evoluir sua medalha de Gramática:";
-    
-    const b = document.createElement('button');
-    b.className = 'btn-opt'; b.innerText = "Simular Acerto em Gramática";
-    b.onclick = () => atualizarMedalha('gramatica', 'b-gramatica');
-    document.getElementById('opcoes').appendChild(b);
+    function verificar(tipo, sel, corr) {
+        if(sel === corr) {
+            prog[tipo] = Math.min(prog[tipo] + 1, 3);
+            document.getElementById('b-' + tipo).className = 'badge ' + classes[prog[tipo]];
+            alert("Correto! Medalha evoluída.");
+            window.location.reload(); // Simples reset para o menu
+        } else {
+            alert("Errou! Tente novamente.");
+        }
+    }
 </script>
 </body>
 </html>

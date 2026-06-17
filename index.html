@@ -4,68 +4,85 @@
     <meta charset="UTF-8">
     <title>Jornada Francesa | Elite System</title>
     <style>
-        body { background: #050b1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
-        .item-display { font-size: 5em; margin: 20px 0; padding: 20px; border: 2px solid #333; border-radius: 20px; }
-        .btn { display: block; width: 100%; max-width: 300px; margin: 10px auto; padding: 15px; background: #1a2235; color: white; border: none; border-radius: 10px; cursor: pointer; }
-        .progress-bar { width: 100%; max-width: 300px; height: 10px; background: #222; margin: 10px auto; border-radius: 5px; }
-        #fill { height: 100%; background: #00f2fe; width: 0%; transition: 0.3s; }
+        body { background: #050b1a; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+        .item-display { font-size: 5em; margin: 20px 0; }
+        .btn { display: block; width: 100%; max-width: 350px; margin: 10px auto; padding: 15px; background: #1a2235; border: 2px solid #333; color: white; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { border-color: #00f2fe; }
+        .progress-bar { width: 100%; max-width: 300px; height: 12px; background: #111; margin: 15px auto; border-radius: 6px; overflow: hidden; }
+        #fill { height: 100%; background: linear-gradient(90deg, #00f2fe, #00aaff); width: 0%; transition: 0.5s; }
     </style>
 </head>
 <body>
 
     <div id="status-container">
-        <h2 id="fase-nome">Medalha</h2>
+        <h2 id="fase-nome">Carregando...</h2>
         <div class="item-display" id="icone">🏅</div>
         <p id="nivel-txt">Nível: Bronze</p>
         <div class="progress-bar"><div id="fill"></div></div>
     </div>
 
     <div id="game-area">
-        <p id="pergunta">Carregando...</p>
+        <h3 id="pergunta"></h3>
         <div id="opcoes"></div>
     </div>
 
 <script>
+    // 1. Definição da Trilha
     const trilha = [
-        { nome: "Medalha", icon: "🏅", max: 5 },
-        { nome: "Xícara", icon: "☕", max: 5 },
-        { nome: "Café Francês", icon: "🥐☕", max: 10 },
-        { nome: "Croissant", icon: "🥐", max: 5 },
-        { nome: "Garfo", icon: "🍴", max: 5 },
-        { nome: "Faca", icon: "🔪", max: 5 }
+        { nome: "Medalha", icon: "🏅", max: 5, cat: "gramatica" },
+        { nome: "Xícara", icon: "☕", max: 5, cat: "conv" },
+        { nome: "Café Francês", icon: "🥐☕", max: 10, cat: "cultura" },
+        { nome: "Croissant", icon: "🥐", max: 5, cat: "gramatica" },
+        { nome: "Garfo", icon: "🍴", max: 5, cat: "conv" },
+        { nome: "Faca", icon: "🔪", max: 5, cat: "cultura" }
     ];
+
+    // 2. Banco de Dados (Pode expandir cada categoria aqui)
+    const bancoDeQuestoes = {
+        gramatica: [{q: "Passé Composé: Je ___ mangé", o: ["ai", "suis"], c: 0}, {q: "Plural de 'Le journal'?", o: ["Les journaux", "Les journals"], c: 0}],
+        conv: [{q: "Como dizer 'Bom dia'?", o: ["Bonjour", "Salut"], c: 0}],
+        cultura: [{q: "Onde fica o Louvre?", o: ["Paris", "Lyon"], c: 0}]
+    };
 
     let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0 };
 
     function render() {
         const f = trilha[user.fase];
         const niveis = ["Bronze", "Prata", "Ouro"];
+        
         document.getElementById('fase-nome').innerText = f.nome;
         document.getElementById('icone').innerText = f.icon;
         document.getElementById('nivel-txt').innerText = `Nível: ${niveis[user.nivel]}`;
         document.getElementById('fill').style.width = (user.pts / f.max * 100) + "%";
         
-        // Simulação de pergunta (substitua pela sua lógica de banco de dados)
-        document.getElementById('pergunta').innerText = "Traduza: 'Bonjour'";
-        document.getElementById('opcoes').innerHTML = `
-            <button class="btn" onclick="check(0)">Olá</button>
-            <button class="btn" onclick="check(1)">Adeus</button>
-        `;
+        // Pega pergunta aleatória da categoria da fase atual
+        const lista = bancoDeQuestoes[f.cat];
+        const q = lista[Math.floor(Math.random() * lista.length)];
+        
+        document.getElementById('pergunta').innerText = q.q;
+        let html = "";
+        q.o.forEach((txt, i) => {
+            html += `<button class="btn" onclick="check(${i}, ${q.c})">${txt}</button>`;
+        });
+        document.getElementById('opcoes').innerHTML = html;
     }
 
-    function check(res) {
-        if(res === 0) { // Correto
+    function check(sel, corr) {
+        if(sel === corr) {
             user.pts++;
             if(user.pts >= trilha[user.fase].max) {
                 user.nivel++;
                 user.pts = 0;
-                if(user.nivel > 2) { user.fase++; user.nivel = 0; }
-                alert("Parabéns! Você evoluiu!");
+                if(user.nivel > 2) { 
+                    user.fase = (user.fase + 1) % trilha.length; // Reinicia a trilha se acabar
+                    user.nivel = 0; 
+                }
+                alert("Parabéns! Evolução garantida!");
             }
             localStorage.setItem('es_user', JSON.stringify(user));
             render();
         } else {
-            alert("Errou! Foco no sucesso!");
+            alert("Erros fazem parte do aprendizado! Tente de novo.");
         }
     }
 

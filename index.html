@@ -4,21 +4,38 @@
     <meta charset="UTF-8">
     <title>Jornada Francesa | Elite System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap');
-        :root { --bg: #050b1a; --neon: #00f2fe; --bronze: #cd7f32; --prata: #c0c0c0; --ouro: #ffd700; }
-        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0; }
-        .container { width: 100%; max-width: 600px; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap');
         
-        .badge-panel { display: flex; justify-content: space-around; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
-        .badge { font-size: 2.5em; filter: grayscale(1) opacity(0.3); transition: 0.5s; }
-        .badge.bronze { filter: grayscale(0) drop-shadow(0 0 10px var(--bronze)); color: var(--bronze); }
-        .badge.prata { filter: grayscale(0) drop-shadow(0 0 10px var(--prata)); color: var(--prata); }
-        .badge.ouro { filter: grayscale(0) drop-shadow(0 0 15px var(--ouro)); color: var(--ouro); transform: scale(1.2); }
+        :root { 
+            --bg: #050b1a; 
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --neon: #00f2fe; 
+            /* Gradientes de Metal */
+            --bronze-grad: linear-gradient(135deg, #d2691e, #8b4513);
+            --prata-grad: linear-gradient(135deg, #e0e0e0, #a0a0a0);
+            --ouro-grad: linear-gradient(135deg, #ffd700, #b8860b);
+        }
 
-        .card { background: rgba(255,255,255,0.05); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #1a2235; border: 1px solid #444; color: #fff; border-radius: 10px; cursor: pointer; }
-        .btn:hover { border-color: var(--neon); }
-        .stats { font-size: 0.9em; color: var(--neon); margin-bottom: 10px; text-align: center; }
+        body { 
+            background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; 
+            display: flex; justify-content: center; padding: 40px 20px; min-height: 100vh; margin: 0; 
+        }
+        .container { width: 100%; max-width: 700px; }
+        
+        /* Medalhas */
+        .badge-panel { display: flex; justify-content: space-around; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 25px; border: 1px solid #333; margin-bottom: 30px; }
+        .badge { font-size: 3.5em; filter: grayscale(1) opacity(0.2); transition: 0.6s; cursor: help; }
+        
+        .badge.bronze { filter: grayscale(0); background: var(--bronze-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 10px #cd7f32); }
+        .badge.prata { filter: grayscale(0); background: var(--prata-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 10px #c0c0c0); }
+        .badge.ouro { filter: grayscale(0); background: var(--ouro-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 15px #ffd700); transform: scale(1.1); }
+
+        .card { background: var(--card-bg); padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); }
+        h2 { font-family: 'Orbitron', sans-serif; text-align: center; font-size: 2em; margin-bottom: 30px; color: var(--neon); }
+        
+        .btn { display: block; width: 100%; padding: 22px; margin: 15px 0; background: rgba(255,255,255,0.05); border: 2px solid #444; color: #fff; border-radius: 15px; cursor: pointer; font-size: 1.2em; font-weight: 600; transition: 0.3s; }
+        .btn:hover { border-color: var(--neon); background: rgba(0,242,254,0.1); transform: translateY(-2px); }
+        .stats { font-size: 1.1em; color: #aaa; text-align: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -31,54 +48,21 @@
     </div>
 
     <div class="card">
-        <h2 id="titulo" style="text-align:center">Selecione o Módulo</h2>
+        <h2 id="titulo">Selecione o Módulo</h2>
         <div id="stats" class="stats"></div>
         <div id="game-area">
-            <button class="btn" onclick="iniciar('gramatica')">Módulo: Gramática (A2)</button>
-            <button class="btn" onclick="iniciar('conv')">Módulo: Conversação (A2)</button>
-            <button class="btn" onclick="iniciar('cultura')">Módulo: Cultura (Quiz)</button>
+            <button class="btn" onclick="iniciar('gramatica')">Gramática Francesa (A2)</button>
+            <button class="btn" onclick="iniciar('conv')">Conversação Fluida (A2)</button>
+            <button class="btn" onclick="iniciar('cultura')">Imersão Cultural (Quiz)</button>
         </div>
     </div>
 </div>
 
 <script>
     const db = {
-        gramatica: [
-            {q: "Eu comi (manger - Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0},
-            {q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0},
-            {q: "Tu (ir - aller) no presente", o: ["Tu vas", "Tu as"], c: 0},
-            {q: "Negativo: Je ___ mange pas", o: ["ne", "n'"], c: 1},
-            {q: "Plural de 'Le journal'", o: ["Les journaux", "Les journals"], c: 0},
-            {q: "Qual é o particípio de 'finir'?", o: ["fini", "finu"], c: 0},
-            {q: "O pronome 'me' antes de vogal vira:", o: ["m'", "me"], c: 0},
-            {q: "Como se diz 'nós estamos'?", o: ["Nous sommes", "Nous avons"], c: 0},
-            {q: "O feminino de 'un ami' é:", o: ["une amie", "une ami"], c: 0},
-            {q: "Qual a contração de 'à + le'?", o: ["au", "à le"], c: 0}
-        ],
-        conv: [
-            {q: "A: Est-ce que tu aimes Paris?", o: ["Oui, j'adore!", "Le chat dort."], c: 0},
-            {q: "A: Quel âge as-tu?", o: ["J'ai 25 ans", "Je suis 25 ans"], c: 0},
-            {q: "A: Tu veux un café?", o: ["Oui, merci!", "Non, je veux manger"], c: 0},
-            {q: "A: Comment ça va?", o: ["Ça va bien", "Je suis bien"], c: 0},
-            {q: "A: Où habites-tu?", o: ["J'habite à Nice", "J'ai à Nice"], c: 0},
-            {q: "A: Quel est ton métier?", o: ["Je suis médecin", "J'ai médecin"], c: 0},
-            {q: "A: Tu parles français?", o: ["Oui, un peu", "Oui, je parle le"], c: 0},
-            {q: "A: Où est la gare?", o: ["Elle est là-bas", "Il est là-bas"], c: 0},
-            {q: "A: À quelle heure?", o: ["À huit heures", "À huit temps"], c: 0},
-            {q: "A: D'où viens-tu?", o: ["Je viens du Brésil", "J'arrive au Brésil"], c: 0}
-        ],
-        cultura: [
-            {q: "Torre Eiffel fica em:", o: ["Paris", "Lyon"], c: 0},
-            {q: "O Louvre é um:", o: ["Museu", "Teatro"], c: 0},
-            {q: "Capital da França:", o: ["Paris", "Bordeaux"], c: 0},
-            {q: "O que é Croissant?", o: ["Pão folhado", "Bebida"], c: 0},
-            {q: "O que é o Louvre?", o: ["Palácio/Museu", "Igreja"], c: 0},
-            {q: "Prato típico: Ratatouille é feito de:", o: ["Legumes", "Carnes"], c: 0},
-            {q: "Dia Nacional da França:", o: ["14 de Julho", "7 de Setembro"], c: 0},
-            {q: "Famoso filósofo francês:", o: ["Descartes", "Shakespeare"], c: 0},
-            {q: "Rio que corta Paris:", o: ["Sena", "Tâmisa"], c: 0},
-            {q: "Pintor impressionista francês:", o: ["Monet", "Picasso"], c: 0}
-        ]
+        gramatica: [{q: "Eu comi (manger - Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0}, {q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0}],
+        conv: [{q: "A: Est-ce que tu aimes Paris?", o: ["Oui, j'adore!", "Le chat dort."], c: 0}, {q: "A: Quel âge as-tu?", o: ["J'ai 25 ans", "Je suis 25 ans"], c: 0}],
+        cultura: [{q: "Torre Eiffel fica em:", o: ["Paris", "Lyon"], c: 0}, {q: "O Louvre é um:", o: ["Museu", "Teatro"], c: 0}]
     };
 
     let prog = { gramatica: {pts: 0, nivel: 0}, conv: {pts: 0, nivel: 0}, cultura: {pts: 0, nivel: 0} };
@@ -86,26 +70,24 @@
 
     function iniciar(tipo) {
         let q = db[tipo][Math.floor(Math.random() * db[tipo].length)];
-        document.getElementById('stats').innerText = `Progresso atual: ${prog[tipo].pts}/5 para nível ${classes[prog[tipo].nivel + 1] || 'Ouro'}`;
+        document.getElementById('stats').innerText = `Progresso: ${prog[tipo].pts}/5 para a próxima insígnia`;
         document.getElementById('titulo').innerText = tipo.toUpperCase();
-        document.getElementById('game-area').innerHTML = `<p style="text-align:center">${q.q}</p>` + 
+        document.getElementById('game-area').innerHTML = `<p style="font-size:1.4em; text-align:center">${q.q}</p>` + 
             q.o.map((txt, i) => `<button class='btn' onclick='verificar("${tipo}", ${i}, ${q.c})'>${txt}</button>`).join('');
     }
 
     function verificar(tipo, sel, corr) {
         if(sel === corr) {
             prog[tipo].pts++;
-            if(prog[tipo].pts >= 5) {
-                if(prog[tipo].nivel < 3) {
-                    prog[tipo].nivel++;
-                    prog[tipo].pts = 0;
-                    document.getElementById('b-' + tipo).className = 'badge ' + classes[prog[tipo].nivel];
-                    alert("Mestria atualizada: Nível " + classes[prog[tipo].nivel].toUpperCase());
-                }
+            if(prog[tipo].pts >= 5 && prog[tipo].nivel < 3) {
+                prog[tipo].nivel++;
+                prog[tipo].pts = 0;
+                document.getElementById('b-' + tipo).className = 'badge ' + classes[prog[tipo].nivel];
+                alert("Mestria " + classes[prog[tipo].nivel].toUpperCase() + " alcançada!");
             }
-            iniciar(tipo); // Continua no mesmo módulo
+            iniciar(tipo);
         } else {
-            alert("Errou! Foco no objetivo.");
+            alert("Incorreto. Foco no objetivo!");
         }
     }
 </script>

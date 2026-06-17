@@ -1,100 +1,44 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Elite System | Jornada Francesa</title>
-    <style>
-        :root { --bg: #050b1a; --locked: #222; --active: #00f2fe; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        
-        /* Ícones Sombreados */
-        .icon-box { font-size: 4em; filter: grayscale(100%) brightness(0.3); transition: 0.5s; margin: 20px; }
-        .icon-box.unlocked { filter: grayscale(0%) brightness(1); text-shadow: 0 0 20px var(--active); }
-        
-        .btn { display: block; width: 100%; max-width: 350px; margin: 10px auto; padding: 15px; background: #1a2235; border: 1px solid #444; color: white; border-radius: 12px; cursor: pointer; }
-        .btn:hover { background: #25304a; }
-    </style>
-</head>
-<body>
+À COORACT ,
 
-    <div id="status-container">
-        <div id="icon-display" class="icon-box">🏅</div>
-        <h2 id="fase-nome">Carregando...</h2>
-        <p id="nivel-txt">Nível: Bronze</p>
-    </div>
+​
 
-    <div id="game-area">
-        <h3 id="pergunta"></h3>
-        <div id="opcoes"></div>
-    </div>
+Assunto: Processo de Substituição
 
-<script>
-    const trilha = [
-        { nome: "Medalha", icon: "🏅", max: 5, cat: "gramatica" },
-        { nome: "Xícara", icon: "☕", max: 5, cat: "conv" },
-        { nome: "Café Francês", icon: "🥐☕", max: 10, cat: "cultura" }
-    ];
+​
 
-    // Banco de questões com ID único
-    const banco = {
-        gramatica: [
-            {id: 1, q: "Passé Composé de 'manger' (Eu)", o: ["J'ai mangé", "Je mangeais"], c: 0},
-            {id: 2, q: "Plural de 'Le journal'?", o: ["Les journaux", "Les journals"], c: 0},
-            {id: 3, q: "Tu (ir - aller) no presente", o: ["Tu vas", "Tu as"], c: 0}
-        ],
-        conv: [
-            {id: 4, q: "Quel âge as-tu?", o: ["J'ai 20 ans", "Je suis 20 ans"], c: 0},
-            {id: 5, q: "Comment ça va?", o: ["Ça va bien", "Il est bien"], c: 0}
-        ],
-        cultura: [
-            {id: 6, q: "Capital da França?", o: ["Paris", "Lyon"], c: 0},
-            {id: 7, q: "O Louvre é um:", o: ["Museu", "Palácio"], c: 0}
-        ]
-    };
+ 
 
-    let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0, respondidas: [] };
+Sra. Coordenadora
 
-    function render() {
-        const f = trilha[user.fase];
-        const iconEl = document.getElementById('icon-display');
-        
-        iconEl.innerText = f.icon;
-        iconEl.classList.add('unlocked'); // Ícone acende
-        document.getElementById('fase-nome').innerText = f.nome;
+ 
 
-        // Filtra questões não respondidas nesta sessão
-        let disponiveis = banco[f.cat].filter(q => !user.respondidas.includes(q.id));
-        
-        if (disponiveis.length === 0) {
-            user.respondidas = []; // Reset se acabarem as perguntas
-            disponiveis = banco[f.cat];
-        }
+Vimos por meio deste, informar  para uma melhor organização desta Coordenação - COORACT, a indicação do substituto que ficará no lugar deste chefe do administrativo nos períodos referentes às férias, abonos e outros afastamentos.
 
-        const q = disponiveis[Math.floor(Math.random() * disponiveis.length)];
-        
-        document.getElementById('pergunta').innerText = q.q;
-        document.getElementById('opcoes').innerHTML = q.o.map((txt, i) => 
-            `<button class="btn" onclick="check(${i}, ${q.c}, ${q.id})">${txt}</button>`
-        ).join('');
-    }
+Conforme  planilha abaixo contendo o nome do chefe, nome do substituto e o número do Processo de Substituição .
 
-    function check(sel, corr, id) {
-        if(sel === corr) {
-            user.pts++;
-            user.respondidas.push(id); // Marca como respondida
-            if(user.pts >= trilha[user.fase].max) {
-                user.nivel++;
-                user.pts = 0;
-                alert("Nível alcançado!");
-            }
-            localStorage.setItem('es_user', JSON.stringify(user));
-            render();
-        } else {
-            alert("Errou! Tente de novo.");
-        }
-    }
+ 
 
-    render();
-</script>
-</body>
-</html>
+                    CT
+
+           NOME DO CHEFE
+
+               NOME DO SUBSTITUTO
+
+Nº DO PROCESSO DE SUBSTITUIÇÃO DE CARGO
+
+     CT- Arniqueira
+
+          Esnomero Sabino Batista 
+
+             Eduardo Vieira Cavalcante
+
+              00400-00044227/2021-14
+ 
+
+Nos colocamos à disposição para demais esclarecimentos.
+
+ 
+
+Atenciosamente,
+
+ 

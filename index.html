@@ -10,12 +10,13 @@
         .app-container { background: #fff; width: 100%; max-width: 500px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .progress-bar { background: #eee; height: 8px; border-radius: 4px; margin-bottom: 20px; }
         .fill { background: var(--success); height: 100%; width: 0%; transition: width 0.5s; }
-        .char-bubble { background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); margin-bottom: 20px; }
-        button { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: white; transition: 0.2s; }
-        button:hover { background: #f0f0f0; }
-        .correct { background: var(--success) !important; color: white; }
-        .wrong { background: var(--error) !important; color: white; }
-        #explanation { display: none; margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 8px; font-size: 0.9em; }
+        .char-bubble { background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); margin-bottom: 20px; font-weight: 500; }
+        button { width: 100%; padding: 14px; margin: 6px 0; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white; transition: 0.2s; font-size: 1em; }
+        button:hover:not([disabled]) { background: #f0f0f0; border-color: #ccc; }
+        .correct { background: var(--success) !important; color: white; border-color: var(--success) !important; }
+        .wrong { background: var(--error) !important; color: white; border-color: var(--error) !important; }
+        #explanation { display: none; margin-top: 15px; padding: 12px; background: #fff3cd; border-radius: 8px; font-size: 0.9em; color: #856404; line-height: 1.4; }
+        #next-btn { background: var(--warning); color: white; border: none; font-weight: bold; margin-top: 15px; display: none; }
     </style>
 </head>
 <body>
@@ -28,7 +29,7 @@
         <div class="char-bubble" id="pergunta">Carregando...</div>
         <div id="choices"></div>
         <div id="explanation"></div>
-        <button id="next-btn" style="display:none; background: var(--warning); color: white;" onclick="proximaMissao()">Continuar ➔</button>
+        <button id="next-btn" onclick="proximaMissao()">Continuar ➔</button>
     </div>
 </div>
 
@@ -50,34 +51,36 @@
 
     function renderizar() {
         const m = missoes[indice];
-        document.getElementById('fill').style.width = (indice / missoes.length) * 100 + "%";
+        // Atualiza progresso
+        document.getElementById('fill').style.width = ((indice / missoes.length) * 100) + "%";
         document.getElementById('pergunta').innerText = m.q;
         document.getElementById('explanation').style.display = 'none';
         document.getElementById('next-btn').style.display = 'none';
         
         const choices = document.getElementById('choices');
         choices.innerHTML = '';
+        
         m.o.forEach((opt, i) => {
             const btn = document.createElement('button');
             btn.innerText = opt;
-            btn.onclick = () => verificar(i, btn);
+            btn.onclick = function() { verificar(i, btn); };
             choices.appendChild(btn);
         });
-
-        // Áudio automático da resposta correta para treino
-        const audio = new SpeechSynthesisUtterance(m.o[m.c]);
-        audio.lang = 'fr-FR';
-        window.speechSynthesis.speak(audio);
     }
 
     function verificar(idx, btn) {
         const m = missoes[indice];
-        document.querySelectorAll('button').forEach(b => b.disabled = true);
+        const todosBtns = document.querySelectorAll('#choices button');
+        todosBtns.forEach(b => b.disabled = true);
+        
         if (idx === m.c) {
             btn.classList.add('correct');
         } else {
             btn.classList.add('wrong');
+            // Revela a correta
+            todosBtns[m.c].classList.add('correct');
         }
+        
         document.getElementById('explanation').innerText = "💡 " + m.exp;
         document.getElementById('explanation').style.display = 'block';
         document.getElementById('next-btn').style.display = 'block';
@@ -85,10 +88,16 @@
 
     function proximaMissao() {
         indice++;
-        if (indice < missoes.length) renderizar();
-        else document.getElementById('game-ui').innerHTML = "<h2>🎉 Nível 1 Completo!</h2><p>Você dominou a base do francês.</p>";
+        if (indice < missoes.length) {
+            renderizar();
+        } else {
+            document.getElementById('game-ui').innerHTML = 
+                "<h2>🎉 Nível 1 Completo!</h2><p>Você dominou a base do francês. Continue praticando!</p>" +
+                "<button onclick='location.reload()'>Reiniciar</button>";
+        }
     }
 
+    // Inicia o jogo
     renderizar();
 </script>
 </body>

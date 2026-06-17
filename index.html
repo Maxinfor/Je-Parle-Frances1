@@ -2,34 +2,28 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa | Elite Medals</title>
+    <title>Jornada Francesa | Elite System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@600&display=swap');
-        
-        :root { 
-            --bg: #050b1a; 
-            --gold: #FFD700; --silver: #C0C0C0; --bronze: #CD7F32;
-        }
-
+        :root { --bg: #050b1a; --bronze: #CD7F32; --silver: #C0C0C0; --gold: #FFD700; }
         body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 40px 20px; min-height: 100vh; margin: 0; }
         .container { width: 100%; max-width: 800px; }
         
-        /* Medalhas Visuais */
-        .medal-case { display: flex; justify-content: space-around; background: rgba(255,255,255,0.05); padding: 40px; border-radius: 30px; margin-bottom: 40px; border: 2px solid #333; }
+        .medal-case { display: flex; justify-content: space-around; background: #0a1128; padding: 40px; border-radius: 40px; border: 2px solid #222; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .medal { 
-            width: 100px; height: 100px; border-radius: 50%; border: 6px solid #444; 
-            display: flex; align-items: center; justify-content: center; font-size: 2em;
-            background: #222; transition: 0.5s; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: 120px; height: 120px; border-radius: 50%; border: 8px solid #333; 
+            display: flex; align-items: center; justify-content: center; font-size: 3em; font-weight: bold;
+            background: #111; color: #444; transition: 0.6s;
         }
-        .medal.bronze { border-color: var(--bronze); background: var(--bronze); color: #fff; }
-        .medal.prata { border-color: var(--silver); background: var(--silver); color: #000; }
-        .medal.ouro { border-color: var(--gold); background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
+        /* Estados das medalhas */
+        .medal.bronze { border-color: var(--bronze); color: var(--bronze); background: #25170d; box-shadow: 0 0 20px var(--bronze); }
+        .medal.prata { border-color: var(--silver); color: var(--silver); background: #222; box-shadow: 0 0 20px var(--silver); }
+        .medal.ouro { border-color: var(--gold); color: var(--gold); background: #332a00; box-shadow: 0 0 40px var(--gold); }
 
-        .card { background: rgba(255,255,255,0.08); padding: 60px; border-radius: 40px; backdrop-filter: blur(15px); }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5em; text-align: center; color: #00f2fe; margin-bottom: 30px; }
-        p { font-size: 1.8em; text-align: center; margin-bottom: 40px; font-weight: 600; }
-        .btn { display: block; width: 100%; padding: 30px; margin: 20px 0; background: #1a2235; border: 3px solid #444; color: #fff; border-radius: 20px; cursor: pointer; font-size: 1.5em; font-weight: 700; transition: 0.3s; }
-        .btn:hover { border-color: #00f2fe; background: rgba(0,242,254,0.1); }
+        .card { background: rgba(255,255,255,0.05); padding: 60px; border-radius: 50px; text-align: center; border: 1px solid #333; }
+        .btn { display: block; width: 100%; padding: 35px; margin: 25px 0; background: #1a2235; border: 4px solid #444; color: #fff; border-radius: 25px; cursor: pointer; font-size: 1.6em; font-weight: 700; transition: 0.3s; }
+        .btn:hover { border-color: #00f2fe; background: #25304a; }
+        h1 { font-size: 2.8em; color: #00f2fe; margin-bottom: 30px; }
+        #progresso-txt { font-size: 1.5em; color: #888; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -40,9 +34,9 @@
         <div class="medal" id="m-conv">C</div>
         <div class="medal" id="m-cultura">A</div>
     </div>
-
     <div class="card">
         <h1 id="titulo">Selecione o Treino</h1>
+        <div id="progresso-txt"></div>
         <div id="game-area">
             <button class="btn" onclick="iniciar('gramatica')">Gramática (A2)</button>
             <button class="btn" onclick="iniciar('conv')">Conversação (A2)</button>
@@ -53,31 +47,42 @@
 
 <script>
     const db = {
-        gramatica: [{q: "Como dizer 'eu comi'?", o: ["J'ai mangé", "Je mangeais"], c: 0}],
-        conv: [{q: "Como responder a 'Tu veux un café'?", o: ["Oui, avec plaisir!", "Non, je déteste."], c: 0}],
-        cultura: [{q: "Onde fica a Torre Eiffel?", o: ["Paris", "Lyon"], c: 0}]
+        gramatica: [{q: "Eu comi (Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0}, {q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0}, {q: "Tu (ir - aller) no presente", o: ["Tu vas", "Tu as"], c: 0}, {q: "Negativo: Je ___ mange pas", o: ["ne", "n'"], c: 1}, {q: "Plural de 'Le journal'", o: ["Les journaux", "Les journals"], c: 0}],
+        conv: [{q: "Tu veux un café?", o: ["Oui, merci!", "Le chat est bleu."], c: 0}, {q: "Quel âge as-tu?", o: ["J'ai 20 ans", "Je suis 20 ans"], c: 0}, {q: "Comment ça va?", o: ["Ça va bien", "Il est bien"], c: 0}, {q: "Où habites-tu?", o: ["J'habite à Paris", "J'ai à Paris"], c: 0}, {q: "Quel est ton métier?", o: ["Je suis médecin", "J'ai médecin"], c: 0}],
+        cultura: [{q: "Capital da França:", o: ["Paris", "Lyon"], c: 0}, {q: "O Louvre é um:", o: ["Museu", "Palácio"], c: 0}, {q: "O que é um Croissant?", o: ["Pão folhado", "Um queijo"], c: 0}, {q: "Rio que corta Paris:", o: ["Sena", "Tâmisa"], c: 0}, {q: "Dia Nacional da França:", o: ["14 de Julho", "7 de Setembro"], c: 0}]
     };
 
-    let prog = { gramatica: {pts: 0, nivel: 0}, conv: {pts: 0, nivel: 0}, cultura: {pts: 0, nivel: 0} };
-    const tiers = ['', 'bronze', 'prata', 'ouro'];
+    let prog = { 
+        gramatica: {pts: 0, nivel: 0}, 
+        conv: {pts: 0, nivel: 0}, 
+        cultura: {pts: 0, nivel: 0} 
+    };
 
     function iniciar(tipo) {
-        let q = db[tipo][0]; // Exemplo simplificado
+        let q = db[tipo][Math.floor(Math.random() * db[tipo].length)];
+        let status = ["Iniciante", "Bronze", "Prata", "Ouro"][prog[tipo].nivel];
+        
         document.getElementById('titulo').innerText = tipo.toUpperCase();
-        document.getElementById('game-area').innerHTML = `<p>${q.q}</p>` + 
+        document.getElementById('progresso-txt').innerText = `Nível Atual: ${status} | ${prog[tipo].pts}/5 para o próximo nível`;
+        
+        document.getElementById('game-area').innerHTML = `<p style="font-size:2em; margin-bottom:40px;">${q.q}</p>` + 
             q.o.map((txt, i) => `<button class='btn' onclick='verificar("${tipo}", ${i}, ${q.c})'>${txt}</button>`).join('');
     }
 
     function verificar(tipo, sel, corr) {
         if(sel === corr) {
             prog[tipo].pts++;
+            // Lógica de evolução: 5 pontos para cada nível
             if(prog[tipo].pts >= 5 && prog[tipo].nivel < 3) {
                 prog[tipo].nivel++;
                 prog[tipo].pts = 0;
-                document.getElementById('m-' + tipo).className = 'medal ' + tiers[prog[tipo].nivel];
+                document.getElementById('m-' + tipo).className = 'medal ' + ['bronze', 'prata', 'ouro'][prog[tipo].nivel-1];
+                alert("Parabéns! Nova medalha conquistada!");
             }
-            alert("Correto! Progresso: " + prog[tipo].pts + "/5 para a próxima medalha.");
-            window.location.reload();
+            iniciar(tipo);
+        } else {
+            alert("Errou! Foco total.");
+            iniciar(tipo);
         }
     }
 </script>

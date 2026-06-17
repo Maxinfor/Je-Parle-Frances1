@@ -3,89 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada A1</title>
+    <title>Jornada A1 Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Impede zoom acidental no celular ao tocar nos botões */
-        button { touch-action: manipulation; }
-    </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center p-0 md:p-4">
-
-    <!-- Container otimizado para celular (preenche a tela) -->
-    <div id="app" class="w-full h-screen md:h-auto md:max-w-md bg-zinc-900 md:rounded-3xl p-6 flex flex-col justify-center border border-zinc-800 shadow-2xl">
-        <!-- O conteúdo será injetado aqui -->
+<body class="bg-black text-white min-h-screen flex items-center justify-center">
+    <div id="app" class="w-full max-w-md p-6 bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-800">
+        <!-- Conteúdo carregado aqui -->
     </div>
 
     <script>
-        const conteudos = [
-            { t: "1. Être", g: "Je suis (sou), Tu es (és).", p: "Eu estou em Paris?", op: ["Je suis à Paris", "Je es à Paris"], c: "Je suis à Paris", e: "Dica: 'Je' sempre pede 'suis'." },
-            { t: "2. Avoir", g: "J'ai (tenho), Tu as (tens).", p: "Eu tenho 20 anos?", op: ["Je suis 20 ans", "J'ai 20 ans"], c: "J'ai 20 ans", e: "Dica: Idade em francês usa o verbo 'Ter'." },
-            { t: "3. Verbos -ER", g: "J'habite (moro), Tu habites (moras).", p: "Como dizer 'Eu moro'?", op: ["J'habite", "J'habites"], c: "J'habite", e: "Dica: 'Je' termina com 'e'." },
-            { t: "4. Contrações", g: "À + Le = AU.", p: "Eu vou ao cinema?", op: ["Je vais à le cinéma", "Je vais au cinéma"], c: "Je vais au cinéma", e: "Dica: Fusão obrigatória: à + le = au." },
-            { t: "5. Passado", g: "J'ai + participio (-é).", p: "Eu comi um croissant?", op: ["J'ai mangé un croissant", "Je mange un croissant"], c: "J'ai mangé un croissant", e: "Dica: Passado precisa de auxiliar + é." },
-            { t: "6. Futuro", g: "Aller + infinitivo.", p: "Eu vou estudar?", op: ["Je vais étudier", "Je vais étudie"], c: "Je vais étudier", e: "Dica: O segundo verbo não muda." },
-            { t: "7. Partitivos", g: "DU (masc), DE LA (fem).", p: "Eu quero café?", op: ["Je veux le café", "Je veux du café"], c: "Je veux du café", e: "Dica: 'Du' é para quantidade." },
-            { t: "8. Negação", g: "NE + Verbo + PAS.", p: "Eu não moro em Paris?", op: ["Je ne habite pas", "Je n'habite pas"], c: "Je n'habite pas", e: "Dica: Verbo com vogal = n'." },
-            { t: "9. Perguntas", g: "Est-ce que + Frase.", p: "Você mora aqui?", op: ["Est-ce que tu habites ?", "Tu habites ?"], c: "Est-ce que tu habites ?", e: "Dica: É a forma correta." },
-            { t: "10. Plurais", g: "Le/La -> LES + s.", p: "Os amigos?", op: ["Le amis", "Les amis"], c: "Les amis", e: "Dica: Plural = Les." },
-            { t: "11. Adjetivos", g: "Feminino + e.", p: "Ela é alta?", op: ["Elle est grand", "Elle est grande"], c: "Elle est grande", e: "Dica: Concordância de gênero." },
-            { t: "12. Dias", g: "Le + dia = hábito.", p: "Às segundas, eu estudo?", op: ["Lundi, j'étudie", "Le lundi, j'étudie"], c: "Le lundi, j'étudie", e: "Dica: Le = evento semanal." },
-            { t: "13. Conclusão", g: "Você domina a base!", p: "Eu falo um pouco?", op: ["Je parle un peu", "Je parle peu"], c: "Je parle un peu", e: "Dica: 'Un peu' é a expressão." }
+        // Banco de dados: Apenas preencha os arrays 'questoes' com 10 itens cada
+        const niveis = [
+            {
+                titulo: "Nível 1: Verbo Être",
+                premio: "https://cdn-icons-png.flaticon.com/512/179/179249.png",
+                questoes: [
+                    { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" },
+                    { p: "Você está em Paris?", op: ["Tu es à Paris", "Tu suis à Paris"], c: "Tu es à Paris" },
+                    { p: "Ele é francês?", op: ["Il est français", "Il suis français"], c: "Il est français" },
+                    { p: "Nós estamos aqui?", op: ["Nous sommes ici", "Nous sommes ici"], c: "Nous sommes ici" },
+                    { p: "Vocês são amigos?", op: ["Vous êtes amis", "Vous sommes amis"], c: "Vous êtes amis" },
+                    { p: "Eles são irmãos?", op: ["Ils sont frères", "Ils êtes frères"], c: "Ils sont frères" },
+                    { p: "Eu sou estudante?", op: ["Je suis étudiant", "Je es étudiant"], c: "Je suis étudiant" },
+                    { p: "Ela está cansada?", op: ["Elle est fatiguée", "Elle suis fatiguée"], c: "Elle est fatiguée" },
+                    { p: "Nós somos brasileiros?", op: ["Nous sommes brésiliens", "Nous êtes brésiliens"], c: "Nous sommes brésiliens" },
+                    { p: "Você é o professor?", op: ["Tu es le professeur", "Tu suis le professeur"], c: "Tu es le professeur" }
+                ]
+            },
+            {
+                titulo: "Nível 2: Verbo Avoir",
+                premio: "https://cdn-icons-png.flaticon.com/512/2909/2909871.png",
+                questoes: Array(10).fill({ p: "Como dizer 'Eu tenho 20 anos'?", op: ["J'ai 20 ans", "Je suis 20 ans"], c: "J'ai 20 ans" })
+            }
+            // Você pode adicionar os outros 11 níveis seguindo este formato
         ];
 
-        let index = 0, modoEstudo = true;
+        let nivelIdx = 0, questaoIdx = 0;
 
-        function renderizar() {
+        function carregar() {
+            const nivel = niveis[nivelIdx];
+            if (!nivel) return finalJogo();
+            
+            const q = nivel.questoes[questaoIdx];
             const app = document.getElementById('app');
-            const data = conteudos[index];
-            const prog = ((index) / conteudos.length) * 100;
-
+            
             app.innerHTML = `
-                <div class="mb-8 w-full bg-zinc-800 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full transition-all" style="width: ${prog}%"></div></div>
-                ${modoEstudo ? `
-                    <h2 class="text-blue-400 text-sm font-bold uppercase tracking-widest mb-2">Lição ${index + 1}</h2>
-                    <h1 class="text-3xl font-bold mb-6">${data.t}</h1>
-                    <p class="text-xl text-zinc-300 mb-10 leading-relaxed">${data.g}</p>
-                    <button id="btn-avancar" class="w-full py-5 bg-blue-600 rounded-2xl font-bold text-lg hover:bg-blue-500 transition">CONTINUAR</button>
-                ` : `
-                    <h2 class="text-blue-400 text-sm font-bold uppercase tracking-widest mb-4">Exercício</h2>
-                    <h1 class="text-2xl font-bold mb-8">${data.p}</h1>
-                    <div id="opcoes" class="flex flex-col gap-4"></div>
-                `}
-                <div id="feedback" class="mt-6 p-4 rounded-xl text-center font-bold hidden"></div>
+                <div class="text-blue-500 font-bold mb-2">NÍVEL ${nivelIdx + 1} - QUESTÃO ${questaoIdx + 1}/10</div>
+                <h1 class="text-2xl font-bold mb-6">${q.p}</h1>
+                <div class="flex flex-col gap-3">
+                    ${q.op.map(o => `<button onclick="verificar('${o}')" class="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition">${o}</button>`).join('')}
+                </div>
             `;
+        }
 
-            if (modoEstudo) {
-                document.getElementById('btn-avancar').onclick = () => { modoEstudo = false; renderizar(); };
+        function verificar(resp) {
+            const nivel = niveis[nivelIdx];
+            if (resp === nivel.questoes[questaoIdx].c) {
+                questaoIdx++;
+                if (questaoIdx >= 10) {
+                    mostrarRecompensa();
+                } else {
+                    carregar();
+                }
             } else {
-                const cont = document.getElementById('opcoes');
-                data.op.forEach(o => {
-                    const b = document.createElement('button');
-                    b.className = "p-5 bg-zinc-800 border border-zinc-700 rounded-2xl text-lg font-medium active:bg-zinc-700 transition w-full";
-                    b.innerText = o;
-                    b.onclick = () => verificar(o);
-                    cont.appendChild(b);
-                });
+                alert("Errou! A resposta correta era: " + nivel.questoes[questaoIdx].c);
             }
         }
 
-        function verificar(escolha) {
-            const fb = document.getElementById('feedback');
-            fb.classList.remove('hidden');
-            if (escolha === conteudos[index].c) {
-                fb.className = "mt-6 p-4 rounded-xl text-center font-bold bg-green-900/30 text-green-400";
-                fb.innerText = "CERTO! 🎉";
-                setTimeout(() => { index++; modoEstudo = true; index < conteudos.length ? renderizar() : final(); }, 800);
+        function mostrarRecompensa() {
+            document.getElementById('app').innerHTML = `
+                <h1 class="text-3xl font-bold text-center mb-6">Nível Concluído!</h1>
+                <img src="${niveis[nivelIdx].premio}" class="w-32 mx-auto mb-6 animate-bounce">
+                <button onclick="proximoNivel()" class="w-full py-4 bg-blue-600 rounded-xl font-bold">COLETAR E SEGUIR</button>
+            `;
+        }
+
+        function proximoNivel() {
+            nivelIdx++;
+            questaoIdx = 0;
+            if (nivelIdx < niveis.length) {
+                carregar();
             } else {
-                fb.className = "mt-6 p-4 rounded-xl text-center font-bold bg-red-900/30 text-red-400";
-                fb.innerText = "Ops: " + conteudos[index].e;
+                document.getElementById('app').innerHTML = `<h1 class="text-3xl font-bold text-center">Jornada Concluída!</h1>`;
             }
         }
 
-        function final() { app.innerHTML = `<h1 class="text-4xl font-bold text-center mb-8">Parabéns!</h1><button onclick="location.reload()" class="w-full py-5 bg-blue-600 rounded-2xl font-bold text-lg">REINICIAR</button>`; }
-
-        renderizar();
+        carregar();
     </script>
 </body>
 </html>

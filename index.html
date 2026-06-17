@@ -1,47 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Elite System | Jornada Francesa</title>
-    <style>
-        :root { --bg: #050b1a; --active: #00f2fe; }
-        body { 
-            background: var(--bg); color: #fff; 
-            font-family: 'Segoe UI', sans-serif; 
-            text-align: center; padding: 40px; 
-            font-size: 1.4rem; /* Letras maiores */
-        }
-        
-        h2 { font-size: 2.5rem; color: var(--active); }
-        .icon-box { font-size: 6rem; margin: 30px 0; }
-        
-        .btn { 
-            display: block; width: 100%; max-width: 500px; 
-            margin: 20px auto; padding: 25px; 
-            background: #1a2235; border: 2px solid #444; 
-            color: white; border-radius: 20px; 
-            cursor: pointer; font-size: 1.5rem;
-        }
-        .btn:hover { background: #25304a; border-color: var(--active); }
-        
-        #reset-btn { font-size: 1rem; color: #666; margin-top: 50px; background: none; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-    <div id="status-container">
-        <div id="icon-display" class="icon-box">🏅</div>
-        <h2 id="fase-nome">Carregando...</h2>
-        <p id="nivel-txt">Nível: Bronze</p>
-    </div>
-
-    <div id="game-area">
-        <h3 id="pergunta" style="font-size: 2rem; margin: 30px 0;"></h3>
-        <div id="opcoes"></div>
-    </div>
-
-    <button id="reset-btn" onclick="resetar()">Reiniciar todo o progresso</button>
-
 <script>
     const trilha = [
         { nome: "Medalha", icon: "🏅", max: 5, cat: "gramatica" },
@@ -62,18 +18,37 @@
         ]
     };
 
-    let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0, respondidas: [] };
+    // Recupera ou inicializa o usuário com segurança
+    let user = JSON.parse(localStorage.getItem('es_user'));
+    if (!user || user.fase >= trilha.length) {
+        user = { fase: 0, nivel: 0, pts: 0, respondidas: [] };
+    }
 
     function render() {
         const f = trilha[user.fase];
+        const niveis = ["Bronze", "Prata", "Ouro"];
+
+        // Atualiza os textos da interface
         document.getElementById('icon-display').innerText = f.icon;
         document.getElementById('fase-nome').innerText = f.nome;
-        document.getElementById('nivel-txt').innerText = `Progresso: ${user.pts}/${f.max}`;
+        document.getElementById('nivel-txt').innerText = `Nível: ${niveis[user.nivel]} | Progresso: ${user.pts}/${f.max}`;
 
+        // Verifica se a categoria existe
+        if (!banco[f.cat]) {
+            document.getElementById('pergunta').innerText = "Erro: Categoria não encontrada.";
+            return;
+        }
+
+        // Filtra questões
         let disponiveis = banco[f.cat].filter(q => !user.respondidas.includes(q.id));
-        if (disponiveis.length === 0) { user.respondidas = []; disponiveis = banco[f.cat]; }
+        
+        if (disponiveis.length === 0) {
+            user.respondidas = [];
+            disponiveis = banco[f.cat];
+        }
 
         const q = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+        
         document.getElementById('pergunta').innerText = q.q;
         document.getElementById('opcoes').innerHTML = q.o.map((txt, i) => 
             `<button class="btn" onclick="check(${i}, ${q.c}, ${q.id})">${txt}</button>`
@@ -87,7 +62,11 @@
             if(user.pts >= trilha[user.fase].max) {
                 user.nivel++;
                 user.pts = 0;
-                alert("Parabéns! Nível alcançado!");
+                if(user.nivel >= 3) { 
+                    user.fase++; 
+                    user.nivel = 0; 
+                }
+                alert("Parabéns! Nível conquistado!");
             }
             localStorage.setItem('es_user', JSON.stringify(user));
             render();
@@ -105,5 +84,3 @@
 
     render();
 </script>
-</body>
-</html>

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa: Lógica e Gramática</title>
+    <title>Jornada Francesa: Níveis 1 a 5</title>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
         .card { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -29,19 +29,43 @@
 <script>
     const jornada = [
         {
-            titulo: "Módulo 5: O Verbo 'Pouvoir'",
-            teoria: "Gramática: O verbo <b>Pouvoir</b> (poder) na forma <b>Vous</b> (formal). Estrutura: <b>Pouvez-vous + [verbo]?</b> Isso suaviza pedidos.",
-            exemplo: "Em vez de 'Eu quero um horário', diga: 'Pouvez-vous me donner un rendez-vous ?'",
-            perg: "Como pedir formalmente para alguém verificar a agenda?",
-            opc: ["Tu as un temps pour moi ?", "Pouvez-vous vérifier votre agenda ?", "Donne-moi ton agenda."],
+            titulo: "Nível 1: A Saudação (O Protocolo)",
+            teoria: "Gramática: O uso de <b>Bonjour</b>. Na França, o cumprimento é a senha social. Ele reconhece a dignidade do outro antes de qualquer interação.",
+            exemplo: "Ao entrar em qualquer lugar, diga: 'Bonjour, Monsieur' ou 'Bonjour, Madame'.",
+            perg: "Qual a forma correta de iniciar uma interação em uma loja?",
+            opc: ["Ir direto ao pedido", "Dizer 'Bonjour' antes de qualquer coisa", "Acenar com a mão"],
             correta: 1
         },
         {
-            titulo: "Módulo 6: A Lógica da Negação",
-            teoria: "Gramática: Estrutura <b>ne + verbo + pas</b>. O 'ne' antes e 'pas' depois do verbo negam a ação de forma clara e elegante.",
-            exemplo: "Je ne comprends pas (Eu não entendo). Mantenha o 'ne' para situações formais.",
-            perg: "Você está em um serviço público e precisa negar que possui o documento. Como dizer?",
-            opc: ["J'ai pas le document.", "Je ne possède pas le document.", "Pas document."],
+            titulo: "Nível 2: O Radar Noturno",
+            teoria: "Gramática: Uso do <b>Bonsoir</b>. A lógica francesa divide o dia: 'Bonjour' (até o fim da tarde) e 'Bonsoir' (após as 18h).",
+            exemplo: "Às 19h, você diz: 'Bonsoir, une table pour deux'.",
+            perg: "Você entra em um café às 20h. O que você diz?",
+            opc: ["Bonjour", "Bonsoir", "Salut"],
+            correta: 1
+        },
+        {
+            titulo: "Nível 3: Polidez com 'S'il vous plaît'",
+            teoria: "Gramática: A expressão <b>s'il vous plaît</b> (se lhe agrada). É a chave gramatical para transformar uma exigência em um pedido educado.",
+            exemplo: "Em vez de 'Um café', diga: 'Un café, s'il vous plaît'.",
+            perg: "Como pedir água de forma gramaticalmente educada?",
+            opc: ["Je veux de l'eau", "De l'eau, s'il vous plaît", "Donne-moi l'eau"],
+            correta: 1
+        },
+        {
+            titulo: "Nível 4: Pronome de Respeito 'Vous'",
+            teoria: "Gramática: Uso do <b>Vous</b> (o senhor/a senhora). É a ferramenta de distância segura para estranhos e ambientes formais.",
+            exemplo: "Perguntar onde fica algo: 'Excusez-moi, où est le métro ?'",
+            perg: "Por que usamos o 'Vous' com um estranho?",
+            opc: ["Para ser rápido", "Para demonstrar respeito e manter distância segura", "Porque não sei o nome dele"],
+            correta: 1
+        },
+        {
+            titulo: "Nível 5: O Verbo 'Pouvoir'",
+            teoria: "Gramática: O verbo <b>Pouvoir</b> (poder) com <b>Vous</b>. Estrutura: <b>Pouvez-vous + [verbo]?</b> Isso torna sua solicitação um pedido de auxílio.",
+            exemplo: "Para pedir um horário: 'Pouvez-vous me donner un rendez-vous ?'",
+            perg: "Como pedir ajuda para verificar a agenda de forma polida?",
+            opc: ["Tu as un temps ?", "Pouvez-vous vérifier votre agenda ?", "Donne-moi ton agenda"],
             correta: 1
         }
     ];
@@ -85,7 +109,7 @@
         if(i < jornada.length) {
             carregar();
         } else {
-            document.getElementById('content').innerHTML = "<h2>🎉 Jornada Concluída!</h2><p>Você domina a lógica gramatical francesa aplicada ao cotidiano. Aplique o 'Vous' e o 'ne...pas' para ser sempre respeitado.</p>";
+            document.getElementById('content').innerHTML = "<h2>🎉 Jornada Concluída!</h2><p>Você completou os 5 níveis de etiqueta e gramática francesa. Agora você possui a lógica para transitar com respeito e precisão.</p>";
             document.getElementById('next').style.display = 'none';
         }
     }

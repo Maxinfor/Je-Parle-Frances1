@@ -2,78 +2,95 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>A Magia dos Cumprimentos</title>
+    <title>Jornada Francesa: Lógica e Gramática</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .bubble { background: #e1f5fe; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-size: 1.1em; border-left: 5px solid #039be5; }
-        .btn { display: block; width: 100%; padding: 15px; margin: 8px 0; border: none; border-radius: 10px; background: #fff; border: 2px solid #ddd; cursor: pointer; text-align: left; transition: 0.2s; }
-        .btn:hover:not(:disabled) { background: #f5f5f5; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #2c3e50; margin-top: 0; }
+        .teoria { background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 5px solid #2196f3; margin-bottom: 15px; }
+        .exemplo { background: #fff3e0; padding: 15px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 15px; font-style: italic; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: left; background: white; transition: 0.2s; }
+        .btn:hover:not(:disabled) { background: #f0f0f0; }
         .correct { background: #c8e6c9 !important; border-color: #4caf50 !important; }
         .wrong { background: #ffcdd2 !important; border-color: #f44336 !important; }
-        #next { display: none; width: 100%; padding: 15px; background: #ffa000; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        #next { display: none; margin-top: 20px; width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div id="game">
-        <div class="bubble" id="pergunta">Carregando...</div>
-        <div id="opcoes"></div>
-        <p id="exp" style="font-size: 0.9em; color: #555;"></p>
-        <button id="next" onclick="irParaProxima()">CONTINUAR A JORNADA ➔</button>
+<div class="card" id="app">
+    <div id="content">
+        <h2 id="titulo">Carregando...</h2>
+        <div id="corpo"></div>
     </div>
+    <button id="next" onclick="proximo()">PRÓXIMA LIÇÃO ➔</button>
 </div>
 
 <script>
-    const missao = [
-        { q: "Na França, cumprimentar não é apenas ser gentil, é uma senha. Qual é a 'senha' que abre todas as portas antes de qualquer pedido?", o: ["Pardon", "Bonjour", "S'il vous plaît"], c: 1, e: "O 'Bonjour' reconhece que o outro é um ser humano antes de ser um atendente." },
-        { q: "Você chegou na padaria às 19h. O 'Bonjour' soa estranho agora. Como você ajusta seu radar noturno?", o: ["Bonne nuit", "Bonsoir", "Salut"], c: 1, e: "Bonsoir é usado a partir do fim da tarde para mostrar que você respeita o ciclo do dia." },
-        { q: "Você conheceu um estudante na fila da faculdade. Ele tem sua idade. Qual o nível de senha ideal?", o: ["Bonjour, Monsieur", "Salut !", "Pardon"], c: 1, e: "Salut! é perfeito para pares, amigos e pessoas informais. O 'Bonjour' seria formal demais aqui." }
+    const jornada = [
+        {
+            titulo: "Módulo 5: O Verbo 'Pouvoir'",
+            teoria: "Gramática: O verbo <b>Pouvoir</b> (poder) na forma <b>Vous</b> (formal). Estrutura: <b>Pouvez-vous + [verbo]?</b> Isso suaviza pedidos.",
+            exemplo: "Em vez de 'Eu quero um horário', diga: 'Pouvez-vous me donner un rendez-vous ?'",
+            perg: "Como pedir formalmente para alguém verificar a agenda?",
+            opc: ["Tu as un temps pour moi ?", "Pouvez-vous vérifier votre agenda ?", "Donne-moi ton agenda."],
+            correta: 1
+        },
+        {
+            titulo: "Módulo 6: A Lógica da Negação",
+            teoria: "Gramática: Estrutura <b>ne + verbo + pas</b>. O 'ne' antes e 'pas' depois do verbo negam a ação de forma clara e elegante.",
+            exemplo: "Je ne comprends pas (Eu não entendo). Mantenha o 'ne' para situações formais.",
+            perg: "Você está em um serviço público e precisa negar que possui o documento. Como dizer?",
+            opc: ["J'ai pas le document.", "Je ne possède pas le document.", "Pas document."],
+            correta: 1
+        }
     ];
 
     let i = 0;
 
-    function carregarMissao() {
-        const m = missao[i];
-        document.getElementById('pergunta').innerText = m.q;
-        document.getElementById('opcoes').innerHTML = '';
-        document.getElementById('exp').innerText = '';
+    function carregar() {
+        const m = jornada[i];
+        document.getElementById('titulo').innerText = m.titulo;
+        document.getElementById('corpo').innerHTML = `
+            <div class="teoria">${m.teoria}</div>
+            <div class="exemplo"><strong>Exemplo:</strong> ${m.exemplo}</div>
+            <p><strong>Questão:</strong> ${m.perg}</p>
+            <div id="opcoes"></div>
+        `;
         document.getElementById('next').style.display = 'none';
 
-        m.o.forEach((txt, idx) => {
+        m.opc.forEach((txt, idx) => {
             const b = document.createElement('button');
             b.className = 'btn';
             b.innerText = txt;
-            b.onclick = () => checar(idx, b);
+            b.onclick = () => verificar(idx, b);
             document.getElementById('opcoes').appendChild(b);
         });
     }
 
-    function checar(idx, btn) {
+    function verificar(idx, btn) {
         const btns = document.querySelectorAll('.btn');
         btns.forEach(b => b.disabled = true);
-        if(idx === missao[i].c) {
+        if(idx === jornada[i].correta) {
             btn.classList.add('correct');
         } else {
             btn.classList.add('wrong');
-            btns[missao[i].c].classList.add('correct');
+            btns[jornada[i].correta].classList.add('correct');
         }
-        document.getElementById('exp').innerText = "💡 " + missao[i].e;
         document.getElementById('next').style.display = 'block';
     }
 
-    function irParaProxima() {
+    function proximo() {
         i++;
-        if(i < missao.length) {
-            carregarMissao();
+        if(i < jornada.length) {
+            carregar();
         } else {
-            document.getElementById('game').innerHTML = "<h2>🎉 Você destravou os cumprimentos!</h2><p>Agora você sabe quando ser formal ou informal.</p>";
+            document.getElementById('content').innerHTML = "<h2>🎉 Jornada Concluída!</h2><p>Você domina a lógica gramatical francesa aplicada ao cotidiano. Aplique o 'Vous' e o 'ne...pas' para ser sempre respeitado.</p>";
+            document.getElementById('next').style.display = 'none';
         }
     }
 
-    // Inicialização segura
-    document.addEventListener('DOMContentLoaded', carregarMissao);
+    document.addEventListener('DOMContentLoaded', carregar);
 </script>
 </body>
 </html>

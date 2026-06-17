@@ -2,78 +2,122 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa: Coleção de Elite</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornada Francesa | Elite Edition</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-        
-        body { background: #0a1021; color: white; font-family: 'Orbitron', sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
-        .app-container { width: 100%; max-width: 600px; }
-        
-        /* Painel de Recompensas */
-        .recompensas-grid { 
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; 
-            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;
-            margin-bottom: 20px; border: 1px solid rgba(0,242,254,0.3);
-        }
-        .item { font-size: 1.5em; opacity: 0.2; filter: grayscale(1); transition: 0.5s; text-align: center; }
-        .item.active { opacity: 1; filter: grayscale(0) drop-shadow(0 0 10px var(--color)); transform: scale(1.2); }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;600&display=swap');
 
-        .card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.05); border: 1px solid #444; color: white; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-        .btn:hover:not(:disabled) { border-color: #00f2fe; }
+        :root {
+            --bg: #050b1a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --neon-blue: #00f2fe;
+            --neon-gold: #ffc107;
+            --neon-pink: #ff0055;
+        }
+
+        body { 
+            background: var(--bg); color: white; font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0;
+            background-image: radial-gradient(circle at top right, #1a0b2e, transparent);
+        }
+
+        .container { width: 100%; max-width: 650px; }
+
+        /* PAINEL DE CONQUISTAS */
+        .rewards-panel {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 25px;
+        }
+        .reward-item { 
+            font-size: 1.4em; filter: grayscale(1) opacity(0.2); transition: 0.5s all;
+            text-align: center; padding: 5px; border-radius: 10px;
+        }
+        .reward-item.unlocked { 
+            filter: grayscale(0) opacity(1); transform: scale(1.1);
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+
+        /* CARTÃO PRINCIPAL */
+        .card { 
+            background: var(--glass); backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        h2 { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); letter-spacing: 2px; }
+
+        .btn { 
+            width: 100%; padding: 18px; margin: 10px 0; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 15px;
+            cursor: pointer; transition: 0.3s; font-weight: 600; text-align: left;
+        }
+        .btn:hover { border-color: var(--neon-blue); background: rgba(0,242,254,0.1); }
+        
         .correct { border-color: #0f0 !important; background: rgba(0,255,0,0.1) !important; }
         .wrong { border-color: #f00 !important; background: rgba(255,0,0,0.1) !important; }
+
+        #next { background: linear-gradient(90deg, var(--neon-blue), #7000ff); border: none; text-align: center; display: none; font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <!-- Painel Visual de Recompensas -->
-    <div class="recompensas-grid" id="grid">
-        <div class="item" id="garfo" data-color="#cd7f32">🍴</div>
-        <div class="item" id="croissant" data-color="#ffd700">🥐</div>
-        <div class="item" id="xicara" data-color="#ff0055">☕</div>
-        <div class="item" id="petgato" data-color="#ff9800">🍰</div>
-        <div class="item" id="torre" data-color="#00f2fe">🗼</div>
-        <div class="item" id="louvre" data-color="#fff">🏛️</div>
+<div class="container">
+    <div class="rewards-panel" id="rewards">
+        <div class="reward-item" id="r1">🍴</div>
+        <div class="reward-item" id="r2">🥐</div>
+        <div class="reward-item" id="r3">☕</div>
+        <div class="reward-item" id="r4">🍰</div>
+        <div class="reward-item" id="r5">🗼</div>
+        <div class="reward-item" id="r6">🏛️</div>
     </div>
 
     <div class="card">
         <h2 id="titulo">Carregando...</h2>
         <div id="corpo"></div>
-        <button id="next" style="display:none; width:100%; padding:15px; margin-top:20px; border:none; border-radius:10px; cursor:pointer; background:#00f2fe;" onclick="proximo()">PRÓXIMA FASE ➔</button>
+        <button id="next" onclick="proximo()">PRÓXIMA FASE</button>
     </div>
 </div>
 
 <script>
-    const fases = [
-        { t: "Nível 1-3: O Gourmet", p: "O básico da etiqueta.", id: "garfo" },
-        { t: "Nível 4-5: O Boulanger", p: "A arte do pão francês.", id: "croissant" },
-        { t: "Nível 6: O Café", p: "A elegância de um café.", id: "xicara" },
-        { t: "Nível 7-8: O Patissier", p: "Doces refinados.", id: "petgato" },
-        { t: "Nível 9: O Arquiteto", p: "O ícone de Paris.", id: "torre" },
-        { t: "Nível 10: O Imortal", p: "A arte francesa.", id: "louvre" }
+    const jogo = [
+        { t: "Nível 1: Saudação", p: "O uso do Bonjour", o: ["Bonjour", "Oi", "Hey"], c: 0, r: "r1" },
+        { t: "Nível 2: Noturno", p: "Após às 18h", o: ["Bonjour", "Bonsoir", "Salut"], c: 1, r: "r1" },
+        { t: "Nível 3: Polidez", p: "O uso de S'il vous plaît", o: ["Quero", "S'il vous plaît", "Dá"], c: 1, r: "r2" },
+        { t: "Nível 4: Respeito", p: "Por que usar o Vous?", o: ["Rapidez", "Respeito", "Amizade"], c: 1, r: "r2" },
+        { t: "Nível 5: Verbo Pouvoir", p: "Pedir auxílio", o: ["Tu...", "Pouvez-vous ?", "Fala aí"], c: 1, r: "r3" },
+        { t: "Nível 6: Gastronomia", p: "O doce de baunilha", o: ["Eclair", "Pudim", "Mousse"], c: 0, r: "r4" },
+        { t: "Nível 7: Ícone Parisiense", p: "A Dama de Ferro", o: ["Eiffel", "Big Ben", "Louvre"], c: 0, r: "r5" },
+        { t: "Nível 8: História", p: "O museu real", o: ["Louvre", "Met", "Moma"], c: 0, r: "r6" }
     ];
 
     let i = 0;
     function carregar() {
-        const m = fases[i];
+        const m = jogo[i];
         document.getElementById('titulo').innerText = m.t;
-        document.getElementById('corpo').innerHTML = `<p>${m.p}</p><button class="btn" onclick="vencer('${m.id}')">Simular Acerto</button>`;
+        document.getElementById('corpo').innerHTML = `<p>${m.p}</p><div id="opcoes"></div>`;
+        m.o.forEach((txt, idx) => {
+            const b = document.createElement('button');
+            b.className = 'btn'; b.innerText = txt;
+            b.onclick = () => verificar(idx, b);
+            document.getElementById('opcoes').appendChild(b);
+        });
+        document.getElementById('next').style.display = 'none';
     }
 
-    function vencer(id) {
-        const el = document.getElementById(id);
-        el.classList.add('active');
-        el.style.setProperty('--color', el.dataset.color);
-        document.getElementById('next').style.display = 'block';
+    function verificar(idx, b) {
+        document.querySelectorAll('.btn').forEach(btn => btn.disabled = true);
+        if(idx === jogo[i].c) {
+            b.classList.add('correct');
+            document.getElementById(jogo[i].r).classList.add('unlocked');
+            document.getElementById('next').style.display = 'block';
+        } else {
+            b.classList.add('wrong');
+        }
     }
 
-    function proximo() {
-        i++;
-        if(i < fases.length) carregar();
-        else document.getElementById('titulo').innerText = "🎉 JORNADA COMPLETA!";
-    }
+    function proximo() { i++; i < jogo.length ? carregar() : document.getElementById('corpo').innerHTML = "<h2>🎉 Você é um Master Francês!</h2>"; }
     carregar();
 </script>
 </body>

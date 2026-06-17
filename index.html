@@ -2,23 +2,25 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa | Elite System</title>
+    <title>Elite System | Jornada Francesa</title>
     <style>
-        body { background: #050b1a; color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
-        .item-display { font-size: 5em; margin: 20px 0; }
-        .btn { display: block; width: 100%; max-width: 350px; margin: 10px auto; padding: 15px; background: #1a2235; border: 2px solid #333; color: white; border-radius: 12px; cursor: pointer; transition: 0.3s; }
-        .btn:hover { border-color: #00f2fe; }
-        .progress-bar { width: 100%; max-width: 300px; height: 12px; background: #111; margin: 15px auto; border-radius: 6px; overflow: hidden; }
-        #fill { height: 100%; background: linear-gradient(90deg, #00f2fe, #00aaff); width: 0%; transition: 0.5s; }
+        :root { --bg: #050b1a; --locked: #222; --active: #00f2fe; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; }
+        
+        /* Ícones Sombreados */
+        .icon-box { font-size: 4em; filter: grayscale(100%) brightness(0.3); transition: 0.5s; margin: 20px; }
+        .icon-box.unlocked { filter: grayscale(0%) brightness(1); text-shadow: 0 0 20px var(--active); }
+        
+        .btn { display: block; width: 100%; max-width: 350px; margin: 10px auto; padding: 15px; background: #1a2235; border: 1px solid #444; color: white; border-radius: 12px; cursor: pointer; }
+        .btn:hover { background: #25304a; }
     </style>
 </head>
 <body>
 
     <div id="status-container">
+        <div id="icon-display" class="icon-box">🏅</div>
         <h2 id="fase-nome">Carregando...</h2>
-        <div class="item-display" id="icone">🏅</div>
         <p id="nivel-txt">Nível: Bronze</p>
-        <div class="progress-bar"><div id="fill"></div></div>
     </div>
 
     <div id="game-area">
@@ -27,62 +29,68 @@
     </div>
 
 <script>
-    // 1. Definição da Trilha
     const trilha = [
         { nome: "Medalha", icon: "🏅", max: 5, cat: "gramatica" },
         { nome: "Xícara", icon: "☕", max: 5, cat: "conv" },
-        { nome: "Café Francês", icon: "🥐☕", max: 10, cat: "cultura" },
-        { nome: "Croissant", icon: "🥐", max: 5, cat: "gramatica" },
-        { nome: "Garfo", icon: "🍴", max: 5, cat: "conv" },
-        { nome: "Faca", icon: "🔪", max: 5, cat: "cultura" }
+        { nome: "Café Francês", icon: "🥐☕", max: 10, cat: "cultura" }
     ];
 
-    // 2. Banco de Dados (Pode expandir cada categoria aqui)
-    const bancoDeQuestoes = {
-        gramatica: [{q: "Passé Composé: Je ___ mangé", o: ["ai", "suis"], c: 0}, {q: "Plural de 'Le journal'?", o: ["Les journaux", "Les journals"], c: 0}],
-        conv: [{q: "Como dizer 'Bom dia'?", o: ["Bonjour", "Salut"], c: 0}],
-        cultura: [{q: "Onde fica o Louvre?", o: ["Paris", "Lyon"], c: 0}]
+    // Banco de questões com ID único
+    const banco = {
+        gramatica: [
+            {id: 1, q: "Passé Composé de 'manger' (Eu)", o: ["J'ai mangé", "Je mangeais"], c: 0},
+            {id: 2, q: "Plural de 'Le journal'?", o: ["Les journaux", "Les journals"], c: 0},
+            {id: 3, q: "Tu (ir - aller) no presente", o: ["Tu vas", "Tu as"], c: 0}
+        ],
+        conv: [
+            {id: 4, q: "Quel âge as-tu?", o: ["J'ai 20 ans", "Je suis 20 ans"], c: 0},
+            {id: 5, q: "Comment ça va?", o: ["Ça va bien", "Il est bien"], c: 0}
+        ],
+        cultura: [
+            {id: 6, q: "Capital da França?", o: ["Paris", "Lyon"], c: 0},
+            {id: 7, q: "O Louvre é um:", o: ["Museu", "Palácio"], c: 0}
+        ]
     };
 
-    let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0 };
+    let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0, respondidas: [] };
 
     function render() {
         const f = trilha[user.fase];
-        const niveis = ["Bronze", "Prata", "Ouro"];
+        const iconEl = document.getElementById('icon-display');
         
+        iconEl.innerText = f.icon;
+        iconEl.classList.add('unlocked'); // Ícone acende
         document.getElementById('fase-nome').innerText = f.nome;
-        document.getElementById('icone').innerText = f.icon;
-        document.getElementById('nivel-txt').innerText = `Nível: ${niveis[user.nivel]}`;
-        document.getElementById('fill').style.width = (user.pts / f.max * 100) + "%";
+
+        // Filtra questões não respondidas nesta sessão
+        let disponiveis = banco[f.cat].filter(q => !user.respondidas.includes(q.id));
         
-        // Pega pergunta aleatória da categoria da fase atual
-        const lista = bancoDeQuestoes[f.cat];
-        const q = lista[Math.floor(Math.random() * lista.length)];
+        if (disponiveis.length === 0) {
+            user.respondidas = []; // Reset se acabarem as perguntas
+            disponiveis = banco[f.cat];
+        }
+
+        const q = disponiveis[Math.floor(Math.random() * disponiveis.length)];
         
         document.getElementById('pergunta').innerText = q.q;
-        let html = "";
-        q.o.forEach((txt, i) => {
-            html += `<button class="btn" onclick="check(${i}, ${q.c})">${txt}</button>`;
-        });
-        document.getElementById('opcoes').innerHTML = html;
+        document.getElementById('opcoes').innerHTML = q.o.map((txt, i) => 
+            `<button class="btn" onclick="check(${i}, ${q.c}, ${q.id})">${txt}</button>`
+        ).join('');
     }
 
-    function check(sel, corr) {
+    function check(sel, corr, id) {
         if(sel === corr) {
             user.pts++;
+            user.respondidas.push(id); // Marca como respondida
             if(user.pts >= trilha[user.fase].max) {
                 user.nivel++;
                 user.pts = 0;
-                if(user.nivel > 2) { 
-                    user.fase = (user.fase + 1) % trilha.length; // Reinicia a trilha se acabar
-                    user.nivel = 0; 
-                }
-                alert("Parabéns! Evolução garantida!");
+                alert("Nível alcançado!");
             }
             localStorage.setItem('es_user', JSON.stringify(user));
             render();
         } else {
-            alert("Erros fazem parte do aprendizado! Tente de novo.");
+            alert("Errou! Tente de novo.");
         }
     }
 

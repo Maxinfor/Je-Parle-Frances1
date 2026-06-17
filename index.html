@@ -2,103 +2,78 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada Francês Real — Nível 1 A1</title>
+    <title>A Magia dos Cumprimentos</title>
     <style>
-        :root { --primary: #3498db; --success: #27ae60; --error: #e74c3c; --warning: #f39c12; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .app-container { background: #fff; width: 100%; max-width: 500px; padding: 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .progress-bar { background: #eee; height: 8px; border-radius: 4px; margin-bottom: 20px; }
-        .fill { background: var(--success); height: 100%; width: 0%; transition: width 0.5s; }
-        .char-bubble { background: #f8f9fa; padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); margin-bottom: 20px; font-weight: 500; }
-        button { width: 100%; padding: 14px; margin: 6px 0; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white; transition: 0.2s; font-size: 1em; }
-        button:hover:not([disabled]) { background: #f0f0f0; border-color: #ccc; }
-        .correct { background: var(--success) !important; color: white; border-color: var(--success) !important; }
-        .wrong { background: var(--error) !important; color: white; border-color: var(--error) !important; }
-        #explanation { display: none; margin-top: 15px; padding: 12px; background: #fff3cd; border-radius: 8px; font-size: 0.9em; color: #856404; line-height: 1.4; }
-        #next-btn { background: var(--warning); color: white; border: none; font-weight: bold; margin-top: 15px; display: none; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .bubble { background: #e1f5fe; padding: 15px; border-radius: 15px; margin-bottom: 20px; font-size: 1.1em; border-left: 5px solid #039be5; }
+        .btn { display: block; width: 100%; padding: 15px; margin: 8px 0; border: none; border-radius: 10px; background: #fff; border: 2px solid #ddd; cursor: pointer; text-align: left; transition: 0.2s; }
+        .btn:hover:not(:disabled) { background: #f5f5f5; }
+        .correct { background: #c8e6c9 !important; border-color: #4caf50 !important; }
+        .wrong { background: #ffcdd2 !important; border-color: #f44336 !important; }
+        #next { display: none; width: 100%; padding: 15px; background: #ffa000; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <h3>🇫🇷 Jornada Francês A1</h3>
-    <div class="progress-bar"><div id="fill" class="fill"></div></div>
-    
-    <div id="game-ui">
-        <div class="char-bubble" id="pergunta">Carregando...</div>
-        <div id="choices"></div>
-        <div id="explanation"></div>
-        <button id="next-btn" onclick="proximaMissao()">Continuar ➔</button>
+<div class="card">
+    <div id="game">
+        <div class="bubble" id="pergunta">Carregando...</div>
+        <div id="opcoes"></div>
+        <p id="exp" style="font-size: 0.9em; color: #555;"></p>
+        <button id="next" onclick="irParaProxima()">CONTINUAR A JORNADA ➔</button>
     </div>
 </div>
 
 <script>
-    const missoes = [
-        { q: "O protocolo inicial: Você chega na padaria às 10h. Como cumprimenta o atendente?", o: ["Salut, ça va ?", "Bonjour, Monsieur.", "Au revoir."], c: 1, exp: "O 'Bonjour' é obrigatório para abrir qualquer interação social na França." },
-        { q: "Identidade: O atendente pergunta seu nome. Como você responde?", o: ["Moi Lucas.", "Je m'appelle Lucas.", "Lucas est mon."], c: 1, exp: "Usamos 'Je m'appelle' (Eu me chamo) para se apresentar." },
-        { q: "Nacionalidade: O atendente pergunta de onde você é. Como você diz 'Eu sou brasileiro'?", o: ["Je suis brésilien.", "J'ai brésilien.", "Moi brésilien."], c: 0, exp: "'Je suis' (Eu sou) é a conjugação correta do verbo Être." },
-        { q: "Posse: Você precisa dizer que tem uma reserva. Como se diz 'Eu tenho uma reserva'?", o: ["Je suis une réservation.", "J'ai une réservation.", "Je m'appelle réservation."], c: 1, exp: "Usamos o verbo 'Avoir' (Ter) para reservas: 'J'ai'." },
-        { q: "Artigos: Você quer uma baguete (feminino). Como pede?", o: ["Un baguette, s'il vous plaît.", "Une baguette, s'il vous plaît.", "Le baguette, s'il vous plaît."], c: 1, exp: "Baguette é feminino, logo usa-se 'Une'." },
-        { q: "Polidez: Em vez de 'Je veux' (Eu quero), o que você deve usar para ser educado?", o: ["Je voudrais...", "Je demande...", "Je donne..."], c: 0, exp: "'Je voudrais' (Eu gostaria de) é a chave da cortesia francesa." },
-        { q: "Localização: Como perguntar 'Onde fica a estação'?", o: ["Où est la gare ?", "La gare est où ?", "Je suis la gare ?"], c: 0, exp: "'Où est...?' é a estrutura padrão para localização." },
-        { q: "Negativa: Como dizer 'Não, obrigado'?", o: ["Non, pardon.", "Non, merci.", "Non, s'il vous plaît."], c: 1, exp: "Simples e direto, sempre acompanhado de 'merci'." },
-        { q: "Preço: Como perguntar 'Quanto custa?'", o: ["C'est combien ?", "C'est quel prix ?", "Combien est ?"], c: 0, exp: "'C'est combien?' é a forma mais comum de perguntar preços." },
-        { q: "Síntese: Como se despedir educadamente?", o: ["Salut, ciao.", "Au revoir, bonne journée !", "Bonsoir, merci."], c: 1, exp: "'Bonne journée' (Tenha um bom dia) é a forma mais gentil de encerrar." }
+    const missao = [
+        { q: "Na França, cumprimentar não é apenas ser gentil, é uma senha. Qual é a 'senha' que abre todas as portas antes de qualquer pedido?", o: ["Pardon", "Bonjour", "S'il vous plaît"], c: 1, e: "O 'Bonjour' reconhece que o outro é um ser humano antes de ser um atendente." },
+        { q: "Você chegou na padaria às 19h. O 'Bonjour' soa estranho agora. Como você ajusta seu radar noturno?", o: ["Bonne nuit", "Bonsoir", "Salut"], c: 1, e: "Bonsoir é usado a partir do fim da tarde para mostrar que você respeita o ciclo do dia." },
+        { q: "Você conheceu um estudante na fila da faculdade. Ele tem sua idade. Qual o nível de senha ideal?", o: ["Bonjour, Monsieur", "Salut !", "Pardon"], c: 1, e: "Salut! é perfeito para pares, amigos e pessoas informais. O 'Bonjour' seria formal demais aqui." }
     ];
 
-    let indice = 0;
+    let i = 0;
 
-    function renderizar() {
-        const m = missoes[indice];
-        // Atualiza progresso
-        document.getElementById('fill').style.width = ((indice / missoes.length) * 100) + "%";
+    function carregarMissao() {
+        const m = missao[i];
         document.getElementById('pergunta').innerText = m.q;
-        document.getElementById('explanation').style.display = 'none';
-        document.getElementById('next-btn').style.display = 'none';
-        
-        const choices = document.getElementById('choices');
-        choices.innerHTML = '';
-        
-        m.o.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.innerText = opt;
-            btn.onclick = function() { verificar(i, btn); };
-            choices.appendChild(btn);
+        document.getElementById('opcoes').innerHTML = '';
+        document.getElementById('exp').innerText = '';
+        document.getElementById('next').style.display = 'none';
+
+        m.o.forEach((txt, idx) => {
+            const b = document.createElement('button');
+            b.className = 'btn';
+            b.innerText = txt;
+            b.onclick = () => checar(idx, b);
+            document.getElementById('opcoes').appendChild(b);
         });
     }
 
-    function verificar(idx, btn) {
-        const m = missoes[indice];
-        const todosBtns = document.querySelectorAll('#choices button');
-        todosBtns.forEach(b => b.disabled = true);
-        
-        if (idx === m.c) {
+    function checar(idx, btn) {
+        const btns = document.querySelectorAll('.btn');
+        btns.forEach(b => b.disabled = true);
+        if(idx === missao[i].c) {
             btn.classList.add('correct');
         } else {
             btn.classList.add('wrong');
-            // Revela a correta
-            todosBtns[m.c].classList.add('correct');
+            btns[missao[i].c].classList.add('correct');
         }
-        
-        document.getElementById('explanation').innerText = "💡 " + m.exp;
-        document.getElementById('explanation').style.display = 'block';
-        document.getElementById('next-btn').style.display = 'block';
+        document.getElementById('exp').innerText = "💡 " + missao[i].e;
+        document.getElementById('next').style.display = 'block';
     }
 
-    function proximaMissao() {
-        indice++;
-        if (indice < missoes.length) {
-            renderizar();
+    function irParaProxima() {
+        i++;
+        if(i < missao.length) {
+            carregarMissao();
         } else {
-            document.getElementById('game-ui').innerHTML = 
-                "<h2>🎉 Nível 1 Completo!</h2><p>Você dominou a base do francês. Continue praticando!</p>" +
-                "<button onclick='location.reload()'>Reiniciar</button>";
+            document.getElementById('game').innerHTML = "<h2>🎉 Você destravou os cumprimentos!</h2><p>Agora você sabe quando ser formal ou informal.</p>";
         }
     }
 
-    // Inicia o jogo
-    renderizar();
+    // Inicialização segura
+    document.addEventListener('DOMContentLoaded', carregarMissao);
 </script>
 </body>
 </html>

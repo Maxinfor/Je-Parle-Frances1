@@ -2,77 +2,69 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa | Elite System</title>
+    <title>Jornada Francesa | Elite Medals</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@600&display=swap');
         
         :root { 
             --bg: #050b1a; 
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --neon: #00f2fe; 
-            /* Gradientes de Metal */
-            --bronze-grad: linear-gradient(135deg, #d2691e, #8b4513);
-            --prata-grad: linear-gradient(135deg, #e0e0e0, #a0a0a0);
-            --ouro-grad: linear-gradient(135deg, #ffd700, #b8860b);
+            --gold: #FFD700; --silver: #C0C0C0; --bronze: #CD7F32;
         }
 
-        body { 
-            background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; 
-            display: flex; justify-content: center; padding: 40px 20px; min-height: 100vh; margin: 0; 
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; display: flex; justify-content: center; padding: 40px 20px; min-height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 800px; }
+        
+        /* Medalhas Visuais */
+        .medal-case { display: flex; justify-content: space-around; background: rgba(255,255,255,0.05); padding: 40px; border-radius: 30px; margin-bottom: 40px; border: 2px solid #333; }
+        .medal { 
+            width: 100px; height: 100px; border-radius: 50%; border: 6px solid #444; 
+            display: flex; align-items: center; justify-content: center; font-size: 2em;
+            background: #222; transition: 0.5s; box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .container { width: 100%; max-width: 700px; }
-        
-        /* Medalhas */
-        .badge-panel { display: flex; justify-content: space-around; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 25px; border: 1px solid #333; margin-bottom: 30px; }
-        .badge { font-size: 3.5em; filter: grayscale(1) opacity(0.2); transition: 0.6s; cursor: help; }
-        
-        .badge.bronze { filter: grayscale(0); background: var(--bronze-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 10px #cd7f32); }
-        .badge.prata { filter: grayscale(0); background: var(--prata-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 10px #c0c0c0); }
-        .badge.ouro { filter: grayscale(0); background: var(--ouro-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; drop-shadow(0 0 15px #ffd700); transform: scale(1.1); }
+        .medal.bronze { border-color: var(--bronze); background: var(--bronze); color: #fff; }
+        .medal.prata { border-color: var(--silver); background: var(--silver); color: #000; }
+        .medal.ouro { border-color: var(--gold); background: var(--gold); color: #000; box-shadow: 0 0 30px var(--gold); }
 
-        .card { background: var(--card-bg); padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(15px); }
-        h2 { font-family: 'Orbitron', sans-serif; text-align: center; font-size: 2em; margin-bottom: 30px; color: var(--neon); }
-        
-        .btn { display: block; width: 100%; padding: 22px; margin: 15px 0; background: rgba(255,255,255,0.05); border: 2px solid #444; color: #fff; border-radius: 15px; cursor: pointer; font-size: 1.2em; font-weight: 600; transition: 0.3s; }
-        .btn:hover { border-color: var(--neon); background: rgba(0,242,254,0.1); transform: translateY(-2px); }
-        .stats { font-size: 1.1em; color: #aaa; text-align: center; margin-bottom: 20px; }
+        .card { background: rgba(255,255,255,0.08); padding: 60px; border-radius: 40px; backdrop-filter: blur(15px); }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 2.5em; text-align: center; color: #00f2fe; margin-bottom: 30px; }
+        p { font-size: 1.8em; text-align: center; margin-bottom: 40px; font-weight: 600; }
+        .btn { display: block; width: 100%; padding: 30px; margin: 20px 0; background: #1a2235; border: 3px solid #444; color: #fff; border-radius: 20px; cursor: pointer; font-size: 1.5em; font-weight: 700; transition: 0.3s; }
+        .btn:hover { border-color: #00f2fe; background: rgba(0,242,254,0.1); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="badge-panel">
-        <div class="badge" id="b-gramatica">🏅</div>
-        <div class="badge" id="b-conv">🏅</div>
-        <div class="badge" id="b-cultura">🏅</div>
+    <div class="medal-case">
+        <div class="medal" id="m-gramatica">G</div>
+        <div class="medal" id="m-conv">C</div>
+        <div class="medal" id="m-cultura">A</div>
     </div>
 
     <div class="card">
-        <h2 id="titulo">Selecione o Módulo</h2>
-        <div id="stats" class="stats"></div>
+        <h1 id="titulo">Selecione o Treino</h1>
         <div id="game-area">
-            <button class="btn" onclick="iniciar('gramatica')">Gramática Francesa (A2)</button>
-            <button class="btn" onclick="iniciar('conv')">Conversação Fluida (A2)</button>
-            <button class="btn" onclick="iniciar('cultura')">Imersão Cultural (Quiz)</button>
+            <button class="btn" onclick="iniciar('gramatica')">Gramática (A2)</button>
+            <button class="btn" onclick="iniciar('conv')">Conversação (A2)</button>
+            <button class="btn" onclick="iniciar('cultura')">Cultura (Quiz)</button>
         </div>
     </div>
 </div>
 
 <script>
     const db = {
-        gramatica: [{q: "Eu comi (manger - Passé Composé)", o: ["J'ai mangé", "Je mangeais"], c: 0}, {q: "Nós vamos falar (Futur Proche)", o: ["Nous allons parler", "Nous parlerons"], c: 0}],
-        conv: [{q: "A: Est-ce que tu aimes Paris?", o: ["Oui, j'adore!", "Le chat dort."], c: 0}, {q: "A: Quel âge as-tu?", o: ["J'ai 25 ans", "Je suis 25 ans"], c: 0}],
-        cultura: [{q: "Torre Eiffel fica em:", o: ["Paris", "Lyon"], c: 0}, {q: "O Louvre é um:", o: ["Museu", "Teatro"], c: 0}]
+        gramatica: [{q: "Como dizer 'eu comi'?", o: ["J'ai mangé", "Je mangeais"], c: 0}],
+        conv: [{q: "Como responder a 'Tu veux un café'?", o: ["Oui, avec plaisir!", "Non, je déteste."], c: 0}],
+        cultura: [{q: "Onde fica a Torre Eiffel?", o: ["Paris", "Lyon"], c: 0}]
     };
 
     let prog = { gramatica: {pts: 0, nivel: 0}, conv: {pts: 0, nivel: 0}, cultura: {pts: 0, nivel: 0} };
-    const classes = ['', 'bronze', 'prata', 'ouro'];
+    const tiers = ['', 'bronze', 'prata', 'ouro'];
 
     function iniciar(tipo) {
-        let q = db[tipo][Math.floor(Math.random() * db[tipo].length)];
-        document.getElementById('stats').innerText = `Progresso: ${prog[tipo].pts}/5 para a próxima insígnia`;
+        let q = db[tipo][0]; // Exemplo simplificado
         document.getElementById('titulo').innerText = tipo.toUpperCase();
-        document.getElementById('game-area').innerHTML = `<p style="font-size:1.4em; text-align:center">${q.q}</p>` + 
+        document.getElementById('game-area').innerHTML = `<p>${q.q}</p>` + 
             q.o.map((txt, i) => `<button class='btn' onclick='verificar("${tipo}", ${i}, ${q.c})'>${txt}</button>`).join('');
     }
 
@@ -82,12 +74,10 @@
             if(prog[tipo].pts >= 5 && prog[tipo].nivel < 3) {
                 prog[tipo].nivel++;
                 prog[tipo].pts = 0;
-                document.getElementById('b-' + tipo).className = 'badge ' + classes[prog[tipo].nivel];
-                alert("Mestria " + classes[prog[tipo].nivel].toUpperCase() + " alcançada!");
+                document.getElementById('m-' + tipo).className = 'medal ' + tiers[prog[tipo].nivel];
             }
-            iniciar(tipo);
-        } else {
-            alert("Incorreto. Foco no objetivo!");
+            alert("Correto! Progresso: " + prog[tipo].pts + "/5 para a próxima medalha.");
+            window.location.reload();
         }
     }
 </script>

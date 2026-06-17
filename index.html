@@ -2,34 +2,219 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Jornada Francesa: Níveis 1 a 5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jornada Francesa: Níveis 1 a 5 (Edição Futurista)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h2 { color: #2c3e50; margin-top: 0; }
-        .teoria { background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 5px solid #2196f3; margin-bottom: 15px; }
-        .exemplo { background: #fff3e0; padding: 15px; border-radius: 8px; border-left: 5px solid #ff9800; margin-bottom: 15px; font-style: italic; }
-        .btn { display: block; width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; text-align: left; background: white; transition: 0.2s; }
-        .btn:hover:not(:disabled) { background: #f0f0f0; }
-        .correct { background: #c8e6c9 !important; border-color: #4caf50 !important; }
-        .wrong { background: #ffcdd2 !important; border-color: #f44336 !important; }
-        #next { display: none; margin-top: 20px; width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        /* RESET E FUNDO TECH DEEP */
+        :root {
+            --bg-deep: #0a1021;
+            --primary-neon: #00f2fe;
+            --secondary-neon: #ff0055;
+            --text-main: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --correct-glow: #0f0;
+            --wrong-glow: #f00;
+        }
+
+        body { 
+            font-family: 'Orbitron', 'Segoe UI', sans-serif; /* Fonte futurista para títulos, fallback para corpo */
+            background: var(--bg-deep); 
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(0, 242, 254, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(255, 0, 85, 0.08) 0px, transparent 50%);
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* EFEITO GLASSMORPHISM NO CARD PRINCIPAL */
+        .card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            width: 100%; 
+            max-width: 550px; 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.03); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.05);
+        }
+
+        h2#titulo { 
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            color: var(--primary-neon); 
+            margin-top: 0; 
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.7);
+            margin-bottom: 25px;
+        }
+
+        /* PAINÉIS DE TEORIA E EXEMPLO COM VISUAL TECH */
+        .panel {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panel-icon {
+            font-size: 1.4em;
+            margin-top: 3px;
+        }
+
+        .teoria { 
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: inset 0 0 10px rgba(0, 242, 254, 0.05);
+        }
+        .teoria .panel-icon, .teoria b { color: var(--primary-neon); text-shadow: 0 0 5px rgba(0, 242, 254, 0.5); }
+
+        .exemplo { 
+            border-color: rgba(255, 165, 0, 0.3);
+            box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.05);
+            font-style: italic;
+        }
+        .exemplo .panel-icon, .exemplo strong { color: #ffa500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.5); }
+
+        p.questao {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ccc;
+        }
+
+        /* BOTÕES DE OPÇÃO: TRANSPARENTES COM HOVER NEON */
+        .btn { 
+            font-family: 'Segoe UI', sans-serif;
+            display: block; 
+            width: 100%; 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: transparent;
+            color: #eee;
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            border-radius: 10px; 
+            cursor: pointer; 
+            text-align: left; 
+            font-size: 1em;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover:not(:disabled) { 
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--primary-neon);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+            transform: translateX(5px);
+        }
+
+        /* ESTADOS CORRECT/WRONG COM BRILHO INTENSO */
+        .correct { 
+            background: rgba(0, 255, 0, 0.05) !important; 
+            border-color: #0f0 !important; 
+            color: #fff !important;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.4) !important;
+        }
+        .correct::after {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: 15px; color: #0f0;
+        }
+
+        .wrong { 
+            background: rgba(255, 0, 0, 0.05) !important; 
+            border-color: #f00 !important; 
+            color: #fff !important;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4) !important;
+        }
+        .wrong::after {
+            content: '\f00d'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: 15px; color: #f00;
+        }
+
+        /* BOTÃO PRÓXIMO: O PONTO FOCAL TECH */
+        #next { 
+            font-family: 'Orbitron', sans-serif;
+            display: none; 
+            margin-top: 30px; 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+            position: relative;
+        }
+
+        #next:hover {
+            box-shadow: 0 8px 25px rgba(0, 114, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        #next:active { transform: translateY(1px); }
+
+        /* TELA FINAL TECH */
+        .final-screen {
+            text-align: center;
+            padding: 20px;
+        }
+        .final-screen h2 {
+            color: var(--secondary-neon);
+            text-shadow: 0 0 15px rgba(255, 0, 85, 0.7);
+            font-size: 2.2em;
+        }
+        .final-icon {
+            font-size: 4em;
+            color: var(--primary-neon);
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+        }
+
+        /* Importando fonte futurista Orbitron do Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
     </style>
 </head>
 <body>
 
 <div class="card" id="app">
     <div id="content">
-        <h2 id="titulo">Carregando...</h2>
+        <h2 id="titulo">Iniciando Sistema...</h2>
         <div id="corpo"></div>
     </div>
-    <button id="next" onclick="proximo()">PRÓXIMA LIÇÃO ➔</button>
+    <button id="next" onclick="proximo()">PRÓXIMA FASE <i class="fas fa-arrow-right"></i></button>
 </div>
 
 <script>
     const jornada = [
         {
-            titulo: "Nível 1: A Saudação (O Protocolo)",
+            titulo: "Fase 1: O Protocolo Bonjour",
             teoria: "Gramática: O uso de <b>Bonjour</b>. Na França, o cumprimento é a senha social. Ele reconhece a dignidade do outro antes de qualquer interação.",
             exemplo: "Ao entrar em qualquer lugar, diga: 'Bonjour, Monsieur' ou 'Bonjour, Madame'.",
             perg: "Qual a forma correta de iniciar uma interação em uma loja?",
@@ -37,7 +222,7 @@
             correta: 1
         },
         {
-            titulo: "Nível 2: O Radar Noturno",
+            titulo: "Fase 2: Radar Noturno Bonsoir",
             teoria: "Gramática: Uso do <b>Bonsoir</b>. A lógica francesa divide o dia: 'Bonjour' (até o fim da tarde) e 'Bonsoir' (após as 18h).",
             exemplo: "Às 19h, você diz: 'Bonsoir, une table pour deux'.",
             perg: "Você entra em um café às 20h. O que você diz?",
@@ -45,7 +230,7 @@
             correta: 1
         },
         {
-            titulo: "Nível 3: Polidez com 'S'il vous plaît'",
+            titulo: "Fase 3: O Código S'il vous plaît",
             teoria: "Gramática: A expressão <b>s'il vous plaît</b> (se lhe agrada). É a chave gramatical para transformar uma exigência em um pedido educado.",
             exemplo: "Em vez de 'Um café', diga: 'Un café, s'il vous plaît'.",
             perg: "Como pedir água de forma gramaticalmente educada?",
@@ -53,7 +238,7 @@
             correta: 1
         },
         {
-            titulo: "Nível 4: Pronome de Respeito 'Vous'",
+            titulo: "Fase 4: Vetor de Respeito 'Vous'",
             teoria: "Gramática: Uso do <b>Vous</b> (o senhor/a senhora). É a ferramenta de distância segura para estranhos e ambientes formais.",
             exemplo: "Perguntar onde fica algo: 'Excusez-moi, où est le métro ?'",
             perg: "Por que usamos o 'Vous' com um estranho?",
@@ -61,7 +246,7 @@
             correta: 1
         },
         {
-            titulo: "Nível 5: O Verbo 'Pouvoir'",
+            titulo: "Fase 5: Módulo Pouvoir",
             teoria: "Gramática: O verbo <b>Pouvoir</b> (poder) com <b>Vous</b>. Estrutura: <b>Pouvez-vous + [verbo]?</b> Isso torna sua solicitação um pedido de auxílio.",
             exemplo: "Para pedir um horário: 'Pouvez-vous me donner un rendez-vous ?'",
             perg: "Como pedir ajuda para verificar a agenda de forma polida?",
@@ -76,9 +261,15 @@
         const m = jornada[i];
         document.getElementById('titulo').innerText = m.titulo;
         document.getElementById('corpo').innerHTML = `
-            <div class="teoria">${m.teoria}</div>
-            <div class="exemplo"><strong>Exemplo:</strong> ${m.exemplo}</div>
-            <p><strong>Questão:</strong> ${m.perg}</p>
+            <div class="panel teoria">
+                <i class="fas fa-brain panel-icon"></i>
+                <div>${m.teoria}</div>
+            </div>
+            <div class="panel exemplo">
+                <i class="fas fa-comment-dots panel-icon"></i>
+                <div><strong>Exemplo:</strong> ${m.exemplo}</div>
+            </div>
+            <p class="questao"><strong><i class="fas fa-question-circle"></i> Questão:</strong> ${m.perg}</p>
             <div id="opcoes"></div>
         `;
         document.getElementById('next').style.display = 'none';
@@ -86,7 +277,7 @@
         m.opc.forEach((txt, idx) => {
             const b = document.createElement('button');
             b.className = 'btn';
-            b.innerText = txt;
+            b.innerHTML = `<span class="opt-letter">${String.fromCharCode(65 + idx)}</span> ${txt}`; // Adicionando A, B, C
             b.onclick = () => verificar(idx, b);
             document.getElementById('opcoes').appendChild(b);
         });
@@ -94,27 +285,54 @@
 
     function verificar(idx, btn) {
         const btns = document.querySelectorAll('.btn');
-        btns.forEach(b => b.disabled = true);
+        btns.forEach(b => {
+            b.disabled = true;
+            b.style.opacity = '0.5'; // Ofusca as não selecionadas
+        });
+        btn.style.opacity = '1'; // Mantém a selecionada brilhando
+
         if(idx === jornada[i].correta) {
             btn.classList.add('correct');
         } else {
             btn.classList.add('wrong');
             btns[jornada[i].correta].classList.add('correct');
+            btns[jornada[i].correta].style.opacity = '1'; // Mostra a correta também
         }
         document.getElementById('next').style.display = 'block';
     }
 
     function proximo() {
-        i++;
-        if(i < jornada.length) {
-            carregar();
-        } else {
-            document.getElementById('content').innerHTML = "<h2>🎉 Jornada Concluída!</h2><p>Você completou os 5 níveis de etiqueta e gramática francesa. Agora você possui a lógica para transitar com respeito e precisão.</p>";
-            document.getElementById('next').style.display = 'none';
-        }
+        // Pequena animação de saída
+        document.getElementById('content').style.opacity = 0;
+        document.getElementById('content').style.transform = 'translateX(-20px)';
+        
+        setTimeout(() => {
+            i++;
+            if(i < jornada.length) {
+                carregar();
+                // Animação de entrada
+                document.getElementById('content').style.opacity = 1;
+                document.getElementById('content').style.transform = 'translateX(0)';
+            } else {
+                document.getElementById('content').innerHTML = `
+                    <div class="final-screen">
+                        <i class="fas fa-user-astronaut final-icon"></i>
+                        <h2>🎉 Protocolo Concluído!</h2>
+                        <p>Você completou os 5 níveis de etiqueta e gramática francesa.<br>Sua matriz lógica foi atualizada para transitar com respeito e precisão.</p>
+                    </div>
+                `;
+                document.getElementById('content').style.opacity = 1;
+                document.getElementById('content').style.transform = 'translateX(0)';
+                document.getElementById('next').style.display = 'none';
+            }
+        }, 300); // Tempo da animação
     }
 
-    document.addEventListener('DOMContentLoaded', carregar);
+    // Inicialização do sistema
+    setTimeout(carregar, 1000); // Delay simulando 'carregamento de sistema'
+
+    // Ajuste de estilo inicial para animação
+    document.getElementById('content').style.transition = 'all 0.3s ease';
 </script>
 </body>
 </html>

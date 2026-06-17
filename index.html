@@ -2,76 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite System | Jornada Francesa</title>
+    <title>Jornada Francesa | Elite System</title>
     <style>
-        /* CSS focado em performance e legibilidade */
-        :root { --bg: #050b1a; --primary: #00f2fe; --bronze: #CD7F32; --silver: #C0C0C0; --gold: #FFD700; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; min-height: 100vh; margin: 0; }
-        
-        .container { width: 100%; max-width: 500px; }
-        
-        /* Estilo das Medalhas */
-        .medal-case { display: flex; justify-content: space-around; padding: 20px 0; }
-        .medal { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #333; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-        .active-bronze { border-color: var(--bronze); box-shadow: 0 0 10px var(--bronze); }
-        .active-silver { border-color: var(--silver); box-shadow: 0 0 10px var(--silver); }
-        .active-gold { border-color: var(--gold); box-shadow: 0 0 10px var(--gold); }
-
-        /* Card de Jogo */
-        .card { background: #0a1128; padding: 30px; border-radius: 20px; border: 1px solid #1a2235; }
-        .btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #111; border: 2px solid #333; color: white; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-        .btn:hover { border-color: var(--primary); }
+        body { background: #050b1a; color: #fff; font-family: sans-serif; text-align: center; padding: 20px; }
+        .item-display { font-size: 5em; margin: 20px 0; padding: 20px; border: 2px solid #333; border-radius: 20px; }
+        .btn { display: block; width: 100%; max-width: 300px; margin: 10px auto; padding: 15px; background: #1a2235; color: white; border: none; border-radius: 10px; cursor: pointer; }
+        .progress-bar { width: 100%; max-width: 300px; height: 10px; background: #222; margin: 10px auto; border-radius: 5px; }
+        #fill { height: 100%; background: #00f2fe; width: 0%; transition: 0.3s; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="medal-case" id="medal-board">
-        <div class="medal" id="medal-gramatica">G</div>
-        <div class="medal" id="medal-conv">C</div>
-        <div class="medal" id="medal-cultura">A</div>
+    <div id="status-container">
+        <h2 id="fase-nome">Medalha</h2>
+        <div class="item-display" id="icone">🏅</div>
+        <p id="nivel-txt">Nível: Bronze</p>
+        <div class="progress-bar"><div id="fill"></div></div>
     </div>
 
-    <div class="card" id="app">
-        <h2 id="titulo">Bem-vindo ao Elite System</h2>
-        <div id="content">
-            <button class="btn" onclick="render('gramatica')">Gramática</button>
-            <button class="btn" onclick="render('conv')">Conversação</button>
-            <button class="btn" onclick="render('cultura')">Cultura</button>
-        </div>
+    <div id="game-area">
+        <p id="pergunta">Carregando...</p>
+        <div id="opcoes"></div>
     </div>
-</div>
 
 <script>
-    // Banco de dados centralizado
-    const db = {
-        gramatica: [{q: "Passé Composé de 'manger' (Eu)", o: ["J'ai mangé", "Je mangeais"], c: 0}],
-        conv: [{q: "Como se diz 'quantos anos você tem'?", o: ["Quel âge as-tu?", "Comment tu as?"], c: 0}],
-        cultura: [{q: "Capital da França?", o: ["Paris", "Lyon"], c: 0}]
-    };
+    const trilha = [
+        { nome: "Medalha", icon: "🏅", max: 5 },
+        { nome: "Xícara", icon: "☕", max: 5 },
+        { nome: "Café Francês", icon: "🥐☕", max: 10 },
+        { nome: "Croissant", icon: "🥐", max: 5 },
+        { nome: "Garfo", icon: "🍴", max: 5 },
+        { nome: "Faca", icon: "🔪", max: 5 }
+    ];
 
-    let progresso = JSON.parse(localStorage.getItem('es_prog')) || { gramatica: 0, conv: 0, cultura: 0 };
+    let user = JSON.parse(localStorage.getItem('es_user')) || { fase: 0, nivel: 0, pts: 0 };
 
-    function render(modulo) {
-        const content = document.getElementById('content');
-        const q = db[modulo][0]; // Exemplo simples
+    function render() {
+        const f = trilha[user.fase];
+        const niveis = ["Bronze", "Prata", "Ouro"];
+        document.getElementById('fase-nome').innerText = f.nome;
+        document.getElementById('icone').innerText = f.icon;
+        document.getElementById('nivel-txt').innerText = `Nível: ${niveis[user.nivel]}`;
+        document.getElementById('fill').style.width = (user.pts / f.max * 100) + "%";
         
-        document.getElementById('titulo').innerText = modulo.toUpperCase();
-        content.innerHTML = `<p>${q.q}</p>` + 
-            q.o.map((txt, i) => `<button class="btn" onclick="check('${modulo}', ${i}, ${q.c})">${txt}</button>`).join('');
+        // Simulação de pergunta (substitua pela sua lógica de banco de dados)
+        document.getElementById('pergunta').innerText = "Traduza: 'Bonjour'";
+        document.getElementById('opcoes').innerHTML = `
+            <button class="btn" onclick="check(0)">Olá</button>
+            <button class="btn" onclick="check(1)">Adeus</button>
+        `;
     }
 
-    function check(modulo, sel, corr) {
-        if(sel === corr) {
-            progresso[modulo]++;
-            localStorage.setItem('es_prog', JSON.stringify(progresso));
-            alert("Correto!");
-            render(modulo);
+    function check(res) {
+        if(res === 0) { // Correto
+            user.pts++;
+            if(user.pts >= trilha[user.fase].max) {
+                user.nivel++;
+                user.pts = 0;
+                if(user.nivel > 2) { user.fase++; user.nivel = 0; }
+                alert("Parabéns! Você evoluiu!");
+            }
+            localStorage.setItem('es_user', JSON.stringify(user));
+            render();
         } else {
-            alert("Errado! Tente de novo.");
+            alert("Errou! Foco no sucesso!");
         }
     }
+
+    render();
 </script>
 </body>
 </html>

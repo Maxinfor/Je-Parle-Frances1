@@ -4,73 +4,63 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Efeito de brilho neon contínuo */
-        .neon-glow { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
-        
-        /* Animação de pulso para botões */
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.6); }
-            100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.2); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
-        
-        body { background: radial-gradient(circle at center, #0f172a 0%, #000 100%); }
+        .cyber-card { background: rgba(20, 20, 25, 0.8); border: 1px solid rgba(6, 182, 212, 0.2); backdrop-filter: blur(10px); }
+        .glow-gold { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); color: #FFD700; }
+        .glow-silver { filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.6)); color: #C0C0C0; }
+        .glow-bronze { filter: drop-shadow(0 0 10px rgba(205, 127, 50, 0.6)); color: #CD7F32; }
     </style>
 </head>
-<body class="text-white min-h-screen flex items-center justify-center font-mono">
+<body class="bg-[#050505] text-white min-h-screen flex items-center justify-center font-mono p-4">
 
-    <div id="app" class="w-full max-w-sm p-8 bg-zinc-900/50 rounded-3xl border border-cyan-900/50 backdrop-blur-xl neon-glow">
-        <!-- Conteúdo carregado aqui -->
+    <div id="app" class="w-full max-w-sm p-8 rounded-3xl border border-cyan-900/50 shadow-[0_0_50px_rgba(6,182,212,0.1)] cyber-card">
+        <!-- Conteúdo dinâmico -->
     </div>
 
     <script>
-        // Dados de exemplo
-        const niveis = [{
-            titulo: "SISTEMA A1: ACESSO",
-            questoes: [
-                { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" }
-            ]
-        }];
+        // Banco de dados com seus itens de recompensa
+        const recompensas = [
+            { nome: "CROISSANT DE OURO", icon: "🥐", style: "glow-gold" },
+            { nome: "CARRO DE OURO", icon: "🏎️", style: "glow-gold" },
+            { nome: "TORRE EIFFEL DE OURO", icon: "🗼", style: "glow-gold" },
+            { nome: "CROISSANT DE PRATA", icon: "🥐", style: "glow-silver" },
+            { nome: "CARRO DE PRATA", icon: "🏎️", style: "glow-silver" },
+            { nome: "TORRE EIFFEL DE PRATA", icon: "🗼", style: "glow-silver" },
+            { nome: "CROISSANT DE BRONZE", icon: "🥐", style: "glow-bronze" },
+            { nome: "CARRO DE BRONZE", icon: "🏎️", style: "glow-bronze" },
+            { nome: "TORRE EIFFEL DE OURO", icon: "🗼", style: "glow-gold" }
+        ];
 
-        let nivelIdx = 0, questaoIdx = 0;
+        let nivelIdx = 0;
 
-        function carregar() {
-            const q = niveis[nivelIdx].questoes[questaoIdx];
+        function mostrarRecompensa() {
+            const item = recompensas[nivelIdx];
             const app = document.getElementById('app');
             
             app.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <span class="text-[10px] text-cyan-400 tracking-[0.2em]">STATUS: ONLINE</span>
-                    <span class="text-[10px] text-zinc-500">Q ${questaoIdx + 1}/10</span>
-                </div>
-                <h1 class="text-xl font-bold mb-8 text-cyan-100 border-l-2 border-cyan-500 pl-4">
-                    ${q.p}
-                </h1>
-                <div class="flex flex-col gap-4">
-                    ${q.op.map(o => `
-                        <button onclick="verificar('${o}')" class="w-full p-4 bg-zinc-950 border border-cyan-500/30 rounded-xl hover:border-cyan-400 transition-all duration-300 hover:scale-[1.02] active:scale-95 text-left text-sm animate-pulse-glow">
-                            <span class="text-cyan-500 mr-2">></span> ${o}
-                        </button>
-                    `).join('')}
+                <div class="text-center">
+                    <h2 class="text-cyan-400 text-xs tracking-widest mb-4">RECOMPENSA DECODIFICADA</h2>
+                    <div class="text-8xl my-8 ${item.style} animate-pulse">
+                        ${item.icon}
+                    </div>
+                    <h1 class="text-xl font-bold mb-8">${item.nome}</h1>
+                    <button onclick="proximoNivel()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(8,145,178,0.4)]">
+                        COLETAR DADOS
+                    </button>
                 </div>
             `;
         }
 
-        function verificar(resp) {
-            if (resp === niveis[nivelIdx].questoes[questaoIdx].c) {
-                // Efeito visual de sucesso
-                document.body.classList.add('bg-green-900/20');
-                setTimeout(() => document.body.classList.remove('bg-green-900/20'), 300);
-                
-                questaoIdx++;
-                carregar();
-            } else {
-                alert("ACCESS DENIED: Erro de processamento.");
+        function proximoNivel() {
+            nivelIdx++;
+            if (nivelIdx < recompensas.length) {
+                // Aqui você chamaria sua função carregar() da fase
+                document.getElementById('app').innerHTML = `<p class="text-center">Iniciando Nível ${nivelIdx + 1}...</p>`;
+                setTimeout(() => location.reload(), 1000); // Exemplo de reinício
             }
         }
 
-        carregar();
+        // Chamada de teste para ver a recompensa
+        mostrarRecompensa();
     </script>
 </body>
 </html>

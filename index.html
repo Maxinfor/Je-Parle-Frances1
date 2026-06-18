@@ -2,89 +2,56 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada A1 Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .neon-border { border: 1px solid #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
+        .cyber-btn { background: linear-gradient(90deg, #0f172a, #1e293b); border: 1px solid #334155; }
+        .cyber-btn:hover { border-color: #06b6d4; box-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+    </style>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center">
-    <div id="app" class="w-full max-w-md p-6 bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-800">
-        <!-- Conteúdo carregado aqui -->
-    </div>
+<body class="bg-[#050505] text-white min-h-screen flex items-center justify-center font-mono">
+    
+    <div id="app" class="w-full max-w-sm p-8 bg-zinc-950/80 rounded-2xl border border-zinc-800 backdrop-blur-md shadow-[0_0_50px_rgba(6,182,212,0.1)]">
+        </div>
 
     <script>
-        // Banco de dados: Apenas preencha os arrays 'questoes' com 10 itens cada
         const niveis = [
             {
-                titulo: "Nível 1: Verbo Être",
-                premio: "https://cdn-icons-png.flaticon.com/512/179/179249.png",
+                titulo: "NÍVEL 1 - SYNC ÊTRE",
                 questoes: [
-                    { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" },
-                    { p: "Você está em Paris?", op: ["Tu es à Paris", "Tu suis à Paris"], c: "Tu es à Paris" },
-                    { p: "Ele é francês?", op: ["Il est français", "Il suis français"], c: "Il est français" },
-                    { p: "Nós estamos aqui?", op: ["Nous sommes ici", "Nous sommes ici"], c: "Nous sommes ici" },
-                    { p: "Vocês são amigos?", op: ["Vous êtes amis", "Vous sommes amis"], c: "Vous êtes amis" },
-                    { p: "Eles são irmãos?", op: ["Ils sont frères", "Ils êtes frères"], c: "Ils sont frères" },
-                    { p: "Eu sou estudante?", op: ["Je suis étudiant", "Je es étudiant"], c: "Je suis étudiant" },
-                    { p: "Ela está cansada?", op: ["Elle est fatiguée", "Elle suis fatiguée"], c: "Elle est fatiguée" },
-                    { p: "Nós somos brasileiros?", op: ["Nous sommes brésiliens", "Nous êtes brésiliens"], c: "Nous sommes brésiliens" },
-                    { p: "Você é o professor?", op: ["Tu es le professeur", "Tu suis le professeur"], c: "Tu es le professeur" }
+                    { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" }
                 ]
-            },
-            {
-                titulo: "Nível 2: Verbo Avoir",
-                premio: "https://cdn-icons-png.flaticon.com/512/2909/2909871.png",
-                questoes: Array(10).fill({ p: "Como dizer 'Eu tenho 20 anos'?", op: ["J'ai 20 ans", "Je suis 20 ans"], c: "J'ai 20 ans" })
             }
-            // Você pode adicionar os outros 11 níveis seguindo este formato
         ];
 
         let nivelIdx = 0, questaoIdx = 0;
 
         function carregar() {
-            const nivel = niveis[nivelIdx];
-            if (!nivel) return finalJogo();
-            
-            const q = nivel.questoes[questaoIdx];
+            const q = niveis[nivelIdx].questoes[questaoIdx];
             const app = document.getElementById('app');
             
             app.innerHTML = `
-                <div class="text-blue-500 font-bold mb-2">NÍVEL ${nivelIdx + 1} - QUESTÃO ${questaoIdx + 1}/10</div>
-                <h1 class="text-2xl font-bold mb-6">${q.p}</h1>
-                <div class="flex flex-col gap-3">
-                    ${q.op.map(o => `<button onclick="verificar('${o}')" class="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition">${o}</button>`).join('')}
+                <div class="text-[10px] tracking-widest text-cyan-400 mb-4 uppercase">System Status: Active</div>
+                <div class="text-cyan-500 font-bold mb-4 text-sm">${niveis[nivelIdx].titulo} - Q ${questaoIdx + 1}/10</div>
+                <h1 class="text-xl font-bold mb-8 border-l-4 border-cyan-500 pl-4">${q.p}</h1>
+                <div class="flex flex-col gap-4">
+                    ${q.op.map(o => `
+                        <button onclick="verificar('${o}')" class="cyber-btn p-4 rounded-lg transition-all text-left flex items-center gap-3">
+                            <span class="w-6 h-6 border border-cyan-500 rounded flex items-center justify-center text-[10px]">✔</span>
+                            ${o}
+                        </button>
+                    `).join('')}
                 </div>
             `;
         }
 
         function verificar(resp) {
-            const nivel = niveis[nivelIdx];
-            if (resp === nivel.questoes[questaoIdx].c) {
+            if (resp === niveis[nivelIdx].questoes[questaoIdx].c) {
+                alert("SYSTÉME: Corret");
                 questaoIdx++;
-                if (questaoIdx >= 10) {
-                    mostrarRecompensa();
-                } else {
-                    carregar();
-                }
-            } else {
-                alert("Errou! A resposta correta era: " + nivel.questoes[questaoIdx].c);
-            }
-        }
-
-        function mostrarRecompensa() {
-            document.getElementById('app').innerHTML = `
-                <h1 class="text-3xl font-bold text-center mb-6">Nível Concluído!</h1>
-                <img src="${niveis[nivelIdx].premio}" class="w-32 mx-auto mb-6 animate-bounce">
-                <button onclick="proximoNivel()" class="w-full py-4 bg-blue-600 rounded-xl font-bold">COLETAR E SEGUIR</button>
-            `;
-        }
-
-        function proximoNivel() {
-            nivelIdx++;
-            questaoIdx = 0;
-            if (nivelIdx < niveis.length) {
                 carregar();
             } else {
-                document.getElementById('app').innerHTML = `<h1 class="text-3xl font-bold text-center">Jornada Concluída!</h1>`;
+                alert("ERROR: Access Denied");
             }
         }
 

@@ -4,25 +4,34 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .neon-border { border: 1px solid #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.3); }
-        .cyber-btn { background: linear-gradient(90deg, #0f172a, #1e293b); border: 1px solid #334155; }
-        .cyber-btn:hover { border-color: #06b6d4; box-shadow: 0 0 10px rgba(6, 182, 212, 0.5); }
+        /* Efeito de brilho neon contínuo */
+        .neon-glow { box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+        
+        /* Animação de pulso para botões */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.2); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 2s infinite; }
+        
+        body { background: radial-gradient(circle at center, #0f172a 0%, #000 100%); }
     </style>
 </head>
-<body class="bg-[#050505] text-white min-h-screen flex items-center justify-center font-mono">
-    
-    <div id="app" class="w-full max-w-sm p-8 bg-zinc-950/80 rounded-2xl border border-zinc-800 backdrop-blur-md shadow-[0_0_50px_rgba(6,182,212,0.1)]">
-        </div>
+<body class="text-white min-h-screen flex items-center justify-center font-mono">
+
+    <div id="app" class="w-full max-w-sm p-8 bg-zinc-900/50 rounded-3xl border border-cyan-900/50 backdrop-blur-xl neon-glow">
+        <!-- Conteúdo carregado aqui -->
+    </div>
 
     <script>
-        const niveis = [
-            {
-                titulo: "NÍVEL 1 - SYNC ÊTRE",
-                questoes: [
-                    { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" }
-                ]
-            }
-        ];
+        // Dados de exemplo
+        const niveis = [{
+            titulo: "SISTEMA A1: ACESSO",
+            questoes: [
+                { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" }
+            ]
+        }];
 
         let nivelIdx = 0, questaoIdx = 0;
 
@@ -31,14 +40,17 @@
             const app = document.getElementById('app');
             
             app.innerHTML = `
-                <div class="text-[10px] tracking-widest text-cyan-400 mb-4 uppercase">System Status: Active</div>
-                <div class="text-cyan-500 font-bold mb-4 text-sm">${niveis[nivelIdx].titulo} - Q ${questaoIdx + 1}/10</div>
-                <h1 class="text-xl font-bold mb-8 border-l-4 border-cyan-500 pl-4">${q.p}</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-[10px] text-cyan-400 tracking-[0.2em]">STATUS: ONLINE</span>
+                    <span class="text-[10px] text-zinc-500">Q ${questaoIdx + 1}/10</span>
+                </div>
+                <h1 class="text-xl font-bold mb-8 text-cyan-100 border-l-2 border-cyan-500 pl-4">
+                    ${q.p}
+                </h1>
                 <div class="flex flex-col gap-4">
                     ${q.op.map(o => `
-                        <button onclick="verificar('${o}')" class="cyber-btn p-4 rounded-lg transition-all text-left flex items-center gap-3">
-                            <span class="w-6 h-6 border border-cyan-500 rounded flex items-center justify-center text-[10px]">✔</span>
-                            ${o}
+                        <button onclick="verificar('${o}')" class="w-full p-4 bg-zinc-950 border border-cyan-500/30 rounded-xl hover:border-cyan-400 transition-all duration-300 hover:scale-[1.02] active:scale-95 text-left text-sm animate-pulse-glow">
+                            <span class="text-cyan-500 mr-2">></span> ${o}
                         </button>
                     `).join('')}
                 </div>
@@ -47,11 +59,14 @@
 
         function verificar(resp) {
             if (resp === niveis[nivelIdx].questoes[questaoIdx].c) {
-                alert("SYSTÉME: Corret");
+                // Efeito visual de sucesso
+                document.body.classList.add('bg-green-900/20');
+                setTimeout(() => document.body.classList.remove('bg-green-900/20'), 300);
+                
                 questaoIdx++;
                 carregar();
             } else {
-                alert("ERROR: Access Denied");
+                alert("ACCESS DENIED: Erro de processamento.");
             }
         }
 

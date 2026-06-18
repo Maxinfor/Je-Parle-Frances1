@@ -4,63 +4,51 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .cyber-card { background: rgba(20, 20, 25, 0.8); border: 1px solid rgba(6, 182, 212, 0.2); backdrop-filter: blur(10px); }
-        .glow-gold { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); color: #FFD700; }
-        .glow-silver { filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.6)); color: #C0C0C0; }
-        .glow-bronze { filter: drop-shadow(0 0 10px rgba(205, 127, 50, 0.6)); color: #CD7F32; }
+        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .glow-gold { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); color: #FFD700; }
+        .glow-silver { filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.8)); color: #C0C0C0; }
+        .glow-bronze { filter: drop-shadow(0 0 15px rgba(205, 127, 50, 0.8)); color: #CD7F32; }
     </style>
 </head>
-<body class="bg-[#050505] text-white min-h-screen flex items-center justify-center font-mono p-4">
+<body class="bg-[#050505] text-white min-h-screen p-6 font-mono">
 
-    <div id="app" class="w-full max-w-sm p-8 rounded-3xl border border-cyan-900/50 shadow-[0_0_50px_rgba(6,182,212,0.1)] cyber-card">
-        <!-- Conteúdo dinâmico -->
+    <!-- Container da Vitrine -->
+    <div id="app" class="max-w-md mx-auto">
+        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.3em] uppercase text-sm">Inventário Elite</h2>
+        <div id="vitrine" class="grid grid-cols-3 gap-4">
+            <!-- As recompensas serão geradas aqui -->
+        </div>
     </div>
 
     <script>
-        // Banco de dados com seus itens de recompensa
         const recompensas = [
-            { nome: "CROISSANT DE OURO", icon: "🥐", style: "glow-gold" },
-            { nome: "CARRO DE OURO", icon: "🏎️", style: "glow-gold" },
-            { nome: "TORRE EIFFEL DE OURO", icon: "🗼", style: "glow-gold" },
-            { nome: "CROISSANT DE PRATA", icon: "🥐", style: "glow-silver" },
-            { nome: "CARRO DE PRATA", icon: "🏎️", style: "glow-silver" },
-            { nome: "TORRE EIFFEL DE PRATA", icon: "🗼", style: "glow-silver" },
-            { nome: "CROISSANT DE BRONZE", icon: "🥐", style: "glow-bronze" },
-            { nome: "CARRO DE BRONZE", icon: "🏎️", style: "glow-bronze" },
-            { nome: "TORRE EIFFEL DE OURO", icon: "🗼", style: "glow-gold" }
+            { nome: "Croissant de Bronze", icon: "🥐", style: "glow-bronze" },
+            { nome: "Carro de Bronze", icon: "🏎️", style: "glow-bronze" },
+            { nome: "Torre Eiffel de Bronze", icon: "🗼", style: "glow-bronze" },
+            { nome: "Croissant de Prata", icon: "🥐", style: "glow-silver" },
+            { nome: "Carro de Prata", icon: "🏎️", style: "glow-silver" },
+            { nome: "Torre Eiffel de Prata", icon: "🗼", style: "glow-silver" },
+            { nome: "Croissant de Ouro", icon: "🥐", style: "glow-gold" },
+            { nome: "Carro de Ouro", icon: "🏎️", style: "glow-gold" },
+            { nome: "Torre Eiffel de Ouro", icon: "🗼", style: "glow-gold" }
         ];
 
-        let nivelIdx = 0;
+        // Estado do jogador (quantas recompensas liberou)
+        let nivelConcluidos = 3; // Exemplo: 3 recompensas ganhas
 
-        function mostrarRecompensa() {
-            const item = recompensas[nivelIdx];
-            const app = document.getElementById('app');
-            
-            app.innerHTML = `
-                <div class="text-center">
-                    <h2 class="text-cyan-400 text-xs tracking-widest mb-4">RECOMPENSA DECODIFICADA</h2>
-                    <div class="text-8xl my-8 ${item.style} animate-pulse">
-                        ${item.icon}
+        function renderizarVitrine() {
+            const container = document.getElementById('vitrine');
+            container.innerHTML = recompensas.map((r, idx) => `
+                <div class="cyber-panel p-4 rounded-xl flex flex-col items-center justify-center aspect-square ${idx < nivelConcluidos ? 'opacity-100' : 'opacity-20 grayscale'}">
+                    <div class="text-3xl ${idx < nivelConcluidos ? r.style : ''}">
+                        ${r.icon}
                     </div>
-                    <h1 class="text-xl font-bold mb-8">${item.nome}</h1>
-                    <button onclick="proximoNivel()" class="w-full py-4 bg-cyan-600 hover:bg-cyan-500 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(8,145,178,0.4)]">
-                        COLETAR DADOS
-                    </button>
+                    <span class="text-[8px] mt-2 text-center uppercase truncate w-full">${idx < nivelConcluidos ? r.nome : 'LOCKED'}</span>
                 </div>
-            `;
+            `).join('');
         }
 
-        function proximoNivel() {
-            nivelIdx++;
-            if (nivelIdx < recompensas.length) {
-                // Aqui você chamaria sua função carregar() da fase
-                document.getElementById('app').innerHTML = `<p class="text-center">Iniciando Nível ${nivelIdx + 1}...</p>`;
-                setTimeout(() => location.reload(), 1000); // Exemplo de reinício
-            }
-        }
-
-        // Chamada de teste para ver a recompensa
-        mostrarRecompensa();
+        renderizarVitrine();
     </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: 'Segoe UI', sans-serif; }
@@ -13,7 +14,7 @@
 <body class="p-6">
     <div class="max-w-xl mx-auto">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1</h1>
+            <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1 ACADEMY</h1>
             <div class="glass-panel px-4 py-2 text-yellow-400 font-bold">💰 Moedas: <span id="coin-balance">0</span></div>
         </div>
 
@@ -41,7 +42,7 @@
                 { q: "Tu ___ fatigué.", a: "es", options: ["es", "as"] },
                 { q: "Nous ___ français.", a: "sommes", options: ["sommes", "avons"] },
                 { q: "Ils ___ une voiture.", a: "ont", options: ["sont", "ont"] },
-                { q: "Vous ___ un stylo?", a: "avez", options: ["êtes", "avez"] },
+                { q: "Você ___ um stylo?", a: "avez", options: ["êtes", "avez"] },
                 { q: "Elle ___ intelligente.", a: "est", options: ["est", "a"] },
                 { q: "Vous ___ à Paris.", a: "êtes", options: ["êtes", "avez"] },
                 { q: "Nous ___ faim.", a: "avons", options: ["sommes", "avons"] },
@@ -53,14 +54,14 @@
                 { q: "L'addition, s'il vous ___.", a: "plaît", options: ["plaît", "merci"] },
                 { q: "Je ___ de l'eau.", a: "prends", options: ["prends", "suis"] },
                 { q: "Est-ce qu'il y a du ___ dans ce plat?", a: "sel", options: ["sel", "livre"] },
-                { q: "La table est ___ deux personnes.", a: "pour", options: ["pour", "avec"] },
+                { q: "La table est ___ duas pessoas.", a: "pour", options: ["pour", "avec"] },
                 { q: "Je ___ un thé.", a: "bois", options: ["bois", "mange"] },
                 { q: "C'est ___ ?", a: "combien", options: ["combien", "comment"] },
                 { q: "Un ___ de vin, s'il vous plaît.", a: "verre", options: ["verre", "assiette"] },
                 { q: "Bon ___ !", a: "appétit", options: ["appétit", "midi"] }
             ]},
             time: { title: "Números e Horas", questions: [
-                { q: "Quelle heure est-il? Il est ___ heures.", a: "trois", options: ["trois", "vingt"] },
+                { q: "Quelle heure est-il? Il est ___ heures (03:00).", a: "trois", options: ["trois", "vingt"] },
                 { q: "J'ai ___ ans.", a: "vingt", options: ["vingt", "vingtième"] },
                 { q: "Le train part à ___ heures.", a: "dix", options: ["dix", "onze"] },
                 { q: "Il est ___ heure (01:00).", a: "une", options: ["une", "un"] },
@@ -110,11 +111,11 @@
         }
 
         function showResult() {
-            let medal = "", coins = 0;
-            if(score >= 10) { medal = "🥇 OURO"; coins = 50; }
-            else if(score >= 7) { medal = "🥈 PRATA"; coins = 30; }
-            else if(score >= 5) { medal = "🥉 BRONZE"; coins = 10; }
-            else { medal = "❌ Tente novamente"; }
+            let visual = "", coins = 0;
+            if(score >= 10) { visual = "🥐✨ Ouro"; coins = 50; }
+            else if(score >= 7) { visual = "🥐🥈 Prata"; coins = 30; }
+            else if(score >= 5) { visual = "🥐🥉 Bronze"; coins = 10; }
+            else { visual = "🥖 Tente novamente"; }
 
             balance += coins;
             localStorage.setItem('francaisCoins', balance);
@@ -122,16 +123,13 @@
 
             document.getElementById('quiz-area').innerHTML = `
                 <div class="text-center">
-                    <div class="text-6xl mb-4">${score >= 5 ? (score >= 10 ? "🥇" : score >= 7 ? "🥈" : "🥉") : "😞"}</div>
-                    <h2 class="text-2xl font-bold mb-2">Você acertou ${score}/10</h2>
-                    <p class="text-lg mb-6">${medal} (+${coins} moedas)</p>
-                    <button class="option-btn bg-cyan-600" onclick="location.reload()">Continuar estudando</button>
+                    <div class="text-6xl mb-4">${score >= 5 ? (score >= 10 ? "🥐✨" : score >= 7 ? "🥐🥈" : "🥐🥉") : "🥖"}</div>
+                    <h2 class="text-2xl font-bold mb-2">Resultado: ${score}/10</h2>
+                    <p class="text-xl text-yellow-400 font-bold mb-6">${visual} (+${coins} moedas)</p>
+                    <button class="option-btn bg-cyan-600" onclick="location.reload()">Voltar ao Menu</button>
                 </div>
             `;
         }
     </script>
 </body>
 </html>
-
-
-        

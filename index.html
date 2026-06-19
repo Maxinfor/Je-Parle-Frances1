@@ -5,95 +5,65 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); transition: all 0.3s ease; }
-        .cyber-panel:hover:not(.locked) { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.8); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
-        .glow-gold { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); color: #FFD700; }
-        .glow-silver { filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6)); color: #C0C0C0; }
-        .glow-bronze { filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.6)); color: #CD7F32; }
+        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
+        .glow-gold { color: #FFD700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
+        .glow-silver { color: #C0C0C0; text-shadow: 0 0 8px rgba(192, 192, 192, 0.6); }
+        .glow-bronze { color: #CD7F32; text-shadow: 0 0 8px rgba(205, 127, 50, 0.6); }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50 animate__animated animate__fadeIn">
-        <div class="cyber-panel p-8 max-w-sm w-full text-center rounded-xl border border-cyan-500">
-            <h3 id="modal-titulo" class="text-cyan-400 text-lg uppercase mb-2"></h3>
-            <p id="modal-frase" class="text-white text-sm mb-6 italic"></p>
-            <button onclick="fecharModal()" class="bg-cyan-900 px-6 py-2 text-xs hover:bg-cyan-700 w-full">FECHAR</button>
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50">
+        <div class="cyber-panel p-6 max-w-sm w-full rounded-xl border border-cyan-500">
+            <h3 id="modal-titulo" class="text-cyan-400 text-lg uppercase mb-1"></h3>
+            <p id="modal-frase" class="text-white text-sm mb-4 italic border-l-2 border-cyan-700 pl-2"></p>
+            <div id="modal-competencias" class="space-y-3 mb-6"></div>
+            <button onclick="fecharModal()" class="bg-cyan-900 w-full py-2 text-xs hover:bg-cyan-700">FECHAR</button>
         </div>
     </div>
 
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-2 tracking-[0.3em] uppercase text-xl">Inventário A1 Iniciante</h2>
-        <div class="mb-8">
-            <div class="flex justify-between text-[10px] text-cyan-500 mb-1">
-                <span id="porcentagem">0%</span>
-            </div>
-            <div class="w-full h-2 bg-gray-900 border border-cyan-900 rounded-full overflow-hidden">
-                <div id="barra-energia" class="h-full bg-cyan-500 transition-all duration-500" style="width: 0%"></div>
-            </div>
-        </div>
-        
-        <div id="vitrine" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3"></div>
-
-        <div class="mt-10 flex justify-center gap-4">
-            <button onclick="progredir()" class="bg-cyan-900 px-6 py-2 text-xs hover:bg-cyan-700 transition-all">Desbloquear Item</button>
-        </div>
+        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Dashboard Semestral CIL</h2>
+        <div id="vitrine" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
     </div>
 
     <script>
-        const somDesbloqueio = new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3');
-
         const itens = [
-            { nome: "Olá", icon: "👋", style: "glow-bronze", frase: "Bonjour ! Comment ça va ?" },
-            { nome: "Obrigado", icon: "🙏", style: "glow-bronze", frase: "Merci beaucoup pour ton aide." },
-            { nome: "Café", icon: "☕", style: "glow-silver", frase: "Je prends un café, s'il vous plaît." },
-            { nome: "Casa", icon: "🏠", style: "glow-silver", frase: "J'habite dans une petite maison." },
-            { nome: "Família", icon: "👨‍👩‍👧", style: "glow-gold", frase: "Ma famille est très sympathique." }
+            { nome: "Nível 1", icon: "🌱", style: "glow-bronze", frase: "Je m'appelle Idney.", comps: { Ouvir: 80, Falar: 60, Ler: 90, Escrever: 70 } },
+            { nome: "Nível 2", icon: "🏫", style: "glow-bronze", frase: "Où est la bibliothèque ?", comps: { Ouvir: 70, Falar: 50, Ler: 80, Escrever: 60 } },
+            { nome: "Nível 3", icon: "🥖", style: "glow-silver", frase: "Je voudrais une baguette.", comps: { Ouvir: 60, Falar: 40, Ler: 70, Escrever: 50 } },
+            { nome: "Nível 4", icon: "📅", style: "glow-silver", frase: "Hier, je suis allé au cinéma.", comps: { Ouvir: 50, Falar: 30, Ler: 60, Escrever: 40 } },
+            { nome: "Nível 5", icon: "🌍", style: "glow-gold", frase: "Si j'avais du temps...", comps: { Ouvir: 40, Falar: 20, Ler: 50, Escrever: 30 } },
+            { nome: "Nível 6", icon: "🎓", style: "glow-gold", frase: "Je prépare mon avenir.", comps: { Ouvir: 30, Falar: 10, Ler: 40, Escrever: 20 } }
         ];
-        
-        let nivelConcluidos = parseInt(localStorage.getItem('progresso')) || 0;
 
         function abrirModal(idx) {
             const item = itens[idx];
             document.getElementById('modal-titulo').innerText = item.nome;
             document.getElementById('modal-frase').innerText = `"${item.frase}"`;
+            
+            const cont = document.getElementById('modal-competencias');
+            cont.innerHTML = Object.entries(item.comps).map(([c, v]) => `
+                <div>
+                    <div class="flex justify-between text-[9px] text-cyan-500 uppercase"><span>${c}</span><span>${v}%</span></div>
+                    <div class="w-full h-1 bg-gray-800 rounded-full"><div class="h-full bg-cyan-400" style="width: ${v}%"></div></div>
+                </div>
+            `).join('');
+            
             document.getElementById('modal').classList.remove('hidden');
         }
 
-        function fecharModal() {
-            document.getElementById('modal').classList.add('hidden');
-        }
+        function fecharModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        function renderizarVitrine() {
-            const container = document.getElementById('vitrine');
-            container.innerHTML = itens.map((item, idx) => {
-                const isLocked = idx >= nivelConcluidos;
-                const animation = (idx === nivelConcluidos - 1) ? 'animate__animated animate__flipInY' : '';
-                return `
-                    <div class="cyber-panel p-3 rounded-lg flex flex-col items-center justify-center aspect-square ${isLocked ? 'opacity-20 grayscale' : 'cursor-pointer'}" 
-                         onclick="${!isLocked ? `abrirModal(${idx})` : ''}">
-                        <div class="text-2xl ${!isLocked ? item.style : 'text-gray-500'} ${animation}">${item.icon}</div>
-                        <span class="text-[7px] mt-2 text-center uppercase truncate w-full px-1">${isLocked ? 'LOCKED' : item.nome}</span>
-                    </div>
-                `;
-            }).join('');
-            
-            const pct = (nivelConcluidos / itens.length) * 100;
-            document.getElementById('barra-energia').style.width = `${pct}%`;
-            document.getElementById('porcentagem').innerText = `${Math.round(pct)}% COMPLETO`;
+        function render() {
+            document.getElementById('vitrine').innerHTML = itens.map((item, idx) => `
+                <div class="cyber-panel p-4 rounded-lg cursor-pointer flex flex-col items-center hover:border-cyan-400" onclick="abrirModal(${idx})">
+                    <div class="text-3xl ${item.style}">${item.icon}</div>
+                    <span class="text-[10px] mt-2">${item.nome}</span>
+                </div>
+            `).join('');
         }
-
-        function progredir() {
-            if (nivelConcluidos < itens.length) {
-                nivelConcluidos++;
-                somDesbloqueio.play();
-                localStorage.setItem('progresso', nivelConcluidos);
-                renderizarVitrine();
-            }
-        }
-
-        renderizarVitrine();
+        render();
     </script>
 </body>
 </html>

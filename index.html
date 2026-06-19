@@ -4,117 +4,134 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .badge-slot { width: 70px; height: 70px; border: 2px dashed rgba(6, 182, 212, 0.5); display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 24px; transition: all 0.3s; }
-        .badge-unlocked { background: rgba(6, 182, 212, 0.2); border: 2px solid #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
-        .option-btn { background: #1f2937; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
-        .option-btn:hover { background: #374151; border-color: #06b6d4; }
+        body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: 'Segoe UI', sans-serif; }
+        .glass-panel { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
+        .option-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; width: 100%; border-radius: 12px; margin-bottom: 10px; transition: 0.3s; }
+        .option-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
     </style>
 </head>
-<body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
-
-    <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Estante de Conquistas</h2>
-
-        <div class="cyber-panel p-6 rounded-xl mb-6">
-            <div class="flex flex-wrap justify-center gap-4">
-                <div class="badge-slot badge-unlocked" title="Fundamentos">🇫🇷</div>
-                <div id="badge-2" class="badge-slot opacity-50" title="Verbos">🔒</div>
-                <div id="badge-3" class="badge-slot opacity-50" title="Restaurante">🔒</div>
-                <div id="badge-4" class="badge-slot opacity-50" title="Horas/Números">🔒</div>
-                <div id="badge-5" class="badge-slot opacity-50" title="Família/Perfil">🔒</div>
-            </div>
+<body class="p-6">
+    <div class="max-w-xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1</h1>
+            <div class="glass-panel px-4 py-2 text-yellow-400 font-bold">💰 Moedas: <span id="coin-balance">0</span></div>
         </div>
 
-        <div class="cyber-panel p-6 rounded-xl">
-            <h3 id="module-title" class="text-cyan-400 mb-4 uppercase text-sm font-bold">Escolha um módulo para treinar:</h3>
-            <div id="quiz-container" class="flex flex-col gap-2">
-                <button class="option-btn" onclick="startQuiz('verbs')">Treinar Verbos (Être/Avoir)</button>
-                <button class="option-btn" onclick="startQuiz('restaurant')">Treinar Restaurante</button>
-                <button class="option-btn" onclick="startQuiz('time')">Treinar Horas/Números</button>
-                <button class="option-btn" onclick="startQuiz('family')">Treinar Família/Perfil</button>
-                <button class="option-btn bg-cyan-900 border-cyan-500" onclick="startQuiz('finalExam')">PROVA FINAL (Valendo 10)</button>
+        <div id="app-container" class="glass-panel p-8">
+            <div id="quiz-area">
+                <h2 id="module-title" class="text-xl text-cyan-300 mb-6 font-semibold">Escolha seu treinamento:</h2>
+                <div id="quiz-content" class="flex flex-col gap-3">
+                    <button class="option-btn" onclick="startQuiz('verbs')">Verbos: Être & Avoir</button>
+                    <button class="option-btn" onclick="startQuiz('restaurant')">No Restaurante</button>
+                    <button class="option-btn" onclick="startQuiz('time')">Números e Horas</button>
+                    <button class="option-btn" onclick="startQuiz('family')">Família e Perfil</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        let balance = parseInt(localStorage.getItem('francaisCoins')) || 0;
+        document.getElementById('coin-balance').innerText = balance;
+
         const quizzes = {
-            verbs: { title: "Desafio: Être & Avoir", badgeId: "badge-2", badgeIcon: "✅", questions: [
+            verbs: { title: "Verbos: Être & Avoir", questions: [
                 { q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai"] },
                 { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai"] },
-                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as"] }
+                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as"] },
+                { q: "Nous ___ français.", a: "sommes", options: ["sommes", "avons"] },
+                { q: "Ils ___ une voiture.", a: "ont", options: ["sont", "ont"] },
+                { q: "Vous ___ un stylo?", a: "avez", options: ["êtes", "avez"] },
+                { q: "Elle ___ intelligente.", a: "est", options: ["est", "a"] },
+                { q: "Vous ___ à Paris.", a: "êtes", options: ["êtes", "avez"] },
+                { q: "Nous ___ faim.", a: "avons", options: ["sommes", "avons"] },
+                { q: "Elles ___ très contentes.", a: "sont", options: ["sont", "ont"] }
             ]},
-            restaurant: { title: "Desafio: No Restaurante", badgeId: "badge-3", badgeIcon: "🍽️", questions: [
+            restaurant: { title: "No Restaurante", questions: [
                 { q: "Je ___ un café, s'il vous plaît.", a: "voudrais", options: ["voudrais", "prends"] },
+                { q: "Qu'est-ce que vous ___ ?", a: "prenez", options: ["prenez", "buvez"] },
                 { q: "L'addition, s'il vous ___.", a: "plaît", options: ["plaît", "merci"] },
-                { q: "La table est ___ deux pessoas.", a: "pour", options: ["pour", "avec"] }
+                { q: "Je ___ de l'eau.", a: "prends", options: ["prends", "suis"] },
+                { q: "Est-ce qu'il y a du ___ dans ce plat?", a: "sel", options: ["sel", "livre"] },
+                { q: "La table est ___ deux personnes.", a: "pour", options: ["pour", "avec"] },
+                { q: "Je ___ un thé.", a: "bois", options: ["bois", "mange"] },
+                { q: "C'est ___ ?", a: "combien", options: ["combien", "comment"] },
+                { q: "Un ___ de vin, s'il vous plaît.", a: "verre", options: ["verre", "assiette"] },
+                { q: "Bon ___ !", a: "appétit", options: ["appétit", "midi"] }
             ]},
-            time: { title: "Desafio: Números e Horas", badgeId: "badge-4", badgeIcon: "⏰", questions: [
-                { q: "Quelle heure est-il? Il est ___ heures.", a: "trois", options: ["trois", "trois-vingt"] },
+            time: { title: "Números e Horas", questions: [
+                { q: "Quelle heure est-il? Il est ___ heures.", a: "trois", options: ["trois", "vingt"] },
                 { q: "J'ai ___ ans.", a: "vingt", options: ["vingt", "vingtième"] },
-                { q: "Le train part à ___ heures.", a: "dix", options: ["dix", "dixième"] }
+                { q: "Le train part à ___ heures.", a: "dix", options: ["dix", "onze"] },
+                { q: "Il est ___ heure (01:00).", a: "une", options: ["une", "un"] },
+                { q: "Nous sommes le ___ juin.", a: "dix-neuf", options: ["dix-neuf", "dix"] },
+                { q: "Il a ___ ans.", a: "onze", options: ["onze", "premier"] },
+                { q: "Il est ___ heures (05:00).", a: "cinq", options: ["cinq", "six"] },
+                { q: "Le numéro est ___.", a: "huit", options: ["huit", "sept"] },
+                { q: "Il est ___ heures (12:00).", a: "douze", options: ["douze", "deux"] },
+                { q: "Dix plus cinq font ___.", a: "quinze", options: ["quinze", "quatorze"] }
             ]},
-            family: { title: "Desafio: Família e Perfil", badgeId: "badge-5", badgeIcon: "👤", questions: [
+            family: { title: "Família e Perfil", questions: [
                 { q: "C'est ___ mère.", a: "ma", options: ["ma", "mon"] },
                 { q: "C'est ___ père.", a: "mon", options: ["ma", "mon"] },
-                { q: "Il est ___.", a: "grand", options: ["grand", "grande"] }
-            ]},
-            finalExam: { title: "EXAME FINAL A1 - VALENDO 10", badgeId: "badge-5", badgeIcon: "🏆", questions: [
-                { q: "Je ___ français.", a: "suis", options: ["suis", "ai"] },
-                { q: "Il ___ 20 ans.", a: "a", options: ["a", "est"] },
-                { q: "___ café, s'il vous plaît.", a: "Un", options: ["Un", "Le"] },
-                { q: "Je ___ le menu.", a: "prends", options: ["prends", "vouloir"] },
-                { q: "Nous ___ étudiants.", a: "sommes", options: ["sommes", "avons"] }
+                { q: "Il est ___ (alto).", a: "grand", options: ["grand", "grande"] },
+                { q: "Elle est ___ (alta).", a: "grande", options: ["grand", "grande"] },
+                { q: "___ frères s'appellent Luc et Marc.", a: "Mes", options: ["Ma", "Mes"] },
+                { q: "Tu as ___ sœur?", a: "une", options: ["un", "une"] },
+                { q: "___ amie est sympa.", a: "Mon", options: ["Ma", "Mon"] },
+                { q: "Elle est ___ (pequena).", a: "petite", options: ["petit", "petite"] },
+                { q: "C'est ___ (meu) cousin.", a: "mon", options: ["ma", "mon"] },
+                { q: "___ (suas) sœurs sont ici.", a: "Tes", options: ["Ta", "Tes"] }
             ]}
         };
 
-        let currentQuiz = [];
-        let currentIdx = 0;
-        let activeModule = "";
+        let currentQ = 0, score = 0, activeQuiz = [];
 
         function startQuiz(type) {
-            activeModule = type;
-            currentQuiz = quizzes[type].questions;
-            currentIdx = 0;
-            document.getElementById('module-title').innerText = quizzes[type].title;
-            loadQuestion();
+            activeQuiz = quizzes[type].questions;
+            currentQ = 0; score = 0;
+            renderQuestion();
         }
 
-        function loadQuestion() {
-            const qData = currentQuiz[currentIdx];
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = `
-                <p class="mb-4 text-lg">${qData.q}</p>
-                <div class="flex gap-2">
-                    ${qData.options.map(opt => `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`).join('')}
-                </div>
-                <p id="feedback" class="mt-4 font-bold h-6"></p>
+        function renderQuestion() {
+            const q = activeQuiz[currentQ];
+            document.getElementById('quiz-content').innerHTML = `
+                <p class="text-sm text-gray-400 mb-2">Questão ${currentQ + 1}/10</p>
+                <p class="text-xl mb-6">${q.q}</p>
+                ${q.options.map(opt => `<button class="option-btn" onclick="handleAnswer('${opt}', '${q.a}')">${opt}</button>`).join('')}
             `;
         }
 
-        function checkAnswer(ans) {
-            if(ans === currentQuiz[currentIdx].a) {
-                currentIdx++;
-                if(currentIdx < currentQuiz.length) {
-                    loadQuestion();
-                } else {
-                    completeQuiz();
-                }
-            } else {
-                document.getElementById('feedback').innerText = "Errado! Tente novamente.";
-            }
+        function handleAnswer(ans, correct) {
+            if(ans === correct) score++;
+            currentQ++;
+            if(currentQ < 10) renderQuestion();
+            else showResult();
         }
 
-        function completeQuiz() {
-            const badge = document.getElementById(quizzes[activeModule].badgeId);
-            badge.innerText = quizzes[activeModule].badgeIcon;
-            badge.className = "badge-slot badge-unlocked";
-            document.getElementById('quiz-container').innerHTML = `
-                <p class='text-green-400 text-lg'>Parabéns! Módulo concluído com sucesso!</p>
-                <button class="option-btn mt-4 bg-cyan-600" onclick="location.reload()">Voltar ao menu</button>
+        function showResult() {
+            let medal = "", coins = 0;
+            if(score >= 10) { medal = "🥇 OURO"; coins = 50; }
+            else if(score >= 7) { medal = "🥈 PRATA"; coins = 30; }
+            else if(score >= 5) { medal = "🥉 BRONZE"; coins = 10; }
+            else { medal = "❌ Tente novamente"; }
+
+            balance += coins;
+            localStorage.setItem('francaisCoins', balance);
+            document.getElementById('coin-balance').innerText = balance;
+
+            document.getElementById('quiz-area').innerHTML = `
+                <div class="text-center">
+                    <div class="text-6xl mb-4">${score >= 5 ? (score >= 10 ? "🥇" : score >= 7 ? "🥈" : "🥉") : "😞"}</div>
+                    <h2 class="text-2xl font-bold mb-2">Você acertou ${score}/10</h2>
+                    <p class="text-lg mb-6">${medal} (+${coins} moedas)</p>
+                    <button class="option-btn bg-cyan-600" onclick="location.reload()">Continuar estudando</button>
+                </div>
             `;
         }
     </script>
 </body>
 </html>
+
+
+        

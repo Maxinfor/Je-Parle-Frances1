@@ -3,19 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .glow-gold { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); color: #FFD700; }
-        .glow-silver { filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.8)); color: #C0C0C0; }
-        .glow-bronze { filter: drop-shadow(0 0 10px rgba(205, 127, 50, 0.8)); color: #CD7F32; }
+        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); transition: all 0.3s ease; }
+        .cyber-panel:hover:not(.locked) { transform: translateY(-5px); border-color: rgba(6, 182, 212, 0.8); box-shadow: 0 0 15px rgba(6, 182, 212, 0.2); }
+        .glow-gold { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); color: #FFD700; }
+        .glow-silver { filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6)); color: #C0C0C0; }
+        .glow-bronze { filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.6)); color: #CD7F32; }
+        .locked { cursor: not-allowed; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
 
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-8 tracking-[0.3em] uppercase text-xl">Inventário A1 Elite</h2>
-        <div id="vitrine" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-            <!-- Itens injetados via JS -->
+        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.3em] uppercase text-xl">Inventário A1 Elite</h2>
+
+        <div class="mb-8">
+            <div class="flex justify-between text-[10px] text-cyan-500 mb-1">
+                <span>PROGRESSÃO</span>
+                <span id="porcentagem">0%</span>
+            </div>
+            <div class="w-full h-2 bg-gray-900 border border-cyan-900 rounded-full overflow-hidden">
+                <div id="barra-energia" class="h-full bg-cyan-500 transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div id="vitrine" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3"></div>
+
+        <div class="mt-10 flex justify-center gap-4">
+            <button onclick="progredir()" class="bg-cyan-900 px-6 py-2 text-xs hover:bg-cyan-700 transition-all">Desbloquear Item</button>
+            <button onclick="resetar()" class="bg-red-900/20 text-red-500 border border-red-900 px-6 py-2 text-xs hover:bg-red-900 hover:text-white transition-all">Reset</button>
         </div>
     </div>
 
@@ -30,35 +47,46 @@
             { nome: "Sceau de Bronze", icon: "📜", style: "glow-bronze" },
             { nome: "Sceau de Prata", icon: "📜", style: "glow-silver" },
             { nome: "Sceau de Ouro", icon: "📜", style: "glow-gold" },
-            { nome: "Bandeira França", icon: "🇫🇷", style: "glow-gold" },
-            { nome: "Mont-Saint-Michel", icon: "🏰", style: "glow-gold" },
-            { nome: "Versailles", icon: "👑", style: "glow-gold" },
-            { nome: "Chambord", icon: "🏰", style: "glow-gold" },
-            { nome: "Chenonceau", icon: "🏰", style: "glow-gold" },
-            { nome: "Chaumont", icon: "🏰", style: "glow-gold" },
-            { nome: "Notre-Dame Bronze", icon: "⛪", style: "glow-bronze" },
-            { nome: "Notre-Dame Prata", icon: "⛪", style: "glow-silver" },
-            { nome: "Notre-Dame Ouro", icon: "⛪", style: "glow-gold" },
-            { nome: "Napoléon", icon: "🎖️", style: "glow-gold" },
-            { nome: "Perfume Bronze", icon: "🧴", style: "glow-bronze" },
-            { nome: "Perfume Prata", icon: "🧴", style: "glow-silver" },
-            { nome: "Perfume Ouro", icon: "🧴", style: "glow-gold" }
+            { nome: "Bandeira França", icon: "🇫🇷", style: "glow-gold" }
         ];
+        
+        let nivelConcluidos = parseInt(localStorage.getItem('progresso')) || 0;
 
-        let nivelConcluidos = 5; // Defina quantos itens estão liberados
+        function atualizarBarra() {
+            const pct = (nivelConcluidos / itens.length) * 100;
+            document.getElementById('barra-energia').style.width = `${pct}%`;
+            document.getElementById('porcentagem').innerText = `${Math.round(pct)}%`;
+        }
 
         function renderizarVitrine() {
             const container = document.getElementById('vitrine');
-            container.innerHTML = itens.map((item, idx) => `
-                <div class="cyber-panel p-3 rounded-lg flex flex-col items-center justify-center aspect-square transition-all duration-500 ${idx < nivelConcluidos ? 'opacity-100 scale-100' : 'opacity-20 grayscale scale-95'}">
-                    <div class="text-2xl ${idx < nivelConcluidos ? item.style : 'text-gray-500'}">
-                        ${item.icon}
+            container.innerHTML = itens.map((item, idx) => {
+                const isLocked = idx >= nivelConcluidos;
+                // Aplica a animação apenas se o item for o último desbloqueado
+                const animation = (idx === nivelConcluidos - 1) ? 'animate__animated animate__flipInY' : '';
+                
+                return `
+                    <div class="cyber-panel p-3 rounded-lg flex flex-col items-center justify-center aspect-square ${isLocked ? 'locked opacity-20 grayscale' : 'cursor-pointer'} ${animation}">
+                        <div class="text-2xl ${!isLocked ? item.style : 'text-gray-500'}">${item.icon}</div>
+                        <span class="text-[7px] mt-2 text-center uppercase truncate w-full px-1">${isLocked ? 'LOCKED' : item.nome}</span>
                     </div>
-                    <span class="text-[7px] mt-2 text-center uppercase truncate w-full px-1">
-                        ${idx < nivelConcluidos ? item.nome : 'LOCKED'}
-                    </span>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+            atualizarBarra();
+        }
+
+        function progredir() {
+            if (nivelConcluidos < itens.length) {
+                nivelConcluidos++;
+                localStorage.setItem('progresso', nivelConcluidos);
+                renderizarVitrine();
+            }
+        }
+
+        function resetar() {
+            nivelConcluidos = 0;
+            localStorage.removeItem('progresso');
+            renderizarVitrine();
         }
 
         renderizarVitrine();

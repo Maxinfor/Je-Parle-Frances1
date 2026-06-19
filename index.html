@@ -2,7 +2,6 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: 'Segoe UI', sans-serif; }
@@ -15,12 +14,15 @@
     <div class="max-w-xl mx-auto">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1 ACADEMY</h1>
-            <div class="glass-panel px-4 py-2 text-yellow-400 font-bold">💰 Moedas: <span id="coin-balance">0</span></div>
+            <div>
+                <div class="glass-panel px-4 py-2 text-yellow-400 font-bold inline-block mr-2">💰 <span id="coin-balance">0</span></div>
+                <button onclick="openShop()" class="bg-indigo-600 px-4 py-2 rounded-xl font-bold">🛒</button>
+            </div>
         </div>
 
         <div id="app-container" class="glass-panel p-8">
             <div id="quiz-area">
-                <h2 id="module-title" class="text-xl text-cyan-300 mb-6 font-semibold">Escolha seu treinamento:</h2>
+                <h2 class="text-xl text-cyan-300 mb-6 font-semibold">Escolha seu treinamento:</h2>
                 <div id="quiz-content" class="flex flex-col gap-3">
                     <button class="option-btn" onclick="startQuiz('verbs')">Verbos: Être & Avoir</button>
                     <button class="option-btn" onclick="startQuiz('restaurant')">No Restaurante</button>
@@ -33,103 +35,15 @@
 
     <script>
         let balance = parseInt(localStorage.getItem('francaisCoins')) || 0;
-        document.getElementById('coin-balance').innerText = balance;
+        let inventory = JSON.parse(localStorage.getItem('francaisInventory')) || { hardMode: false };
+        let currentQ = 0, score = 0, activeQuiz = [], timer, timeLeft = 10, usedHelp = false;
 
         const quizzes = {
             verbs: { title: "Verbos: Être & Avoir", questions: [
-                { q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai"] },
-                { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai"] },
-                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as"] },
-                { q: "Nous ___ français.", a: "sommes", options: ["sommes", "avons"] },
-                { q: "Ils ___ une voiture.", a: "ont", options: ["sont", "ont"] },
-                { q: "Você ___ um stylo?", a: "avez", options: ["êtes", "avez"] },
-                { q: "Elle ___ intelligente.", a: "est", options: ["est", "a"] },
-                { q: "Vous ___ à Paris.", a: "êtes", options: ["êtes", "avez"] },
-                { q: "Nous ___ faim.", a: "avons", options: ["sommes", "avons"] },
-                { q: "Elles ___ très contentes.", a: "sont", options: ["sont", "ont"] }
-            ]},
-            restaurant: { title: "No Restaurante", questions: [
-                { q: "Je ___ un café, s'il vous plaît.", a: "voudrais", options: ["voudrais", "prends"] },
-                { q: "Qu'est-ce que vous ___ ?", a: "prenez", options: ["prenez", "buvez"] },
-                { q: "L'addition, s'il vous ___.", a: "plaît", options: ["plaît", "merci"] },
-                { q: "Je ___ de l'eau.", a: "prends", options: ["prends", "suis"] },
-                { q: "Est-ce qu'il y a du ___ dans ce plat?", a: "sel", options: ["sel", "livre"] },
-                { q: "La table est ___ duas pessoas.", a: "pour", options: ["pour", "avec"] },
-                { q: "Je ___ un thé.", a: "bois", options: ["bois", "mange"] },
-                { q: "C'est ___ ?", a: "combien", options: ["combien", "comment"] },
-                { q: "Un ___ de vin, s'il vous plaît.", a: "verre", options: ["verre", "assiette"] },
-                { q: "Bon ___ !", a: "appétit", options: ["appétit", "midi"] }
-            ]},
-            time: { title: "Números e Horas", questions: [
-                { q: "Quelle heure est-il? Il est ___ heures (03:00).", a: "trois", options: ["trois", "vingt"] },
-                { q: "J'ai ___ ans.", a: "vingt", options: ["vingt", "vingtième"] },
-                { q: "Le train part à ___ heures.", a: "dix", options: ["dix", "onze"] },
-                { q: "Il est ___ heure (01:00).", a: "une", options: ["une", "un"] },
-                { q: "Nous sommes le ___ juin.", a: "dix-neuf", options: ["dix-neuf", "dix"] },
-                { q: "Il a ___ ans.", a: "onze", options: ["onze", "premier"] },
-                { q: "Il est ___ heures (05:00).", a: "cinq", options: ["cinq", "six"] },
-                { q: "Le numéro est ___.", a: "huit", options: ["huit", "sept"] },
-                { q: "Il est ___ heures (12:00).", a: "douze", options: ["douze", "deux"] },
-                { q: "Dix plus cinq font ___.", a: "quinze", options: ["quinze", "quatorze"] }
-            ]},
-            family: { title: "Família e Perfil", questions: [
-                { q: "C'est ___ mère.", a: "ma", options: ["ma", "mon"] },
-                { q: "C'est ___ père.", a: "mon", options: ["ma", "mon"] },
-                { q: "Il est ___ (alto).", a: "grand", options: ["grand", "grande"] },
-                { q: "Elle est ___ (alta).", a: "grande", options: ["grand", "grande"] },
-                { q: "___ frères s'appellent Luc et Marc.", a: "Mes", options: ["Ma", "Mes"] },
-                { q: "Tu as ___ sœur?", a: "une", options: ["un", "une"] },
-                { q: "___ amie est sympa.", a: "Mon", options: ["Ma", "Mon"] },
-                { q: "Elle est ___ (pequena).", a: "petite", options: ["petit", "petite"] },
-                { q: "C'est ___ (meu) cousin.", a: "mon", options: ["ma", "mon"] },
-                { q: "___ (suas) sœurs sont ici.", a: "Tes", options: ["Ta", "Tes"] }
-            ]}
-        };
-
-        let currentQ = 0, score = 0, activeQuiz = [];
-
-        function startQuiz(type) {
-            activeQuiz = quizzes[type].questions;
-            currentQ = 0; score = 0;
-            renderQuestion();
-        }
-
-        function renderQuestion() {
-            const q = activeQuiz[currentQ];
-            document.getElementById('quiz-content').innerHTML = `
-                <p class="text-sm text-gray-400 mb-2">Questão ${currentQ + 1}/10</p>
-                <p class="text-xl mb-6">${q.q}</p>
-                ${q.options.map(opt => `<button class="option-btn" onclick="handleAnswer('${opt}', '${q.a}')">${opt}</button>`).join('')}
-            `;
-        }
-
-        function handleAnswer(ans, correct) {
-            if(ans === correct) score++;
-            currentQ++;
-            if(currentQ < 10) renderQuestion();
-            else showResult();
-        }
-
-        function showResult() {
-            let visual = "", coins = 0;
-            if(score >= 10) { visual = "🥐✨ Ouro"; coins = 50; }
-            else if(score >= 7) { visual = "🥐🥈 Prata"; coins = 30; }
-            else if(score >= 5) { visual = "🥐🥉 Bronze"; coins = 10; }
-            else { visual = "🥖 Tente novamente"; }
-
-            balance += coins;
-            localStorage.setItem('francaisCoins', balance);
-            document.getElementById('coin-balance').innerText = balance;
-
-            document.getElementById('quiz-area').innerHTML = `
-                <div class="text-center">
-                    <div class="text-6xl mb-4">${score >= 5 ? (score >= 10 ? "🥐✨" : score >= 7 ? "🥐🥈" : "🥐🥉") : "🥖"}</div>
-                    <h2 class="text-2xl font-bold mb-2">Resultado: ${score}/10</h2>
-                    <p class="text-xl text-yellow-400 font-bold mb-6">${visual} (+${coins} moedas)</p>
-                    <button class="option-btn bg-cyan-600" onclick="location.reload()">Voltar ao Menu</button>
-                </div>
-            `;
-        }
-    </script>
-</body>
-</html>
+                { q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai", "sommes", "êtes"] },
+                { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai", "as", "ont"] },
+                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as", "est", "suis"] },
+                { q: "Nous ___ français.", a: "sommes", options: ["sommes", "avons", "êtes", "sont"] },
+                { q: "Ils ___ une voiture.", a: "ont", options: ["sont", "ont", "avez", "ai"] },
+                { q: "Você ___ um stylo?", a: "avez", options: ["êtes", "avez", "ont", "sommes"] },
+                { q: "Elle ___ intelligente

@@ -5,92 +5,55 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .glow-gold { color: #FFD700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.6); }
-        .glow-silver { color: #C0C0C0; text-shadow: 0 0 8px rgba(192, 192, 192, 0.6); }
-        .glow-bronze { color: #CD7F32; text-shadow: 0 0 8px rgba(205, 127, 50, 0.6); }
-        .em-andamento { border-color: #22d3ee; border-style: dashed; }
+        .input-cyber { background: rgba(0, 0, 0, 0.5); border: 1px solid #06b6d4; color: white; padding: 5px; width: 100px; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50">
-        <div class="cyber-panel p-6 max-w-sm w-full rounded-xl border border-cyan-500">
-            <h3 id="modal-titulo" class="text-cyan-400 text-lg uppercase mb-1"></h3>
-            <p id="modal-frase" class="text-white text-sm mb-4 italic border-l-2 border-cyan-700 pl-2"></p>
-            <div id="modal-competencias" class="space-y-3 mb-6"></div>
-            <button onclick="fecharModal()" class="bg-cyan-900 w-full py-2 text-xs hover:bg-cyan-700 uppercase">Fechar</button>
-        </div>
-    </div>
-
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Dashboard Semestral CIL</h2>
-        
-        <!-- Barra de Progresso Geral -->
-        <div class="cyber-panel p-4 mb-6 rounded-lg">
-            <div class="flex justify-between text-[10px] text-cyan-500 mb-1">
-                <span>PROGRESSO GERAL</span>
-                <span id="porcentagem-geral">0%</span>
-            </div>
-            <div class="w-full h-2 bg-gray-800 rounded-full">
-                <div id="barra-progresso" class="h-full bg-cyan-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
-            </div>
-        </div>
+        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Desafios A1: Exercícios</h2>
 
-        <div id="vitrine" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+        <!-- Área de Questões -->
+        <div class="cyber-panel p-6 rounded-lg space-y-6">
+            
+            <!-- Questão 1 -->
+            <div>
+                <p class="text-sm mb-2">1. "Je ________ brésilien." (Verbo Être)</p>
+                <input type="text" id="q1" class="input-cyber" placeholder="Resposta">
+            </div>
+
+            <!-- Questão 2 -->
+            <div>
+                <p class="text-sm mb-2">2. "J'________ 30 ans." (Verbo Avoir)</p>
+                <input type="text" id="q2" class="input-cyber" placeholder="Resposta">
+            </div>
+
+            <!-- Questão 3 -->
+            <div>
+                <p class="text-sm mb-2">3. Pronome para "Eles":</p>
+                <input type="text" id="q3" class="input-cyber" placeholder="Resposta">
+            </div>
+
+            <button onclick="verificar()" class="bg-cyan-700 w-full py-2 hover:bg-cyan-500 uppercase transition">Verificar Respostas</button>
+            <p id="resultado" class="text-center font-bold mt-4"></p>
+        </div>
     </div>
 
     <script>
-        const itens = [
-            { nome: "Nível 1", icon: "🌱", style: "glow-bronze", status: "em-andamento", frase: "Je m'appelle Idney.", comps: { Ouvir: 80, Falar: 60, Ler: 90, Escrever: 70 } },
-            { nome: "Nível 2", icon: "🏫", style: "glow-bronze", status: "", frase: "Où est la bibliothèque ?", comps: { Ouvir: 0, Falar: 0, Ler: 0, Escrever: 0 } },
-            { nome: "Nível 3", icon: "🥖", style: "glow-silver", status: "", frase: "Je voudrais une baguette.", comps: { Ouvir: 0, Falar: 0, Ler: 0, Escrever: 0 } },
-            { nome: "Nível 4", icon: "📅", style: "glow-silver", status: "", frase: "Hier, je suis allé au cinéma.", comps: { Ouvir: 0, Falar: 0, Ler: 0, Escrever: 0 } },
-            { nome: "Nível 5", icon: "🌍", style: "glow-gold", status: "", frase: "Si j'avais du temps...", comps: { Ouvir: 0, Falar: 0, Ler: 0, Escrever: 0 } },
-            { nome: "Nível 6", icon: "🎓", style: "glow-gold", status: "", frase: "Je prépare mon avenir.", comps: { Ouvir: 0, Falar: 0, Ler: 0, Escrever: 0 } }
-        ];
+        function verificar() {
+            const r1 = document.getElementById('q1').value.toLowerCase();
+            const r2 = document.getElementById('q2').value.toLowerCase();
+            const r3 = document.getElementById('q3').value.toLowerCase();
 
-        function calcularMedia() {
-            let total = 0;
-            let contagem = 0;
-            itens.forEach(item => {
-                Object.values(item.comps).forEach(val => {
-                    total += val;
-                    contagem++;
-                });
-            });
-            return Math.round(total / contagem);
+            let acertos = 0;
+            if (r1 === 'suis') acertos++;
+            if (r2 === 'ai') acertos++;
+            if (r3 === 'ils') acertos++;
+
+            const res = document.getElementById('resultado');
+            res.innerText = `Você acertou ${acertos} de 3 questões!`;
+            res.className = acertos === 3 ? "text-green-400" : "text-red-400";
         }
-
-        function abrirModal(idx) {
-            const item = itens[idx];
-            document.getElementById('modal-titulo').innerText = item.nome;
-            document.getElementById('modal-frase').innerText = `"${item.frase}"`;
-            const cont = document.getElementById('modal-competencias');
-            cont.innerHTML = Object.entries(item.comps).map(([c, v]) => `
-                <div>
-                    <div class="flex justify-between text-[9px] text-cyan-500 uppercase"><span>${c}</span><span>${v}%</span></div>
-                    <div class="w-full h-1 bg-gray-800 rounded-full"><div class="h-full bg-cyan-400" style="width: ${v}%"></div></div>
-                </div>
-            `).join('');
-            document.getElementById('modal').classList.remove('hidden');
-        }
-
-        function fecharModal() { document.getElementById('modal').classList.add('hidden'); }
-
-        function render() {
-            const media = calcularMedia();
-            document.getElementById('barra-progresso').style.width = media + "%";
-            document.getElementById('porcentagem-geral').innerText = media + "%";
-            
-            document.getElementById('vitrine').innerHTML = itens.map((item, idx) => `
-                <div class="cyber-panel p-4 rounded-lg cursor-pointer flex flex-col items-center hover:border-cyan-400 ${item.status}" onclick="abrirModal(${idx})">
-                    <div class="text-3xl ${item.style}">${item.icon}</div>
-                    <span class="text-[10px] mt-2">${item.nome}</span>
-                </div>
-            `).join('');
-        }
-        render();
     </script>
 </body>
 </html>

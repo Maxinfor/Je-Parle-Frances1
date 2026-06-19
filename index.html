@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: 'Segoe UI', sans-serif; }
-        .glass-panel { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; }
-        .option-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; width: 100%; border-radius: 12px; margin-bottom: 10px; transition: 0.3s; }
-        .option-btn:hover { background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; }
+        body { background: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        .card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-option { 
+            background: #1e293b; border: 2px solid #334155; 
+            transition: all 0.2s ease; cursor: pointer;
+        }
+        .btn-option:hover { border-color: #38bdf8; transform: translateY(-2px); }
+        .correct { border-color: #22c55e !important; background: rgba(34, 197, 94, 0.2) !important; }
+        .wrong { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.2) !important; }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1 ACADEMY</h1>
-            <div>
-                <div class="glass-panel px-4 py-2 text-yellow-400 font-bold inline-block mr-2">💰 <span id="coin-balance">0</span></div>
-                <button onclick="openShop()" class="bg-indigo-600 px-4 py-2 rounded-xl font-bold">🛒</button>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-md">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-xl font-black tracking-tighter text-cyan-400 italic">FRANCÊS A1</h1>
+            <div class="flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-full font-bold text-yellow-400">
+                <span>💎</span> <span id="coin-balance">0</span>
             </div>
         </div>
 
-        <div id="app-container" class="glass-panel p-8">
+        <div id="app-container" class="card p-6 rounded-3xl shadow-2xl">
             <div id="quiz-area">
-                <h2 class="text-xl text-cyan-300 mb-6 font-semibold">Escolha seu treinamento:</h2>
-                <div id="quiz-content" class="flex flex-col gap-3">
-                    <button class="option-btn" onclick="startQuiz('verbs')">Verbos: Être & Avoir</button>
-                    <button class="option-btn" onclick="startQuiz('restaurant')">No Restaurante</button>
-                    <button class="option-btn" onclick="startQuiz('time')">Números e Horas</button>
-                    <button class="option-btn" onclick="startQuiz('family')">Família e Perfil</button>
+                <h2 class="text-2xl font-bold mb-6">Escolha o seu treino:</h2>
+                <div class="space-y-3">
+                    <button class="btn-option w-full p-4 rounded-2xl font-semibold" onclick="startQuiz('verbs')">Verbos: Être & Avoir</button>
+                    <button class="btn-option w-full p-4 rounded-2xl font-semibold" onclick="startQuiz('restaurant')">No Restaurante</button>
+                    <button class="btn-option w-full p-4 rounded-2xl font-semibold" onclick="startQuiz('time')">Números e Horas</button>
+                    <button class="btn-option w-full p-4 rounded-2xl font-semibold" onclick="startQuiz('family')">Família e Perfil</button>
                 </div>
             </div>
         </div>
@@ -35,15 +40,60 @@
 
     <script>
         let balance = parseInt(localStorage.getItem('francaisCoins')) || 0;
-        let inventory = JSON.parse(localStorage.getItem('francaisInventory')) || { hardMode: false };
-        let currentQ = 0, score = 0, activeQuiz = [], timer, timeLeft = 10, usedHelp = false;
+        let currentQ = 0, score = 0, activeQuiz = [];
 
         const quizzes = {
-            verbs: { title: "Verbos: Être & Avoir", questions: [
-                { q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai", "sommes", "êtes"] },
-                { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai", "as", "ont"] },
-                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as", "est", "suis"] },
-                { q: "Nous ___ français.", a: "sommes", options: ["sommes", "avons", "êtes", "sont"] },
-                { q: "Ils ___ une voiture.", a: "ont", options: ["sont", "ont", "avez", "ai"] },
-                { q: "Você ___ um stylo?", a: "avez", options: ["êtes", "avez", "ont", "sommes"] },
-                { q: "Elle ___ intelligente
+            verbs: { questions: [{ q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai", "sommes", "êtes"] }, { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai", "as", "ont"] }] },
+            restaurant: { questions: [{ q: "Je voudrais ___ café.", a: "un", options: ["une", "un", "le", "la"] }] },
+            time: { questions: [{ q: "Il est huit ___.", a: "heures", options: ["heures", "heurs", "hour", "hours"] }] },
+            family: { questions: [{ q: "C'est mon ___ (pai).", a: "père", options: ["père", "mère", "frère", "sœur"] }] }
+        };
+
+        function startQuiz(key) {
+            activeQuiz = quizzes[key].questions;
+            currentQ = 0; score = 0;
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            if(currentQ >= activeQuiz.length) {
+                balance += score * 10;
+                localStorage.setItem('francaisCoins', balance);
+                document.getElementById('coin-balance').innerText = balance;
+                document.getElementById('app-container').innerHTML = `
+                    <div class="text-center py-10">
+                        <h2 class="text-4xl mb-4">🏆</h2>
+                        <h3 class="text-2xl font-bold">Quiz Concluído!</h3>
+                        <p class="mb-6">Você ganhou ${score * 10} diamantes.</p>
+                        <button class="bg-cyan-500 w-full py-3 rounded-xl font-bold" onclick="location.reload()">Jogar Novamente</button>
+                    </div>`;
+                return;
+            }
+            const q = activeQuiz[currentQ];
+            const optionsHtml = q.options.map(opt => `
+                <button class="btn-option w-full p-4 rounded-2xl font-semibold mb-3" 
+                        onclick="checkAnswer(this, '${opt}', '${q.a}')">${opt}</button>`).join('');
+            
+            document.getElementById('app-container').innerHTML = `
+                <div class="text-sm text-slate-400 mb-2">Pergunta ${currentQ + 1} de ${activeQuiz.length}</div>
+                <h3 class="text-xl font-bold mb-6">${q.q}</h3>
+                ${optionsHtml}
+            `;
+        }
+
+        function checkAnswer(btn, ans, correct) {
+            const isCorrect = ans === correct;
+            btn.classList.add(isCorrect ? 'correct' : 'wrong');
+            
+            if(isCorrect) score++;
+            
+            setTimeout(() => {
+                currentQ++;
+                renderQuestion();
+            }, 600);
+        }
+
+        document.getElementById('coin-balance').innerText = balance;
+    </script>
+</body>
+</html>

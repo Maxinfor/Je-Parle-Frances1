@@ -4,56 +4,63 @@
     <meta charset="UTF-8">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .input-cyber { background: rgba(0, 0, 0, 0.5); border: 1px solid #06b6d4; color: white; padding: 5px; border-radius: 4px; width: 120px; }
+        .duo-btn { 
+            background: #1cb0f6; 
+            border-bottom: 4px solid #1899d6; 
+            border-radius: 12px; 
+            color: white; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            transition: all 0.1s;
+        }
+        .duo-btn:active { border-bottom: none; transform: translateY(4px); }
+        .input-duo { 
+            border-bottom: 3px solid #e5e5e5; 
+            background: #f7f7f7; 
+            padding: 8px; 
+            border-radius: 8px; 
+            outline: none; 
+            color: #3c3c3c;
+            width: 120px;
+        }
+        .input-duo:focus { border-bottom-color: #1cb0f6; }
     </style>
 </head>
-<body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
+<body class="bg-[#f7f7f7] text-gray-700 min-h-screen p-4 font-sans">
 
-    <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Avaliação Integrada A1</h2>
+    <div class="max-w-xl mx-auto">
+        <h2 class="text-gray-500 text-center mb-6 font-bold uppercase tracking-widest">Nível 2: Cotidiano e Locais</h2>
 
-        <!-- Resumo Gramatical -->
-        <div class="cyber-panel p-4 mb-6 text-[10px] text-gray-300">
-            <h3 class="text-cyan-500 font-bold mb-1">REVISÃO RÁPIDA:</h3>
-            <p>1. Cumprimentos: Bonjour, Salut, Enchanté.</p>
-            <p>2. Apresentação: Je m'appelle, J'ai... ans.</p>
-            <p>3. Verbos: Être (Je suis) / Avoir (Tu as).</p>
-        </div>
+        <!-- Card de Exercício -->
+        <div class="bg-white p-8 rounded-2xl border-2 border-gray-200 shadow-sm space-y-6">
+            <h3 class="text-lg font-bold">Complete com a preposição de lugar:</h3>
+            
+            <div class="leading-[3rem] text-lg">
+                J'habite 
+                <input type="text" id="c1" class="input-duo" placeholder="?"> 
+                Paris et je travaille 
+                <input type="text" id="c2" class="input-duo" placeholder="?"> 
+                la bibliothèque.
+            </div>
 
-        <!-- Exercícios Integrados -->
-        <div class="cyber-panel p-6 rounded-lg space-y-4">
-            <p class="text-sm leading-relaxed text-gray-200">
-                A: <input type="text" id="g1" class="input-cyber" placeholder="Saudação"> ! Je m'appelle Lucas.<br>
-                B: Bonjour, Lucas. <input type="text" id="g2" class="input-cyber" placeholder="Prazer">.<br>
-                A: Quel âge <input type="text" id="g3" class="input-cyber" placeholder="Avoir (tu)"> ?<br>
-                B: J'<input type="text" id="g4" class="input-cyber" placeholder="Verbo (eu)"> 25 ans. Et toi?<br>
-                A: Je <input type="text" id="g5" class="input-cyber" placeholder="Être (eu)"> étudiant.
-            </p>
-
-            <button onclick="avaliar()" class="bg-cyan-900 w-full py-2 hover:bg-cyan-700 uppercase transition text-xs">Validar Diálogo</button>
-            <p id="feedback" class="text-center font-bold mt-2 text-sm"></p>
+            <button onclick="verificarNivel2()" class="duo-btn w-full py-4 text-sm">Verificar</button>
+            <p id="feedback-duo" class="text-center font-bold"></p>
         </div>
     </div>
 
     <script>
-        function avaliar() {
-            const resp = [
-                document.getElementById('g1').value.toLowerCase(),
-                document.getElementById('g2').value.toLowerCase(),
-                document.getElementById('g3').value.toLowerCase(),
-                document.getElementById('g4').value.toLowerCase(),
-                document.getElementById('g5').value.toLowerCase()
-            ];
+        function verificarNivel2() {
+            const c1 = document.getElementById('c1').value.toLowerCase();
+            const c2 = document.getElementById('c2').value.toLowerCase();
+            const feedback = document.getElementById('feedback-duo');
 
-            const gabarito = ["bonjour", "enchanté", "as", "ai", "suis"];
-            let contagem = 0;
-            
-            resp.forEach((r, i) => { if(r === gabarito[i]) contagem++; });
-
-            const feedback = document.getElementById('feedback');
-            feedback.innerText = contagem === 5 ? "PARABÉNS! Domínio total." : `Você acertou ${contagem}/5. Tente novamente!`;
-            feedback.className = contagem === 5 ? "text-green-400 font-bold" : "text-red-400 font-bold";
+            if(c1 === "à" && c2 === "à") {
+                feedback.innerText = "Excelente! Você dominou o uso de 'à'.";
+                feedback.className = "text-green-500 text-center font-bold";
+            } else {
+                feedback.innerText = "Tente novamente! (Dica: usamos 'à' para cidades e lugares específicos).";
+                feedback.className = "text-red-500 text-center font-bold";
+            }
         }
     </script>
 </body>

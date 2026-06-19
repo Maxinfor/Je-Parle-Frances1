@@ -5,19 +5,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .badge-slot { 
-            width: 80px; height: 80px; 
-            border: 2px dashed rgba(6, 182, 212, 0.5); 
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; font-size: 24px; transition: all 0.3s;
-        }
-        .badge-unlocked { 
-            background: rgba(6, 182, 212, 0.2); 
-            border: 2px solid #06b6d4; 
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-        }
-        .badge-locked { cursor: help; }
-        .badge-locked:hover { border-color: #fbbf24; color: #fbbf24; }
+        .badge-slot { width: 70px; height: 70px; border: 2px dashed rgba(6, 182, 212, 0.5); display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 24px; transition: all 0.3s; }
+        .badge-unlocked { background: rgba(6, 182, 212, 0.2); border: 2px solid #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4); }
+        .option-btn { background: #1f2937; padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .option-btn:hover { background: #374151; border-color: #06b6d4; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
@@ -25,46 +16,105 @@
     <div class="max-w-2xl mx-auto">
         <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Estante de Conquistas</h2>
 
+        <div class="cyber-panel p-6 rounded-xl mb-6">
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="badge-slot badge-unlocked" title="Fundamentos">🇫🇷</div>
+                <div id="badge-2" class="badge-slot opacity-50" title="Verbos">🔒</div>
+                <div id="badge-3" class="badge-slot opacity-50" title="Restaurante">🔒</div>
+                <div id="badge-4" class="badge-slot opacity-50" title="Horas/Números">🔒</div>
+                <div id="badge-5" class="badge-slot opacity-50" title="Família/Perfil">🔒</div>
+            </div>
+        </div>
+
         <div class="cyber-panel p-6 rounded-xl">
-            <!-- Barra de Progresso -->
-            <div class="mb-8">
-                <div class="flex justify-between text-xs mb-2 text-cyan-400">
-                    <span>Progresso Total</span>
-                    <span>33%</span>
-                </div>
-                <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-cyan-500 h-full w-1/3"></div>
-                </div>
+            <h3 id="module-title" class="text-cyan-400 mb-4 uppercase text-sm font-bold">Escolha um módulo para treinar:</h3>
+            <div id="quiz-container" class="flex flex-col gap-2">
+                <button class="option-btn" onclick="startQuiz('verbs')">Treinar Verbos (Être/Avoir)</button>
+                <button class="option-btn" onclick="startQuiz('restaurant')">Treinar Restaurante</button>
+                <button class="option-btn" onclick="startQuiz('time')">Treinar Horas/Números</button>
+                <button class="option-btn" onclick="startQuiz('family')">Treinar Família/Perfil</button>
+                <button class="option-btn bg-cyan-900 border-cyan-500" onclick="startQuiz('finalExam')">PROVA FINAL (Valendo 10)</button>
             </div>
-
-            <!-- Badges -->
-            <div class="flex justify-center gap-6">
-                <div class="badge-slot badge-unlocked" title="Concluído: Fundamentos A1">🇫🇷</div>
-                
-                <div class="badge-slot badge-locked opacity-50" title="Objetivo: Domine os verbos Être e Avoir">
-                    🔒
-                </div>
-                
-                <div class="badge-slot badge-locked opacity-50" title="Objetivo: Vocabulário de Comida e Números">
-                    🔒
-                </div>
-            </div>
-
-            <p id="status-text" class="text-center mt-6 text-xs text-gray-400 uppercase tracking-widest">
-                Clique nas travas para ver os objetivos
-            </p>
         </div>
     </div>
 
     <script>
-        document.querySelectorAll('.badge-locked').forEach(badge => {
-            badge.addEventListener('mouseover', () => {
-                document.getElementById('status-text').innerText = badge.getAttribute('title');
-            });
-            badge.addEventListener('mouseout', () => {
-                document.getElementById('status-text').innerText = 'Conquista: Fundamentos A1 (Desbloqueada)';
-            });
-        });
+        const quizzes = {
+            verbs: { title: "Desafio: Être & Avoir", badgeId: "badge-2", badgeIcon: "✅", questions: [
+                { q: "Je ___ étudiant.", a: "suis", options: ["suis", "ai"] },
+                { q: "J'___ 25 ans.", a: "ai", options: ["suis", "ai"] },
+                { q: "Tu ___ fatigué.", a: "es", options: ["es", "as"] }
+            ]},
+            restaurant: { title: "Desafio: No Restaurante", badgeId: "badge-3", badgeIcon: "🍽️", questions: [
+                { q: "Je ___ un café, s'il vous plaît.", a: "voudrais", options: ["voudrais", "prends"] },
+                { q: "L'addition, s'il vous ___.", a: "plaît", options: ["plaît", "merci"] },
+                { q: "La table est ___ deux pessoas.", a: "pour", options: ["pour", "avec"] }
+            ]},
+            time: { title: "Desafio: Números e Horas", badgeId: "badge-4", badgeIcon: "⏰", questions: [
+                { q: "Quelle heure est-il? Il est ___ heures.", a: "trois", options: ["trois", "trois-vingt"] },
+                { q: "J'ai ___ ans.", a: "vingt", options: ["vingt", "vingtième"] },
+                { q: "Le train part à ___ heures.", a: "dix", options: ["dix", "dixième"] }
+            ]},
+            family: { title: "Desafio: Família e Perfil", badgeId: "badge-5", badgeIcon: "👤", questions: [
+                { q: "C'est ___ mère.", a: "ma", options: ["ma", "mon"] },
+                { q: "C'est ___ père.", a: "mon", options: ["ma", "mon"] },
+                { q: "Il est ___.", a: "grand", options: ["grand", "grande"] }
+            ]},
+            finalExam: { title: "EXAME FINAL A1 - VALENDO 10", badgeId: "badge-5", badgeIcon: "🏆", questions: [
+                { q: "Je ___ français.", a: "suis", options: ["suis", "ai"] },
+                { q: "Il ___ 20 ans.", a: "a", options: ["a", "est"] },
+                { q: "___ café, s'il vous plaît.", a: "Un", options: ["Un", "Le"] },
+                { q: "Je ___ le menu.", a: "prends", options: ["prends", "vouloir"] },
+                { q: "Nous ___ étudiants.", a: "sommes", options: ["sommes", "avons"] }
+            ]}
+        };
+
+        let currentQuiz = [];
+        let currentIdx = 0;
+        let activeModule = "";
+
+        function startQuiz(type) {
+            activeModule = type;
+            currentQuiz = quizzes[type].questions;
+            currentIdx = 0;
+            document.getElementById('module-title').innerText = quizzes[type].title;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const qData = currentQuiz[currentIdx];
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <p class="mb-4 text-lg">${qData.q}</p>
+                <div class="flex gap-2">
+                    ${qData.options.map(opt => `<button class="option-btn" onclick="checkAnswer('${opt}')">${opt}</button>`).join('')}
+                </div>
+                <p id="feedback" class="mt-4 font-bold h-6"></p>
+            `;
+        }
+
+        function checkAnswer(ans) {
+            if(ans === currentQuiz[currentIdx].a) {
+                currentIdx++;
+                if(currentIdx < currentQuiz.length) {
+                    loadQuestion();
+                } else {
+                    completeQuiz();
+                }
+            } else {
+                document.getElementById('feedback').innerText = "Errado! Tente novamente.";
+            }
+        }
+
+        function completeQuiz() {
+            const badge = document.getElementById(quizzes[activeModule].badgeId);
+            badge.innerText = quizzes[activeModule].badgeIcon;
+            badge.className = "badge-slot badge-unlocked";
+            document.getElementById('quiz-container').innerHTML = `
+                <p class='text-green-400 text-lg'>Parabéns! Módulo concluído com sucesso!</p>
+                <button class="option-btn mt-4 bg-cyan-600" onclick="location.reload()">Voltar ao menu</button>
+            `;
+        }
     </script>
 </body>
 </html>

@@ -10,17 +10,23 @@
         .glow-gold { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6)); color: #FFD700; }
         .glow-silver { filter: drop-shadow(0 0 8px rgba(192, 192, 192, 0.6)); color: #C0C0C0; }
         .glow-bronze { filter: drop-shadow(0 0 8px rgba(205, 127, 50, 0.6)); color: #CD7F32; }
-        .locked { cursor: not-allowed; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
 
-    <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.3em] uppercase text-xl">Inventário A1 Elite</h2>
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50 animate__animated animate__fadeIn">
+        <div class="cyber-panel p-8 max-w-sm w-full text-center rounded-xl border border-cyan-500">
+            <h3 id="modal-titulo" class="text-cyan-400 text-lg uppercase mb-2"></h3>
+            <p id="modal-frase" class="text-white text-sm mb-6 italic"></p>
+            <button onclick="fecharModal()" class="bg-cyan-900 px-6 py-2 text-xs hover:bg-cyan-700 w-full">FECHAR</button>
+        </div>
+    </div>
 
+    <div class="max-w-2xl mx-auto">
+        <h2 class="text-cyan-400 text-center mb-2 tracking-[0.3em] uppercase text-xl">Inventário A1 Iniciante</h2>
         <div class="mb-8">
             <div class="flex justify-between text-[10px] text-cyan-500 mb-1">
-                <span>PROGRESSÃO</span>
                 <span id="porcentagem">0%</span>
             </div>
             <div class="w-full h-2 bg-gray-900 border border-cyan-900 rounded-full overflow-hidden">
@@ -32,61 +38,59 @@
 
         <div class="mt-10 flex justify-center gap-4">
             <button onclick="progredir()" class="bg-cyan-900 px-6 py-2 text-xs hover:bg-cyan-700 transition-all">Desbloquear Item</button>
-            <button onclick="resetar()" class="bg-red-900/20 text-red-500 border border-red-900 px-6 py-2 text-xs hover:bg-red-900 hover:text-white transition-all">Reset</button>
         </div>
     </div>
 
     <script>
+        const somDesbloqueio = new Audio('https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3');
+
         const itens = [
-            { nome: "Garfo de Bronze", icon: "🍴", style: "glow-bronze" },
-            { nome: "Garfo de Prata", icon: "🍴", style: "glow-silver" },
-            { nome: "Garfo de Ouro", icon: "🍴", style: "glow-gold" },
-            { nome: "Louvre de Bronze", icon: "🏛️", style: "glow-bronze" },
-            { nome: "Louvre de Prata", icon: "🏛️", style: "glow-silver" },
-            { nome: "Louvre de Ouro", icon: "🏛️", style: "glow-gold" },
-            { nome: "Sceau de Bronze", icon: "📜", style: "glow-bronze" },
-            { nome: "Sceau de Prata", icon: "📜", style: "glow-silver" },
-            { nome: "Sceau de Ouro", icon: "📜", style: "glow-gold" },
-            { nome: "Bandeira França", icon: "🇫🇷", style: "glow-gold" }
+            { nome: "Olá", icon: "👋", style: "glow-bronze", frase: "Bonjour ! Comment ça va ?" },
+            { nome: "Obrigado", icon: "🙏", style: "glow-bronze", frase: "Merci beaucoup pour ton aide." },
+            { nome: "Café", icon: "☕", style: "glow-silver", frase: "Je prends un café, s'il vous plaît." },
+            { nome: "Casa", icon: "🏠", style: "glow-silver", frase: "J'habite dans une petite maison." },
+            { nome: "Família", icon: "👨‍👩‍👧", style: "glow-gold", frase: "Ma famille est très sympathique." }
         ];
         
         let nivelConcluidos = parseInt(localStorage.getItem('progresso')) || 0;
 
-        function atualizarBarra() {
-            const pct = (nivelConcluidos / itens.length) * 100;
-            document.getElementById('barra-energia').style.width = `${pct}%`;
-            document.getElementById('porcentagem').innerText = `${Math.round(pct)}%`;
+        function abrirModal(idx) {
+            const item = itens[idx];
+            document.getElementById('modal-titulo').innerText = item.nome;
+            document.getElementById('modal-frase').innerText = `"${item.frase}"`;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function fecharModal() {
+            document.getElementById('modal').classList.add('hidden');
         }
 
         function renderizarVitrine() {
             const container = document.getElementById('vitrine');
             container.innerHTML = itens.map((item, idx) => {
                 const isLocked = idx >= nivelConcluidos;
-                // Aplica a animação apenas se o item for o último desbloqueado
                 const animation = (idx === nivelConcluidos - 1) ? 'animate__animated animate__flipInY' : '';
-                
                 return `
-                    <div class="cyber-panel p-3 rounded-lg flex flex-col items-center justify-center aspect-square ${isLocked ? 'locked opacity-20 grayscale' : 'cursor-pointer'} ${animation}">
-                        <div class="text-2xl ${!isLocked ? item.style : 'text-gray-500'}">${item.icon}</div>
+                    <div class="cyber-panel p-3 rounded-lg flex flex-col items-center justify-center aspect-square ${isLocked ? 'opacity-20 grayscale' : 'cursor-pointer'}" 
+                         onclick="${!isLocked ? `abrirModal(${idx})` : ''}">
+                        <div class="text-2xl ${!isLocked ? item.style : 'text-gray-500'} ${animation}">${item.icon}</div>
                         <span class="text-[7px] mt-2 text-center uppercase truncate w-full px-1">${isLocked ? 'LOCKED' : item.nome}</span>
                     </div>
                 `;
             }).join('');
-            atualizarBarra();
+            
+            const pct = (nivelConcluidos / itens.length) * 100;
+            document.getElementById('barra-energia').style.width = `${pct}%`;
+            document.getElementById('porcentagem').innerText = `${Math.round(pct)}% COMPLETO`;
         }
 
         function progredir() {
             if (nivelConcluidos < itens.length) {
                 nivelConcluidos++;
+                somDesbloqueio.play();
                 localStorage.setItem('progresso', nivelConcluidos);
                 renderizarVitrine();
             }
-        }
-
-        function resetar() {
-            nivelConcluidos = 0;
-            localStorage.removeItem('progresso');
-            renderizarVitrine();
         }
 
         renderizarVitrine();

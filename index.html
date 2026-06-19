@@ -5,54 +5,55 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .cyber-panel { background: rgba(10, 10, 15, 0.9); border: 1px solid rgba(6, 182, 212, 0.3); }
-        .input-cyber { background: rgba(0, 0, 0, 0.5); border: 1px solid #06b6d4; color: white; padding: 5px; width: 100px; border-radius: 4px; }
+        .input-cyber { background: rgba(0, 0, 0, 0.5); border: 1px solid #06b6d4; color: white; padding: 5px; border-radius: 4px; width: 120px; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
 
     <div class="max-w-2xl mx-auto">
-        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Desafios A1: Exercícios</h2>
+        <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Avaliação Integrada A1</h2>
 
-        <!-- Área de Questões -->
-        <div class="cyber-panel p-6 rounded-lg space-y-6">
-            
-            <!-- Questão 1 -->
-            <div>
-                <p class="text-sm mb-2">1. "Je ________ brésilien." (Verbo Être)</p>
-                <input type="text" id="q1" class="input-cyber" placeholder="Resposta">
-            </div>
+        <!-- Resumo Gramatical -->
+        <div class="cyber-panel p-4 mb-6 text-[10px] text-gray-300">
+            <h3 class="text-cyan-500 font-bold mb-1">REVISÃO RÁPIDA:</h3>
+            <p>1. Cumprimentos: Bonjour, Salut, Enchanté.</p>
+            <p>2. Apresentação: Je m'appelle, J'ai... ans.</p>
+            <p>3. Verbos: Être (Je suis) / Avoir (Tu as).</p>
+        </div>
 
-            <!-- Questão 2 -->
-            <div>
-                <p class="text-sm mb-2">2. "J'________ 30 ans." (Verbo Avoir)</p>
-                <input type="text" id="q2" class="input-cyber" placeholder="Resposta">
-            </div>
+        <!-- Exercícios Integrados -->
+        <div class="cyber-panel p-6 rounded-lg space-y-4">
+            <p class="text-sm leading-relaxed text-gray-200">
+                A: <input type="text" id="g1" class="input-cyber" placeholder="Saudação"> ! Je m'appelle Lucas.<br>
+                B: Bonjour, Lucas. <input type="text" id="g2" class="input-cyber" placeholder="Prazer">.<br>
+                A: Quel âge <input type="text" id="g3" class="input-cyber" placeholder="Avoir (tu)"> ?<br>
+                B: J'<input type="text" id="g4" class="input-cyber" placeholder="Verbo (eu)"> 25 ans. Et toi?<br>
+                A: Je <input type="text" id="g5" class="input-cyber" placeholder="Être (eu)"> étudiant.
+            </p>
 
-            <!-- Questão 3 -->
-            <div>
-                <p class="text-sm mb-2">3. Pronome para "Eles":</p>
-                <input type="text" id="q3" class="input-cyber" placeholder="Resposta">
-            </div>
-
-            <button onclick="verificar()" class="bg-cyan-700 w-full py-2 hover:bg-cyan-500 uppercase transition">Verificar Respostas</button>
-            <p id="resultado" class="text-center font-bold mt-4"></p>
+            <button onclick="avaliar()" class="bg-cyan-900 w-full py-2 hover:bg-cyan-700 uppercase transition text-xs">Validar Diálogo</button>
+            <p id="feedback" class="text-center font-bold mt-2 text-sm"></p>
         </div>
     </div>
 
     <script>
-        function verificar() {
-            const r1 = document.getElementById('q1').value.toLowerCase();
-            const r2 = document.getElementById('q2').value.toLowerCase();
-            const r3 = document.getElementById('q3').value.toLowerCase();
+        function avaliar() {
+            const resp = [
+                document.getElementById('g1').value.toLowerCase(),
+                document.getElementById('g2').value.toLowerCase(),
+                document.getElementById('g3').value.toLowerCase(),
+                document.getElementById('g4').value.toLowerCase(),
+                document.getElementById('g5').value.toLowerCase()
+            ];
 
-            let acertos = 0;
-            if (r1 === 'suis') acertos++;
-            if (r2 === 'ai') acertos++;
-            if (r3 === 'ils') acertos++;
+            const gabarito = ["bonjour", "enchanté", "as", "ai", "suis"];
+            let contagem = 0;
+            
+            resp.forEach((r, i) => { if(r === gabarito[i]) contagem++; });
 
-            const res = document.getElementById('resultado');
-            res.innerText = `Você acertou ${acertos} de 3 questões!`;
-            res.className = acertos === 3 ? "text-green-400" : "text-red-400";
+            const feedback = document.getElementById('feedback');
+            feedback.innerText = contagem === 5 ? "PARABÉNS! Domínio total." : `Você acertou ${contagem}/5. Tente novamente!`;
+            feedback.className = contagem === 5 ? "text-green-400 font-bold" : "text-red-400 font-bold";
         }
     </script>
 </body>

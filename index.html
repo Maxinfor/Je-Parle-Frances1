@@ -9,13 +9,15 @@
             width: 80px; height: 80px; 
             border: 2px dashed rgba(6, 182, 212, 0.5); 
             display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; font-size: 24px;
+            border-radius: 12px; font-size: 24px; transition: all 0.3s;
         }
         .badge-unlocked { 
             background: rgba(6, 182, 212, 0.2); 
             border: 2px solid #06b6d4; 
             box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
         }
+        .badge-locked { cursor: help; }
+        .badge-locked:hover { border-color: #fbbf24; color: #fbbf24; }
     </style>
 </head>
 <body class="bg-[#050505] text-white min-h-screen p-4 font-mono">
@@ -24,24 +26,45 @@
         <h2 class="text-cyan-400 text-center mb-6 tracking-[0.2em] uppercase">Estante de Conquistas</h2>
 
         <div class="cyber-panel p-6 rounded-xl">
-            <div class="flex justify-center gap-6">
-                <!-- Badge 1: Nível 1 -->
-                <div class="badge-slot badge-unlocked" title="Fundamentos A1">
-                    🇫🇷
+            <!-- Barra de Progresso -->
+            <div class="mb-8">
+                <div class="flex justify-between text-xs mb-2 text-cyan-400">
+                    <span>Progresso Total</span>
+                    <span>33%</span>
                 </div>
-                <!-- Badge 2: Pendente -->
-                <div class="badge-slot opacity-50" title="Bloqueado">
+                <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                    <div class="bg-cyan-500 h-full w-1/3"></div>
+                </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex justify-center gap-6">
+                <div class="badge-slot badge-unlocked" title="Concluído: Fundamentos A1">🇫🇷</div>
+                
+                <div class="badge-slot badge-locked opacity-50" title="Objetivo: Domine os verbos Être e Avoir">
                     🔒
                 </div>
-                <!-- Badge 3: Pendente -->
-                <div class="badge-slot opacity-50" title="Bloqueado">
+                
+                <div class="badge-slot badge-locked opacity-50" title="Objetivo: Vocabulário de Comida e Números">
                     🔒
                 </div>
             </div>
-            <p class="text-center mt-4 text-xs text-gray-400 uppercase tracking-widest">
-                Conquista: Fundamentos A1 (Desbloqueada)
+
+            <p id="status-text" class="text-center mt-6 text-xs text-gray-400 uppercase tracking-widest">
+                Clique nas travas para ver os objetivos
             </p>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.badge-locked').forEach(badge => {
+            badge.addEventListener('mouseover', () => {
+                document.getElementById('status-text').innerText = badge.getAttribute('title');
+            });
+            badge.addEventListener('mouseout', () => {
+                document.getElementById('status-text').innerText = 'Conquista: Fundamentos A1 (Desbloqueada)';
+            });
+        });
+    </script>
 </body>
 </html>

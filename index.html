@@ -2,66 +2,59 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRANCÊS A1 ACADEMY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: 'Segoe UI', sans-serif; }
+        body { background: radial-gradient(circle at center, #0f172a, #020617); min-height: 100vh; color: white; font-family: sans-serif; }
         .glass-panel { background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; }
-        .grid-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; transition: 0.3s; cursor: pointer; }
+        .grid-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; transition: 0.3s; cursor: pointer; text-align: center; padding: 24px; margin-bottom: 16px; }
         .grid-card:hover { background: rgba(56, 189, 248, 0.1); border-color: #38bdf8; }
-        .progress-bar { height: 8px; border-radius: 4px; background: rgba(0,0,0,0.3); }
-        .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #38bdf8, #818cf8); }
     </style>
 </head>
-<body class="p-6">
-    <div class="max-w-2xl mx-auto">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-black text-cyan-400 italic">FRANCÊS A1</h1>
-                <h1 class="text-3xl font-black text-white">ACADEMY</h1>
-            </div>
-            <div class="glass-panel px-6 py-3 flex items-center gap-2 font-bold text-yellow-400 text-lg">
-                <span>💰</span> <span id="coin-balance">750</span>
-                <button class="bg-cyan-500 text-white px-4 py-1 rounded-full ml-4 text-sm font-bold">SHOP</button>
-            </div>
-        </div>
+<body class="p-4">
+    <div id="app" class="max-w-md mx-auto"></div>
 
-        <h2 class="text-xl font-semibold mb-6 text-white/80">ESCOLHA SEU TREINAMENTO:</h2>
+    <script>
+        // --- BANCO DE DADOS ---
+        const db = {
+            coins: parseInt(localStorage.getItem('coins')) || 0,
+            fases: {
+                fase1: { titulo: "1. Cumprimentos", teoria: "Bonjour (Olá) | Salut (Oi) | Bonsoir (Boa noite) | Au revoir (Adeus)", questoes: [{q: "Como se diz 'Bom dia'?", r: "bonjour"}, {q: "Como se diz 'Adeus'?", r: "au revoir"}] },
+                fase2: { titulo: "2. Apresentação", teoria: "Je m'appelle... (Eu me chamo) | Enchanté (Prazer)", questoes: [{q: "Como se diz 'Eu me chamo'?", r: "je m'appelle"}, {q: "Como se diz 'Prazer'?", r: "enchanté"}] },
+                fase3: { titulo: "3. Revisão (1+2)", teoria: "Revise tudo sobre cumprimentos e apresentações.", questoes: [{q: "Olá (Francês)", r: "bonjour"}, {q: "Eu me chamo... (Francês)", r: "je m'appelle"}] },
+                fase4: { titulo: "4. Dados Pessoais", teoria: "J'ai X ans (Idade) | J'habite à Brasília | Mon e-mail est...", questoes: [{q: "Eu tenho 25 anos", r: "j'ai 25 ans"}, {q: "Eu moro em Brasília", r: "j'habite à brasília"}] },
+                fase5: { titulo: "5. Revisão Geral", teoria: "Teste final com todos os assuntos.", questoes: [{q: "Bom dia", r: "bonjour"}, {q: "Eu me chamo...", r: "je m'appelle"}, {q: "Eu moro em Brasília", r: "j'habite à brasília"}] }
+            }
+        };
 
-        <!-- Grid de Treinos -->
-        <div id="grid-container" class="grid grid-cols-2 gap-4">
-            <div class="grid-card p-5" onclick="startQuiz('verbs')">
-                <h3 class="font-bold text-lg mb-2">Verbos: Être & Avoir</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm opacity-60">45% CONCLUÍDO</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 45%"></div></div>
-            </div>
+        // --- LÓGICA DO JOGO ---
+        function renderMenu() {
+            let html = `<div class="flex justify-between items-center mb-6"><h1 class="text-2xl font-black text-cyan-400">FRANCÊS A1</h1><div class="bg-slate-800 px-4 py-2 rounded-xl font-bold text-yellow-400">💰 ${db.coins}</div></div><div class="grid grid-cols-1">`;
+            for (let id in db.fases) { html += `<div class="grid-card" onclick="startQuiz('${id}')">${db.fases[id].titulo}</div>`; }
+            document.getElementById('app').innerHTML = html + `</div>`;
+        }
 
-            <div class="grid-card p-5" onclick="startQuiz('restaurant')">
-                <h3 class="font-bold text-lg mb-2">No Restaurante</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm opacity-60">10% CONCLUÍDO</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 10%"></div></div>
-            </div>
+        function startQuiz(id) {
+            const f = db.fases[id];
+            document.getElementById('app').innerHTML = `<div class="glass-panel p-8 text-center text-white"><h2 class="text-2xl mb-4 text-cyan-400 font-bold">${f.titulo}</h2><div class="bg-slate-900 p-4 rounded-xl mb-6 text-sm italic">${f.teoria}</div><button onclick="runExercise('${id}')" class="w-full bg-cyan-500 p-3 rounded-xl font-bold">COMEÇAR EXERCÍCIOS</button><button onclick="renderMenu()" class="mt-4 text-xs opacity-50 underline">Voltar</button></div>`;
+        }
 
-            <div class="grid-card p-5" onclick="startQuiz('time')">
-                <h3 class="font-bold text-lg mb-2">Números e Horas</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm opacity-60">30% CONCLUÍDO</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 30%"></div></div>
-            </div>
+        function runExercise(id) {
+            const q = db.fases[id].questoes[Math.floor(Math.random() * db.fases[id].questoes.length)];
+            document.getElementById('app').innerHTML = `<div class="glass-panel p-8 text-center"><h2 class="text-xl mb-6">${q.q}</h2><input id="ans" class="w-full p-4 rounded-xl bg-slate-900 border border-cyan-500 mb-4 text-white text-center" placeholder="Resposta..."> <button onclick="check('${id}', '${q.r}')" class="w-full bg-cyan-500 p-3 rounded-xl font-bold">RESPONDER</button></div>`;
+        }
 
-            <div class="grid-card p-5" onclick="startQuiz('family')">
-                <h3 class="font-bold text-lg mb-2">Família e Perfil</h3>
-                <div class="flex items-center justify-between mb-2">
-                    <span class="text-sm opacity-60">80% CONCLUÍDO</span>
-                </div>
-                <div class="progress-bar"><div class="progress-fill" style="width: 80%"></div></div>
-            </div>
-        </div>
-    </div>
+        function check(id, expected) {
+            if (document.getElementById('ans').value.toLowerCase().trim() === expected.toLowerCase()) {
+                db.coins += 10;
+                localStorage.setItem('coins', db.coins);
+                alert("Bravo! +10 moedas ✨");
+                startQuiz(id);
+            } else { alert("Encore une fois! 🌸"); }
+        }
+
+        renderMenu();
+    </script>
 </body>
 </html>

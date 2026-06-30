@@ -3,69 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada A1 Elite</title>
+    <title>Jornada A1: 50 Níveis Acumulativos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
-    <div id="app" class="w-full max-w-md p-6 bg-zinc-900 rounded-3xl border border-zinc-800 shadow-2xl">
-        <!-- O conteúdo será gerado aqui -->
+<body class="bg-black text-white p-6 flex flex-col items-center">
+    <div id="app" class="w-full max-w-lg bg-zinc-900 p-8 rounded-3xl border border-zinc-800">
+        <!-- O motor de jogo vai injetar tudo aqui -->
     </div>
 
     <script>
-        // Banco de Questões (Estrutura)
-        const db = [
-            { id: 0, titulo: "Nível 1 (10 Questões)", img: "https://cdn-icons-png.flaticon.com/512/179/179249.png", q: [
-                { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" },
-                // ... adicione as outras 9 aqui
-            ]},
-            { id: 1, titulo: "Nível 2 (20 Questões)", img: "https://cdn-icons-png.flaticon.com/512/2909/2909871.png", q: [
-                { p: "Eu tenho 20 anos?", op: ["J'ai 20 ans", "Je suis 20 ans"], c: "J'ai 20 ans" },
-                // ... adicione as outras 19 aqui
-            ]},
-            { id: 2, titulo: "Nível 3 (30 Questões)", img: "https://cdn-icons-png.flaticon.com/512/3063/3063198.png", q: [
-                { p: "Como conjugar Parler (Je)?", op: ["Je parle", "Je parles"], c: "Je parle" },
-                // ... adicione as outras 29 aqui
-            ]}
-        ];
+        // Banco de temas que serão incrementados
+        const temas = ["Verbo Être", "Verbo Avoir", "Verbos -ER", "Contrações", "Passado", "Futuro", "Partitivos", "Negação", "Perguntas", "Plurais"];
+        
+        // Gerador de Níveis Acumulativos
+        const jogo = Array.from({ length: 50 }, (_, i) => {
+            const nivelAtual = i + 1;
+            const qtdQuestoes = 20 + (i * 2); // 20 no Nível 1, 22 no Nível 2...
+            const temasIncluidos = temas.slice(0, Math.ceil(nivelAtual / 5)); // Adiciona um tema novo a cada 5 níveis
+            
+            return {
+                id: nivelAtual,
+                total: qtdQuestoes,
+                temas: temasIncluidos,
+                premio: `https://picsum.photos/id/${i + 20}/300/300`
+            };
+        });
 
         let nIdx = 0, qIdx = 0;
 
         function render() {
-            const nivel = db[nIdx];
-            if (qIdx >= nivel.q.length) return mostrarPremio();
+            const nivel = jogo[nIdx];
+            if (qIdx >= nivel.total) return mostrarPremio();
 
-            const q = nivel.q[qIdx];
             document.getElementById('app').innerHTML = `
-                <div class="text-blue-500 font-bold text-xs uppercase mb-2">${nivel.titulo} | Questão ${qIdx + 1}/${nivel.q.length}</div>
-                <h1 class="text-2xl font-bold mb-6">${q.p}</h1>
+                <div class="text-blue-400 font-bold text-xs uppercase mb-2">Nível ${nivel.id} | Progresso: ${qIdx + 1}/${nivel.total}</div>
+                <h1 class="text-2xl font-bold mb-4">Assuntos: ${nivel.temas.join(', ')}</h1>
+                <p class="text-zinc-400 mb-8">Questão de nível ${nivel.id} (Escala Gradual)</p>
                 <div class="flex flex-col gap-3">
-                    ${q.op.map(o => `<button onclick="check('${o}')" class="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition">${o}</button>`).join('')}
+                    <button onclick="proxima()" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 transition">Opção A (Simulada)</button>
+                    <button onclick="proxima()" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 transition">Opção B (Simulada)</button>
                 </div>
             `;
         }
 
-        function check(resp) {
-            if (resp === db[nIdx].q[qIdx].c) {
-                qIdx++;
-                render();
-            } else {
-                alert("Errou! A correta era: " + db[nIdx].q[qIdx].c);
-            }
+        function proxima() {
+            qIdx++;
+            render();
         }
 
         function mostrarPremio() {
             document.getElementById('app').innerHTML = `
-                <h1 class="text-3xl font-bold text-center mb-6">Nível Concluído!</h1>
-                <img src="${db[nIdx].img}" class="w-32 mx-auto mb-6">
-                <button onclick="proximoNivel()" class="w-full py-4 bg-yellow-600 rounded-xl font-bold">COLETAR E AVANÇAR</button>
+                <h1 class="text-3xl font-bold text-center mb-6">Nível ${jogo[nIdx].id} Concluído!</h1>
+                <img src="${jogo[nIdx].premio}" class="w-full rounded-2xl mb-6 shadow-xl">
+                <button onclick="nIdx++; qIdx=0; render()" class="w-full py-4 bg-yellow-600 rounded-xl font-bold">COLETAR E IR PARA NÍVEL ${nIdx + 2}</button>
             `;
-        }
-
-        function proximoNivel() {
-            nIdx++;
-            qIdx = 0;
-            if (nIdx < db.length) render();
-            else alert("Jornada Finalizada!");
         }
 
         render();

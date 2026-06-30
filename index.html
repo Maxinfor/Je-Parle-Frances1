@@ -3,94 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRANCÊS GOURMET</title>
+    <title>Jornada A1 Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border-radius: 20px; }
-        .correct { background-color: #059669 !important; }
-        .wrong { background-color: #dc2626 !important; }
-        .baguette-slot { height: 20px; width: 100%; border-radius: 10px; margin-bottom: 5px; transition: 0.5s; }
-    </style>
 </head>
-<body class="p-4">
-    <div id="app" class="max-w-md mx-auto"></div>
+<body class="bg-black text-white min-h-screen flex items-center justify-center p-4">
+    <div id="app" class="w-full max-w-md p-6 bg-zinc-900 rounded-3xl border border-zinc-800 shadow-2xl">
+        <!-- O conteúdo será gerado aqui -->
+    </div>
 
     <script>
-        let progresso = parseInt(localStorage.getItem('progresso')) || 1;
-        let coins = parseInt(localStorage.getItem('coins')) || 0;
-        
-        // Ingredientes da baguete baseados no progresso
-        const ingredientes = ["", "🧀 Queijo", "🥓 Presunto", "🍅 Tomate", "🥬 Alface", "🥖 BAGUETE GIGANTE!"];
-        
-        const db = {
-            fases: {
-                1: { titulo: "A1: Cumprimentos", questoes: [{q: "Como se diz 'Bom dia'?", r: "bonjour", tipo: "escrita"}] },
-                2: { titulo: "A1: Restaurante", questoes: [{q: "Complete: '___ l'addition'", r: "l'addition", tipo: "escrita"}] },
-                6: { titulo: "A2: Rotina", questoes: [{q: "Je ___ lève (Eu me levanto)", r: "me", opcoes: ["te", "me", "se"], tipo: "escolha"}] },
-                7: { titulo: "A2: Família", questoes: [{q: "___ mère (Minha mãe)", r: "ma", opcoes: ["mon", "ma", "mes"], tipo: "escolha"}] }
-            }
-        };
+        // Banco de Questões (Estrutura)
+        const db = [
+            { id: 0, titulo: "Nível 1 (10 Questões)", img: "https://cdn-icons-png.flaticon.com/512/179/179249.png", q: [
+                { p: "Eu sou brasileiro?", op: ["Je suis brésilien", "Je es brésilien"], c: "Je suis brésilien" },
+                // ... adicione as outras 9 aqui
+            ]},
+            { id: 1, titulo: "Nível 2 (20 Questões)", img: "https://cdn-icons-png.flaticon.com/512/2909/2909871.png", q: [
+                { p: "Eu tenho 20 anos?", op: ["J'ai 20 ans", "Je suis 20 ans"], c: "J'ai 20 ans" },
+                // ... adicione as outras 19 aqui
+            ]},
+            { id: 2, titulo: "Nível 3 (30 Questões)", img: "https://cdn-icons-png.flaticon.com/512/3063/3063198.png", q: [
+                { p: "Como conjugar Parler (Je)?", op: ["Je parle", "Je parles"], c: "Je parle" },
+                // ... adicione as outras 29 aqui
+            ]}
+        ];
 
-        function renderMenu() {
-            let nivelAtual = progresso <= 2 ? "Nível A1 (Iniciante)" : "Nível A2 (Sobrevivência)";
-            let html = `<div class="text-center mb-6">
-                <h1 class="text-2xl font-bold text-cyan-400">FRANCÊS A1-A2</h1>
-                <p class="text-sm opacity-70">${nivelAtual}</p>
-                <div class="mt-4 p-4 glass">
-                    <p class="text-xs font-bold uppercase tracking-widest text-yellow-500">Sua Baguete:</p>
-                    <div id="baguette-display" class="mt-2 text-sm">${ingredientes.slice(1, progresso).join(" + ") || "Vazia..."}</div>
+        let nIdx = 0, qIdx = 0;
+
+        function render() {
+            const nivel = db[nIdx];
+            if (qIdx >= nivel.q.length) return mostrarPremio();
+
+            const q = nivel.q[qIdx];
+            document.getElementById('app').innerHTML = `
+                <div class="text-blue-500 font-bold text-xs uppercase mb-2">${nivel.titulo} | Questão ${qIdx + 1}/${nivel.q.length}</div>
+                <h1 class="text-2xl font-bold mb-6">${q.p}</h1>
+                <div class="flex flex-col gap-3">
+                    ${q.op.map(o => `<button onclick="check('${o}')" class="p-4 bg-zinc-800 hover:bg-zinc-700 rounded-xl transition">${o}</button>`).join('')}
                 </div>
-            </div><div class="grid grid-cols-1 gap-4">`;
-
-            for (let id in db.fases) {
-                let bloqueado = parseInt(id) > progresso;
-                html += `<div class="glass p-4 text-center cursor-pointer ${bloqueado ? 'opacity-30' : ''}" 
-                        onclick="${bloqueado ? 'alert(\'Conclua a fase anterior!\')' : `startQuiz('${id}')`}">
-                        ${db.fases[id].titulo} ${bloqueado ? '🔒' : '🔓'}</div>`;
-            }
-            document.getElementById('app').innerHTML = html + `</div>`;
+            `;
         }
 
-        function startQuiz(id) {
-            const q = db.fases[id].questoes[0];
-            let html = `<div class="glass p-8 text-center" id="quiz-box">
-                <h2 class="text-xl mb-6">${q.q}</h2>`;
-            
-            if (q.tipo === "escolha") {
-                q.opcoes.forEach(op => html += `<button class="btn-opt block w-full bg-slate-800 p-3 rounded-xl mb-2" onclick="verificar('${id}', '${q.r}', '${op}', this)">${op}</button>`);
+        function check(resp) {
+            if (resp === db[nIdx].q[qIdx].c) {
+                qIdx++;
+                render();
             } else {
-                html += `<input id="ans" class="w-full p-4 rounded-xl bg-slate-900 text-center mb-4 text-white" placeholder="Sua resposta...">
-                         <button class="w-full bg-cyan-500 py-3 rounded-xl font-bold" onclick="verificar('${id}', '${q.r}', document.getElementById('ans').value, this)">RESPONDER</button>`;
-            }
-            document.getElementById('app').innerHTML = html + `</div>`;
-        }
-
-        function verificar(id, expected, input, element) {
-            const isCorrect = input.toLowerCase().trim() === expected.toLowerCase();
-            
-            // Feedback visual: Pinta de verde ou vermelho
-            element.classList.add(isCorrect ? 'correct' : 'wrong');
-            
-            if (isCorrect) {
-                setTimeout(() => {
-                    alert("Bravo! Você ganhou um novo ingrediente! ✨");
-                    if (parseInt(id) === progresso) { 
-                        progresso++; 
-                        localStorage.setItem('progresso', progresso); 
-                    }
-                    renderMenu();
-                }, 800);
-            } else {
-                // Se errou, mostra a certa em verde
-                setTimeout(() => {
-                    alert("Ops! A resposta certa era: " + expected);
-                    renderMenu();
-                }, 1000);
+                alert("Errou! A correta era: " + db[nIdx].q[qIdx].c);
             }
         }
 
-        renderMenu();
+        function mostrarPremio() {
+            document.getElementById('app').innerHTML = `
+                <h1 class="text-3xl font-bold text-center mb-6">Nível Concluído!</h1>
+                <img src="${db[nIdx].img}" class="w-32 mx-auto mb-6">
+                <button onclick="proximoNivel()" class="w-full py-4 bg-yellow-600 rounded-xl font-bold">COLETAR E AVANÇAR</button>
+            `;
+        }
+
+        function proximoNivel() {
+            nIdx++;
+            qIdx = 0;
+            if (nIdx < db.length) render();
+            else alert("Jornada Finalizada!");
+        }
+
+        render();
     </script>
 </body>
 </html>

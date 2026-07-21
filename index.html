@@ -6,56 +6,132 @@
     <title>Jornada A1: 50 Níveis Acumulativos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white p-6 flex flex-col items-center">
-    <div id="app" class="w-full max-w-lg bg-zinc-900 p-8 rounded-3xl border border-zinc-800">
+<body class="bg-black text-white p-6 flex flex-col items-center min-h-screen">
+    <div id="app" class="w-full max-w-lg bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
         <!-- O motor de jogo vai injetar tudo aqui -->
     </div>
 
     <script>
-        // Banco de temas que serão incrementados
+        // Banco de temas
         const temas = ["Verbo Être", "Verbo Avoir", "Verbos -ER", "Contrações", "Passado", "Futuro", "Partitivos", "Negação", "Perguntas", "Plurais"];
         
+        // Banco de questões simulado por tema (Foco A1)
+        const bancoQuestoes = {
+            "Verbo Être": [
+                { q: "Je ___ étudiant(e).", opcoes: ["suis", "es", "est", "sommes"], correta: 0 },
+                { q: "Tu ___ français(e)?", opcoes: ["suis", "es", "est", "sont"], correta: 1 },
+                { q: "Elle ___ heureuse.", opcoes: ["suis", "es", "est", "sommes"], correta: 2 }
+            ],
+            "Verbo Avoir": [
+                { q: "J'___ un chat.", opcoes: ["ai", "as", "a", "avons"], correta: 0 },
+                { q: "Nous ___ faim.", opcoes: ["avez", "ont", "avons", "suis"], correta: 2 },
+                { q: "Ils ___ 20 ans.", opcoes: ["ont", "ont", "ont", "ont"], correta: 0 }
+            ],
+            "Verbos -ER": [
+                { q: "Tu ___ (parler) français.", opcoes: ["parles", "parle", "parlons", "parlez"], correta: 0 },
+                { q: "Nous ___ (aimer) voyager.", opcoes: ["aimes", "aime", "aimons", "aiment"], correta: 2 }
+            ],
+            "Contrações": [
+                { q: "Je vais ___ école.", opcoes: ["à la", "au", "à l'", "aux"], correta: 2 },
+                { q: "Il vient ___ États-Unis.", opcoes: ["du", "de la", "des", "de l'"], correta: 2 }
+            ],
+            "Passado": [
+                { q: "Hier, je ___ mangé une pomme.", opcoes: ["suis", "ai", "es", "as"], correta: 1 },
+                { q: "Elles ___ arrivées hier.", opcoes: ["sont", "ont", "ont", "sont"], correta: 0 }
+            ],
+            "Futuro": [
+                { q: "Demain, je vais ___.", opcoes: ["partir", "partis", "part", "partons"], correta: 0 }
+            ],
+            "Partitivos": [
+                { q: "Je bois ___ eau.", opcoes: ["de l'", "du", "de la", "des"], correta: 0 },
+                { q: "Tu manges ___ pain.", opcoes: ["du", "de la", "des", "de l'"], correta: 0 }
+            ],
+            "Negação": [
+                { q: "Je ___ ne mange pas de viande.", opcoes: ["ne", "n'", "pas", "plus"], correta: 1 }
+            ],
+            "Perguntas": [
+                { q: "___ tu viens?", opcoes: ["Où", "Comment", "Pourquoi", "Quand"], correta: 0 }
+            ],
+            "Plurais": [
+                { q: "Le cheval devient : les ___", opcoes: ["chevals", "chevals", "chevaux", "chevaus"], correta: 2 }
+            ]
+        };
+
         // Gerador de Níveis Acumulativos
         const jogo = Array.from({ length: 50 }, (_, i) => {
             const nivelAtual = i + 1;
-            const qtdQuestoes = 20 + (i * 2); // 20 no Nível 1, 22 no Nível 2...
-            const temasIncluidos = temas.slice(0, Math.ceil(nivelAtual / 5)); // Adiciona um tema novo a cada 5 níveis
+            const qtdQuestoes = 10 + (i * 2); // Ajustado para 10 inicial para fluidez
+            const temasIncluidos = temas.slice(0, Math.ceil(nivelAtual / 5));
             
             return {
                 id: nivelAtual,
                 total: qtdQuestoes,
                 temas: temasIncluidos,
-                premio: `https://picsum.photos/id/${i + 20}/300/300`
+                premio: `https://picsum.photos/id/${(i + 20) % 100}/300/300`
             };
         });
 
-        let nIdx = 0, qIdx = 0;
+        let nIdx = 0, qIdx = 0, pontuation = 0;
+        let questaoAtualCache = null;
+
+        function obterQuestaoAleatoria(temasAtivos) {
+            // Escolhe aleatoriamente um tema dos disponíveis no nível atual
+            const temaEscolhido = temasAtivos[Math.floor(Math.random() * temasAtivos.length)];
+            const lista = bancoQuestoes[temaEscolhido] || bancoQuestoes["Verbo Être"];
+            const q = lista[Math.floor(Math.random() * lista.length)];
+            return { ...q, tema: temaEscolhido };
+        }
 
         function render() {
             const nivel = jogo[nIdx];
             if (qIdx >= nivel.total) return mostrarPremio();
 
+            // Gera uma questão nova se ainda não existir para o índice atual
+            if (!questaoAtualCache || questaoAtualCache.nivelIndex !== qIdx) {
+                questaoAtualCache = { ...obterQuestaoAleatoria(nivel.temas), nivelIndex: qIdx };
+            }
+
+            const q = questaoAtualCache;
+
             document.getElementById('app').innerHTML = `
-                <div class="text-blue-400 font-bold text-xs uppercase mb-2">Nível ${nivel.id} | Progresso: ${qIdx + 1}/${nivel.total}</div>
-                <h1 class="text-2xl font-bold mb-4">Assuntos: ${nivel.temas.join(', ')}</h1>
-                <p class="text-zinc-400 mb-8">Questão de nível ${nivel.id} (Escala Gradual)</p>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-blue-400 font-bold text-xs uppercase">Nível ${nivel.id} | Progresso: ${qIdx + 1}/${nivel.total}</span>
+                    <span class="text-zinc-500 text-xs">${q.tema}</span>
+                </div>
+                <h1 class="text-xl font-bold mb-6 text-zinc-100">${q.q}</h1>
                 <div class="flex flex-col gap-3">
-                    <button onclick="proxima()" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 transition">Opção A (Simulada)</button>
-                    <button onclick="proxima()" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 transition">Opção B (Simulada)</button>
+                    ${q.opcoes.map((opcao, index) => `
+                        <button onclick="responder(${index}, ${q.correta})" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 text-left transition border border-zinc-700/50">
+                            ${opcao}
+                        </button>
+                    `).join('')}
                 </div>
             `;
         }
 
-        function proxima() {
-            qIdx++;
-            render();
+        function responder(selecionada, correta) {
+            const botoes = document.querySelectorAll('#app button');
+            botoes.forEach((b, i) => {
+                b.disabled = true;
+                if (i === correta) b.classList.add('bg-green-600', 'border-green-500');
+                if (i === selecionada && selecionada !== correta) b.classList.add('bg-red-600', 'border-red-500');
+            });
+
+            setTimeout(() => {
+                qIdx++;
+                questaoAtualCache = null; // Reseta cache para a próxima
+                render();
+            }, 800);
         }
 
         function mostrarPremio() {
             document.getElementById('app').innerHTML = `
-                <h1 class="text-3xl font-bold text-center mb-6">Nível ${jogo[nIdx].id} Concluído!</h1>
-                <img src="${jogo[nIdx].premio}" class="w-full rounded-2xl mb-6 shadow-xl">
-                <button onclick="nIdx++; qIdx=0; render()" class="w-full py-4 bg-yellow-600 rounded-xl font-bold">COLETAR E IR PARA NÍVEL ${nIdx + 2}</button>
+                <h1 class="text-3xl font-bold text-center mb-2">Nível ${jogo[nIdx].id} Concluído! 🎉</h1>
+                <p class="text-zinc-400 text-center mb-6">Excelente progresso na sua jornada básica.</p>
+                <img src="${jogo[nIdx].premio}" class="w-full h-64 object-cover rounded-2xl mb-6 shadow-xl border border-zinc-800">
+                <button onclick="nIdx++; qIdx=0; questaoAtualCache=null; render()" class="w-full py-4 bg-yellow-600 hover:bg-yellow-500 text-black rounded-xl font-bold transition shadow-lg">
+                    COLETAR E IR PARA NÍVEL ${nIdx + 2}
+                </button>
             `;
         }
 

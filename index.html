@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duolingo Style - Francês A1</title>
+    <title>Duolingo Style - Francês A1 com Áudio</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -21,15 +21,30 @@
             questaoAtualIndex: 0
         };
 
-        // Banco de Questões com Teoria (Matéria) + Exercício
+        // Função nativa do navegador para reproduzir a pronúncia em francês (Text-to-Speech)
+        function falar(texto) {
+            if ('speechSynthesis' in window) {
+                // Cancela qualquer áudio anterior pendente
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = 'fr-FR'; // Define o idioma para Francês (França)
+                utterance.rate = 0.9;     // Velocidade ligeiramente mais lenta para facilitar o aprendizado A1
+                
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Banco de Questões com Teoria, Exercício e a palavra/frase em foco para o áudio
         const questoes = [
             {
                 materia: {
                     titulo: "O Verbo Être (Ser / Estar)",
-                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Veja a conjugação básica: Je suis (Eu sou), Tu es (Tu és/Você é), Il/Elle est (Ele/Ela é)."
+                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Ouça a pronúncia abaixo antes de praticar."
                 },
                 exercicio: {
                     pergunta: "Como se diz \"Eu sou\" em francês?",
+                    audioTexto: "Je suis", // Texto que será falado pelo sintetizador
                     opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
                     correta: 0
                 }
@@ -37,10 +52,11 @@
             {
                 materia: {
                     titulo: "O Verbo Avoir (Ter)",
-                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' é usada porque 'je' perde a vogal 'e' antes de outra vogal (a). Exemplo: J'ai un chat (Eu tenho um gato)."
+                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' é usada porque 'je' perde a vogal 'e' antes de outra vogal. Escute com atenção."
                 },
                 exercicio: {
                     pergunta: "Traduza a frase:",
+                    audioTexto: "J'ai un chat.",
                     fraseDestaque: "J'ai un chat.",
                     opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
                     correta: 0
@@ -49,10 +65,11 @@
             {
                 materia: {
                     titulo: "Vocabulário de Alimentos",
-                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos definidos ou indefinidos. A palavra para 'maçã' em francês é feminina: *une pomme*."
+                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos definidos ou indefinidos. Ouça como se pronuncia a palavra para maçã."
                 },
                 exercicio: {
                     pergunta: "Qual destas palavras significa \"Maçã\"?",
+                    audioTexto: "Pomme",
                     opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
                     correta: 1
                 }
@@ -60,10 +77,11 @@
             {
                 materia: {
                     titulo: "Saudações Comuns",
-                    explicacao: "\"Bonjour\" significa Bom dia (ou Olá durante o dia). A expressão \"Comment ça va?\" é a forma mais popular e informal de perguntar \"Como vai?\" ou \"Tudo bem?\":"
+                    explicacao: "\"Bonjour\" significa Bom dia. A expressão \"Comment ça va?\" é a forma mais popular de perguntar \"Como vai?\". Ouça a frase completa."
                 },
                 exercicio: {
                     pergunta: "Traduza a frase:",
+                    audioTexto: "Bonjour, comment ça va?",
                     fraseDestaque: "Bonjour, comment ça va?",
                     opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
                     correta: 1
@@ -72,10 +90,11 @@
             {
                 materia: {
                     titulo: "Conjugação do Pronome Tu",
-                    explicacao: "Para o pronome 'tu' (você/tu), os verbos regulares terminados em -ER perdem a terminação e ganham 's'. Com o verbo être, a forma correta é 'Tu es'."
+                    explicacao: "Para o pronome 'tu' (você/tu) com o verbo être, a forma correta é 'Tu es'. Ouça o som da pronúncia."
                 },
                 exercicio: {
                     pergunta: "Complete: \"Tu ___ français(e)?\"",
+                    audioTexto: "Tu es français?",
                     opcoes: ['suis', 'es', 'est', 'sont'],
                     correta: 1
                 }
@@ -91,8 +110,8 @@
                         <div class="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 mb-6">
                             <span class="text-5xl">🦉</span>
                         </div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu</h1>
-                        <p class="text-zinc-400 mb-10 text-sm">Aprenda a matéria passo a passo e pratique logo em seguida.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu Áudio</h1>
+                        <p class="text-zinc-400 mb-10 text-sm">Aprenda a matéria, escute a pronúncia nativa e pratique.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition active:scale-95">
                             COMEÇAR LIÇÃO
                         </button>
@@ -101,6 +120,11 @@
             } else if (estado.tela === 'teoria') {
                 const item = questoes[estado.questaoAtualIndex];
                 const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
+
+                // Toca automaticamente o áudio da teoria se houver texto associado
+                if (item.exercicio && item.exercicio.audioTexto) {
+                    setTimeout(() => falar(item.exercicio.audioTexto), 400);
+                }
 
                 app.innerHTML = `
                     <div class="flex flex-col justify-between flex-grow">
@@ -118,7 +142,12 @@
 
                             <!-- Cartão de Teoria -->
                             <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-3xl shadow-xl mt-4">
-                                <div class="text-blue-400 font-bold text-xs uppercase tracking-wider mb-2">📚 Hora da Matéria</div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <div class="text-blue-400 font-bold text-xs uppercase tracking-wider">📚 Hora da Matéria</div>
+                                    <button onclick="falar('${item.exercicio.audioTexto}')" class="flex items-center gap-1 text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 px-3 py-1.5 rounded-full transition font-semibold">
+                                        🔊 Ouvir Áudio
+                                    </button>
+                                </div>
                                 <h2 class="text-2xl font-bold mb-4 text-zinc-100">${item.materia.titulo}</h2>
                                 <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
                             </div>
@@ -150,7 +179,15 @@
 
                             <!-- Pergunta / Exercício -->
                             <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
-                            ${q.fraseDestaque ? `<div class="text-2xl font-bold mb-6 text-zinc-100 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">${q.fraseDestaque}</div>` : ''}
+                            
+                            <div class="flex items-center gap-3 bg-zinc-900 p-4 rounded-2xl border border-zinc-800 mb-6">
+                                <button onclick="falar('${q.audioTexto}')" class="w-12 h-12 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-full flex items-center justify-center text-xl shadow-lg transition shrink-0 active:scale-95" title="Ouvir pronúncia">
+                                    🔊
+                                </button>
+                                <div class="text-xl font-bold text-zinc-100">
+                                    ${q.fraseDestaque || q.audioTexto}
+                                </div>
+                            </div>
 
                             <!-- Opções -->
                             <div class="flex flex-col gap-3 mt-4" id="opcoes-container">
@@ -169,7 +206,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🎉</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-green-400">Lição Concluída!</h1>
-                        <p class="text-zinc-400 mb-8">Você absorveu a matéria de hoje e ganhou <strong>+15 XP</strong>.</p>
+                        <p class="text-zinc-400 mb-8">Você praticou a escuta e a gramática, ganhando <strong>+15 XP</strong>.</p>
                         <button onclick="voltarMenu()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition">
                             CONTINUAR
                         </button>
@@ -180,7 +217,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4">💔</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Acabaram as vidas!</h1>
-                        <p class="text-zinc-400 mb-8">Revise a matéria com calma e tente novamente.</p>
+                        <p class="text-zinc-400 mb-8">Escute os áudios com calma e tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-lg transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -192,7 +229,7 @@
         function iniciarLicao() {
             estado.vidas = 3;
             estado.questaoAtualIndex = 0;
-            estado.tela = 'teoria'; // Começa sempre explicando a matéria
+            estado.tela = 'teoria';
             renderizar();
         }
 
@@ -217,7 +254,7 @@
                     if (estado.questaoAtualIndex >= questoes.length) {
                         estado.tela = 'vitoria';
                     } else {
-                        estado.tela = 'teoria'; // Avança para a matéria do próximo nível
+                        estado.tela = 'teoria';
                     }
                     renderizar();
                 }, 900);
@@ -233,13 +270,14 @@
                     if (estado.vidas <= 0) {
                         estado.tela = 'derrota';
                     } else {
-                        renderizar(); // Mantém na mesma tela ou repete
+                        renderizar();
                     }
                 }, 1200);
             }
         }
 
         function voltarMenu() {
+            window.speechSynthesis.cancel();
             estado.tela = 'menu';
             renderizar();
         }

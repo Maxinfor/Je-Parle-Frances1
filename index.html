@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Lógico A1 - Construção de Conhecimento</title>
+    <title>LinguaDu Lógico A1 - Nível 2 (Com Revisão e Diálogo Interativo)</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -14,7 +14,7 @@
     </div>
 
     <script>
-        // Estado do Sistema de Construção Lógica A1
+        // Estado do Sistema de Construção Lógica A1 - Nível 2 com Revisão e Diálogo
         let estado = {
             tela: 'menu', 
             vidas: 3,
@@ -32,193 +32,237 @@
             audio.play().catch(erro => console.log("Áudio indisponível:", erro));
         }
 
-        // Banco de Questões Baseado na Lógica de Construção de Peças e Imagens Fixadoras
+        // Banco de Questões - Nível 2 + Bloco Especial de Revisão + Diálogo Prático Interativo
         const questoes = [
             {
-                passo: "Bloco 1: Moradia e Lar",
+                tipo: "bloco",
+                passo: "Bloco 1: Faculdade e Cursos",
                 vocabulario: [
-                    { palavra: "Je", significado: "Eu" },
-                    { palavra: "habite", significado: "moro" },
-                    { palavra: "une maison", significado: "uma casa" }
+                    { palavra: "Nous", significado: "Nós" },
+                    { palavra: "allons", significado: "vamos" },
+                    { palavra: "à l'université", significado: "para a faculdade" }
                 ],
-                explicacaoLogica: "Em francês, para construir a frase \"eu moro em uma casa\", juntamos as peças lógicas: <strong>Je</strong> (eu) + <strong>habite</strong> (moro) + <strong>une maison</strong> (uma casa). Veja as imagens e memorize a lógica.",
-                imagem: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "J'habite une maison",
+                explicacaoLogica: "Para dizer para onde estamos indo com colegas na faculdade: <strong>Nous</strong> (nós) + <strong>allons</strong> (vamos) + <strong>à l'université</strong> (para a faculdade). Note como as peças se encaixam.",
+                imagem: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Nous allons à l'université",
                 exercicio: {
-                    pergunta: "Seguindo a lógica estrutural, como se diz \"Eu moro em uma casa\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "J'habite une maison",
-                    audioTraducaoFR: "Eu moro em uma casa",
-                    opcoes: ['J\'habite une maison', 'Tu as un chat', 'Je mange du pain', 'Il fait beau'],
+                    pergunta: "Seguindo a lógica estrutural, como se diz \"Nós vamos para a faculdade\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Nous allons à l'université",
+                    audioTraducaoFR: "Nós vamos para a faculdade",
+                    opcoes: ['Nous allons à l\'université', 'Je mange du pain', 'Il fait beau', 'Tu as un chat'],
                     correta: 0
                 }
             },
             {
-                passo: "Bloco 2: Alimentação e Padaria",
+                tipo: "bloco",
+                passo: "Bloco 2: Oficina Mecânica e Carro",
                 vocabulario: [
-                    { palavra: "Je", significado: "Eu" },
-                    { palavra: "voudrais", significado: "gostaria de" },
-                    { palavra: "du pain", significado: "pão" }
+                    { palavra: "Ma voiture", significado: "Meu carro" },
+                    { palavra: "est", significado: "está" },
+                    { palavra: "en panne", significado: "quebrado / enguiçado" }
                 ],
-                explicacaoLogica: "Na padaria, a lógica de pedidos funciona unindo o desejo pessoal: <strong>Je</strong> (eu) + <strong>voudrais</strong> (gostaria de) + <strong>du pain</strong> (pão). Monte a frase mentalmente.",
-                imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Je voudrais du pain",
+                explicacaoLogica: "Quando o veículo estraga na rua e chegamos à oficina: <strong>Ma voiture</strong> (meu carro) + <strong>est</strong> (está) + <strong>en panne</strong> (quebrado).",
+                imagem: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Ma voiture est en panne",
                 exercicio: {
-                    pergunta: "Seguindo a lógica do bloco, como se diz \"Eu gostaria de pão\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je voudrais du pain",
-                    audioTraducaoFR: "Eu gostaria de pão",
-                    opcoes: ['Il pleut fort', 'Je voudrais du pain', 'Où est le métro', 'J\'ai un chien'],
+                    pergunta: "Como se constrói a frase \"Meu carro está quebrado\" na oficina?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Ma voiture est en panne",
+                    audioTraducaoFR: "Meu carro está quebrado",
+                    opcoes: ['Je voudrais du pain', 'Ma voiture est en panne', 'J\'ai un chat', 'Il fait beau'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 3: Identidade Escolar",
+                tipo: "bloco",
+                passo: "Bloco 3: Visitas e Reuniões em Casa",
                 vocabulario: [
-                    { palavra: "Je", significado: "Eu" },
-                    { palavra: "suis", significado: "sou / estou" },
-                    { palavra: "étudiant", significado: "estudante" }
+                    { palavra: "Bienvenue", significado: "Bem-vindo" },
+                    { palavra: "chez", significado: "na casa" },
+                    { palavra: "moi", significado: "de mim / minha" }
                 ],
-                explicacaoLogica: "Para se apresentar na escola ou faculdade: <strong>Je</strong> (eu) + <strong>suis</strong> (sou) + <strong>étudiant</strong> (estudante). A construção é direta e lógica.",
-                imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Je suis étudiant",
+                explicacaoLogica: "Para receber amigos em casa, a expressão fixa de acolhimento é: <strong>Bienvenue</strong> (bem-vindo) + <strong>chez</strong> (na casa) + <strong>moi</strong> (de mim = minha casa).",
+                imagem: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Bienvenue chez moi",
                 exercicio: {
-                    pergunta: "Como se diz \"Eu sou estudante\" unindo as peças lógicas?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je suis étudiant",
-                    audioTraducaoFR: "Eu sou estudante",
-                    opcoes: ['Je travaille ici', 'Je suis étudiant', 'J\'ai une voiture', 'Tu es fatigué'],
+                    pergunta: "Seguindo a lógica de recepção, como se diz \"Bem-vindo à minha casa\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Bienvenue chez moi",
+                    audioTraducaoFR: "Bem-vindo à minha casa",
+                    opcoes: ['Au revoir', 'Bienvenue chez moi', 'Bonne nuit', 'Pardon'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 4: Animais e Casa",
+                tipo: "bloco",
+                passo: "Bloco 4: Corrida e Atividade Física",
+                vocabulario: [
+                    { palavra: "Je", significado: "Eu" },
+                    { palavra: "cours", significado: "corro" },
+                    { palavra: "le matin", significado: "de manhã" }
+                ],
+                explicacaoLogica: "Para falar sobre exercícios físicos matinais no parque: <strong>Je</strong> (eu) + <strong>cours</strong> (corro) + <strong>le matin</strong> (de manhã).",
+                imagem: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Je cours le matin",
+                exercicio: {
+                    pergunta: "Como se diz \"Eu corro de manhã\" seguindo a lógica?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je cours le matin",
+                    audioTraducaoFR: "Eu corro de manhã",
+                    opcoes: ['Je dors beaucoup', 'Je cours le matin', 'Je mange du pain', 'Je lis un livre'],
+                    correta: 1
+                }
+            },
+            {
+                tipo: "bloco",
+                passo: "Bloco 5: Metrô e Deslocamento Urbano",
+                vocabulario: [
+                    { palavra: "Je", significado: "Eu" },
+                    { palavra: "prends", significado: "pego" },
+                    { palavra: "le métro", significado: "o metrô" }
+                ],
+                explicacaoLogica: "Ao se deslocar pela cidade usando o transporte público: <strong>Je</strong> (eu) + <strong>prends</strong> (pego) + <strong>le métro</strong> (o metrô).",
+                imagem: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Je prends le métro",
+                exercicio: {
+                    pergunta: "Como se constrói a frase \"Eu pego o metrô\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je prends le métro",
+                    audioTraducaoFR: "Eu pego o metrô",
+                    opcoes: ['Je vends une voiture', 'Je prends le métro', 'Il pleut fort', 'J\'ai un chat'],
+                    correta: 1
+                }
+            },
+            {
+                tipo: "bloco",
+                passo: "Bloco 6: Lojas e Compras",
+                vocabulario: [
+                    { palavra: "Je", significado: "Eu" },
+                    { palavra: "cherche", significado: "procuro / busco" },
+                    { palavra: "de l'aspirine", significado: "aspirina" }
+                ],
+                explicacaoLogica: "Na farmácia ou comércio local, para achar um produto: <strong>Je</strong> (eu) + <strong>cherche</strong> (procuro) + <strong>de l'aspirine</strong> (aspirina).",
+                imagem: "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Je cherche de l'aspirine",
+                exercicio: {
+                    pergunta: "Seguindo a lógica comercial, como se diz \"Eu procuro aspirina\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je cherche de l'aspirine",
+                    audioTraducaoFR: "Eu procuro aspirina",
+                    opcoes: ['Je mange une pomme', 'Je cherche de l\'aspirine', 'Au revoir', 'Il fait beau'],
+                    correta: 1
+                }
+            },
+            {
+                tipo: "bloco",
+                passo: "Bloco 7: Hotel e Hospedagem",
                 vocabulario: [
                     { palavra: "J'ai", significado: "Eu tenho" },
-                    { palavra: "un chat", significado: "um gato" }
+                    { palavra: "une réservation", significado: "uma reserva" }
                 ],
-                explicacaoLogica: "Quando visitas chegam ou conversamos em casa: <strong>J'ai</strong> (eu tenho - contração de je + ai) + <strong>un chat</strong> (um gato).",
-                imagem: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "J'ai un chat",
+                explicacaoLogica: "Ao chegar à recepção do hotel para fazer o check-in: <strong>J'ai</strong> (eu tenho) + <strong>une réservation</strong> (uma reserva).",
+                imagem: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "J'ai une réservation",
                 exercicio: {
-                    pergunta: "Seguindo a lógica de posse, como se diz \"Eu tenho um gato\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "J'ai un chat",
-                    audioTraducaoFR: "Eu tenho um gato",
-                    opcoes: ['Il a un chien', 'Je suis un chat', 'J\'ai un chat', 'Nous avons du pain'],
-                    correta: 2
-                }
-            },
-            {
-                passo: "Bloco 5: Trabalho e Rotina",
-                vocabulario: [
-                    { palavra: "Je", significado: "Eu" },
-                    { palavra: "commence", significado: "começo" },
-                    { palavra: "le travail", significado: "o trabalho" }
-                ],
-                explicacaoLogica: "No escritório ou ambiente profissional: <strong>Je</strong> (eu) + <strong>commence</strong> (começo) + <strong>le travail</strong> (o trabalho).",
-                imagem: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Je commence le travail",
-                exercicio: {
-                    pergunta: "Como se constrói a frase \"Eu começo o trabalho\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je commence le travail",
-                    audioTraducaoFR: "Eu começo o trabalho",
-                    opcoes: ['Je mange une pomme', 'Je commence le travail', 'J\'ai un chat', 'Il pleut'],
+                    pergunta: "Como se diz \"Eu tenho uma reserva\" no hotel?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'ai une réservation",
+                    audioTraducaoFR: "Eu tenho uma reserva",
+                    opcoes: ['J\'ai un chat', 'J\'ai une réservation', 'Je veux de l\'eau', 'Où est le train'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 6: Clima e Parque",
-                vocabulario: [
-                    { palavra: "Il", significado: "Ele / Faz" },
-                    { palavra: "fait", significado: "faz" },
-                    { palavra: "beau", significado: "bonito / bom tempo" }
-                ],
-                explicacaoLogica: "Para descrever o tempo no parque ou na rua, a expressão fixa de clima é: <strong>Il</strong> (ele) + <strong>fait</strong> (faz) + <strong>beau</strong> (bom tempo).",
-                imagem: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Il fait beau",
-                exercicio: {
-                    pergunta: "Seguindo a lógica do clima, como se diz \"Faz bom tempo / Está bonito\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Il fait beau",
-                    audioTraducaoFR: "Está bom tempo",
-                    opcoes: ['Il fait froid', 'Il fait beau', 'Il pleut fort', 'Je suis fatigué'],
-                    correta: 1
-                }
-            },
-            {
-                passo: "Bloco 7: Direções na Rua",
+                tipo: "bloco",
+                passo: "Bloco 8: Aeroporto e Viagem",
                 vocabulario: [
                     { palavra: "Où", significado: "Onde" },
-                    { palavra: "est", significado: "é / fica" },
-                    { palavra: "la station", significado: "a estação" }
+                    { palavra: "est", significado: "fica" },
+                    { palavra: "le comptoir", significado: "o balcão" }
                 ],
-                explicacaoLogica: "Para perguntar localização na rua: <strong>Où</strong> (onde) + <strong>est</strong> (fica) + <strong>la station</strong> (a estação).",
-                imagem: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Où est la station",
+                explicacaoLogica: "Para se localizar no aeroporto e achar o atendimento: <strong>Où</strong> (onde) + <strong>est</strong> (fica) + <strong>le comptoir</strong> (o balcão).",
+                imagem: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Où est le comptoir",
                 exercicio: {
-                    pergunta: "Como se constrói a pergunta \"Onde fica a estação?\"",
-                    imagemExercicio: "https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Où est la station",
-                    audioTraducaoFR: "Onde fica a estação",
-                    opcoes: ['Je veux du pain', 'Où est la station', 'J\'ai un chat', 'Au revoir'],
+                    pergunta: "Como perguntar \"Onde fica o balcão?\" seguindo a lógica?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Où est le comptoir",
+                    audioTraducaoFR: "Onde fica o balcão",
+                    opcoes: ['Bonjour', 'Où est le comptoir', 'Merci beaucoup', 'Au revoir'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 8: Restaurante e Água",
+                tipo: "bloco",
+                passo: "Bloco 9: Luto e Empatia",
                 vocabulario: [
-                    { palavra: "De", significado: "De" },
-                    { palavra: "l'eau", significado: "a água" },
-                    { palavra: "s'il vous plaît", significado: "por favor" }
+                    { palavra: "Mes", significado: "Meus" },
+                    { palavra: "sincères", significado: "sinceras" },
+                    { palavra: "condoléances", significado: "condolências" }
                 ],
-                explicacaoLogica: "No restaurante, pedimos itens educadamente unindo: <strong>De l'eau</strong> (água) + <strong>s'il vous plaît</strong> (por favor).",
-                imagem: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "De l'eau s'il vous plaît",
+                explicacaoLogica: "Em um momento solene de despedida, a frase de solidariedade monta-se com: <strong>Mes</strong> (meus) + <strong>sincères</strong> (sinceras) + <strong>condoléances</strong> (condolências).",
+                imagem: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Mes sincères condoléances",
                 exercicio: {
-                    pergunta: "Como pedir água educadamente no restaurante?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "De l'eau s'il vous plaît",
-                    audioTraducaoFR: "Água, por favor",
-                    opcoes: ['Du vin rouge', 'De l\'eau s\'il vous plaît', 'Du fromage', 'Merci beaucoup'],
+                    pergunta: "Como expressar condolências respeitosamente seguindo a lógica?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Mes sincères condoléances",
+                    audioTraducaoFR: "Minhas sinceras condolências",
+                    opcoes: ['Bon anniversaire', 'Mes sincères condoléances', 'Bon appétit', 'Salut'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 9: Saúde e Hospital",
+                tipo: "bloco",
+                passo: "Bloco 10: Roupas e Vestuário",
                 vocabulario: [
-                    { palavra: "J'ai", significado: "Eu tenho" },
-                    { palavra: "besoin", significado: "necessidade / preciso" },
-                    { palavra: "d'un médecin", significado: "de um médico" }
+                    { palavra: "Je", significado: "Eu" },
+                    { palavra: "peux", significado: "posso" },
+                    { palavra: "essayer", significado: "experimentar" }
                 ],
-                explicacaoLogica: "No hospital, a estrutura lógica de necessidade é: <strong>J'ai besoin</strong> (eu preciso) + <strong>d'un médecin</strong> (de um médico).",
-                imagem: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "J'ai besoin d'un médecin",
+                explicacaoLogica: "Na loja de roupas, para pedir para provar uma peça: <strong>Je</strong> (eu) + <strong>peux</strong> (posso) + <strong>essayer</strong> (experimentar).",
+                imagem: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Je peux essayer",
                 exercicio: {
-                    pergunta: "Seguindo a lógica estrutural, como se diz \"Eu preciso de um médico\"?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "J'ai besoin d'un médecin",
-                    audioTraducaoFR: "Eu preciso de um médico",
-                    opcoes: ['J\'ai un chat', 'J\'ai besoin d\'un médecin', 'Je veux du pain', 'Où est le parc'],
+                    pergunta: "Como se diz \"Eu posso experimentar\" na loja?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je peux essayer",
+                    audioTraducaoFR: "Eu posso experimentar",
+                    opcoes: ['Au revoir', 'Je peux essayer', 'Bonne nuit', 'Merci'],
                     correta: 1
                 }
             },
             {
-                passo: "Bloco 10: Supermercado e Frutas",
-                vocabulario: [
-                    { palavra: "Une", significado: "Uma" },
-                    { palavra: "pomme", significado: "maçã" }
-                ],
-                explicacaoLogica: "No mercado, para escolher itens unitários de forma direta: <strong>Une</strong> (uma) + <strong>pomme</strong> (maçã).",
-                imagem: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
-                audioFrase: "Une pomme",
+                tipo: "revisao",
+                passo: "Revisão Geral e Fixação",
+                titulo: "Painel de Memória do Nível 2",
+                explicacao: "Vamos fixar o aprendizado! Ligue os pontos lógicos: <strong>Je cours</strong> (eu corro), <strong>Ma voiture est en panne</strong> (meu carro estragou) e <strong>Je prends le métro</strong> (pego o metrô). Pratique a retenção mental.",
+                imagem: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Je révise mes connaissances avec succès",
                 exercicio: {
-                    pergunta: "Como se diz \"Uma maçã\" no mercado?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Une pomme",
-                    audioTraducaoFR: "Uma maçã",
-                    opcoes: ['Du pain', 'Une pomme', 'De l\'eau', 'Du fromage'],
+                    pergunta: "Qual das opções abaixo resume corretamente a frase aprendida para quando o carro quebra?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Ma voiture est en panne",
+                    audioTraducaoFR: "Meu carro está quebrado",
+                    opcoes: ['Je mange du pain', 'Ma voiture est en panne', 'J\'ai un chat', 'Il fait beau'],
+                    correta: 1
+                }
+            },
+            {
+                tipo: "dialogo",
+                passo: "Diálogo Prático Interativo",
+                titulo: "Na Oficina e no Metrô",
+                personagens: "Mecânico & Você (Motorista)",
+                explicacao: "<strong>Cenário Real:</strong> O mecânico te aborda preocupado e pergunta o que houve com o seu veículo. Você precisa responder utilizando a lógica aprendida no Nível 2.",
+                imagem: "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=600&q=80",
+                audioFrase: "Bonjour monsieur, ma voiture est en panne.",
+                exercicio: {
+                    pergunta: "O mecânico diz: \"Bonjour! Quel est le problème?\" Como você responde que seu carro está quebrado?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Ma voiture est en panne",
+                    audioTraducaoFR: "Meu carro está quebrado",
+                    opcoes: ['Je vais à l\'université', 'Ma voiture est en panne', 'Bienvenue chez moi', 'Je cours le matin'],
                     correta: 1
                 }
             }
@@ -231,10 +275,10 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="w-28 h-28 bg-gradient-to-tr from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-orange-500/20 mb-6 animate-pulse border border-orange-400/30">
-                            <span class="text-5xl">🧩</span>
+                            <span class="text-5xl">💬</span>
                         </div>
                         <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">LinguaDu Lógico</h1>
-                        <p class="text-zinc-400 mb-6 text-sm">Construção de Frases por Peças e Blocos de Memória (A1)</p>
+                        <p class="text-zinc-400 mb-6 text-sm">Nível 2: Blocos Lógicos + Revisão + Diálogo Prático (A1)</p>
                         
                         <div class="flex gap-3 mb-8 w-full justify-center">
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
@@ -243,12 +287,12 @@
                             </div>
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
                                 <span class="text-blue-400">📈</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Blocos</div><div class="text-sm font-bold text-zinc-200">${estado.nivelAtual}/${questoes.length}</div></div>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Progresso</div><div class="text-sm font-bold text-zinc-200">${estado.nivelAtual}/${questoes.length}</div></div>
                             </div>
                         </div>
 
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/20 transition active:scale-95 text-base">
-                            INICIAR CONSTRUÇÃO LÓGICA
+                            INICIAR JORNADA COMPLETA
                         </button>
                     </div>
                 `;
@@ -257,6 +301,10 @@
                 const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
                 setTimeout(() => tocarAudio(item.audioFrase), 400);
+
+                let badgeCor = 'bg-orange-500/10 text-orange-400 border-orange-500/20';
+                if (item.tipo === 'revisao') badgeCor = 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+                if (item.tipo === 'dialogo') badgeCor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
 
                 app.innerHTML = `
                     <div class="flex flex-col justify-between flex-grow">
@@ -271,7 +319,7 @@
                                 </div>
                             </div>
 
-                            <div class="text-orange-400 font-bold text-[11px] uppercase tracking-wider mb-2 text-center bg-orange-500/10 py-1.5 rounded-xl border border-orange-500/20">🧩 ${item.passo}</div>
+                            <div class="font-bold text-[11px] uppercase tracking-wider mb-2 text-center py-1.5 rounded-xl border ${badgeCor}">📍 ${item.passo}</div>
 
                             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-1">
                                 <div class="relative h-36 w-full overflow-hidden">
@@ -279,29 +327,30 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
                                 </div>
                                 <div class="p-4">
-                                    <!-- Peças do Vocabulário (Lógica Desmontada) -->
-                                    <div class="grid grid-cols-3 gap-1.5 mb-3 bg-zinc-950/60 p-2.5 rounded-2xl border border-zinc-800">
-                                        ${item.vocabulario.map(v => `
-                                            <div class="text-center bg-zinc-900 p-1.5 rounded-xl border border-zinc-800">
-                                                <div class="text-orange-400 font-bold text-xs">${v.palavra}</div>
-                                                <div class="text-[10px] text-zinc-400">${v.significado}</div>
-                                            </div>
-                                        `).join('')}
-                                    </div>
+                                    ${item.vocabulario ? `
+                                        <div class="grid grid-cols-3 gap-1.5 mb-3 bg-zinc-950/60 p-2.5 rounded-2xl border border-zinc-800">
+                                            ${item.vocabulario.map(v => `
+                                                <div class="text-center bg-zinc-900 p-1.5 rounded-xl border border-zinc-800">
+                                                    <div class="text-orange-400 font-bold text-xs">${v.palavra}</div>
+                                                    <div class="text-[10px] text-zinc-400">${v.significado}</div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : ''}
 
                                     <div class="flex justify-between items-center mb-1">
-                                        <h2 class="text-sm font-bold text-zinc-100">Lógica da Frase:</h2>
-                                        <button onclick="tocarAudio('${item.audioFrase}')" class="w-7 h-7 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 rounded-full flex items-center justify-center transition shrink-0 text-xs" title="Ouvir frase completa">
+                                        <h2 class="text-sm font-bold text-zinc-100">${item.titulo || 'Lógica da Frase:'}</h2>
+                                        <button onclick="tocarAudio('${item.audioFrase}')" class="w-7 h-7 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 rounded-full flex items-center justify-center transition shrink-0 text-xs" title="Ouvir áudio">
                                             🔊
                                         </button>
                                     </div>
-                                    <p class="text-zinc-300 text-xs leading-relaxed">${item.explicacaoLogica}</p>
+                                    <p class="text-zinc-300 text-xs leading-relaxed">${item.explicacaoLogica || item.explicacao}</p>
                                 </div>
                             </div>
                         </div>
 
                         <button onclick="irParaExercicio()" class="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/25 transition mt-3 active:scale-95 text-xs">
-                            MONTAR A FRASE (EXERCÍCIO)
+                            ${item.tipo === 'dialogo' ? 'PARTICIPAR DO DIÁLOGO' : 'PRATICAR EXERCÍCIO'}
                         </button>
                     </div>
                 `;
@@ -323,7 +372,7 @@
                                 </div>
                             </div>
 
-                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Aplicação Lógica:</div>
+                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">${item.tipo === 'dialogo' ? 'Sua Fala no Diálogo:' : 'Aplicação Lógica:'}</div>
                             <h2 class="text-zinc-300 font-semibold text-xs mb-3 leading-relaxed">${q.pergunta}</h2>
                             
                             <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-3 shadow-xl">
@@ -333,10 +382,10 @@
                                 </div>
                                 <div class="p-3 flex items-center justify-between bg-zinc-900">
                                     <div>
-                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Peças em Francês</div>
+                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Resposta em Francês</div>
                                         <div class="text-sm font-bold text-zinc-100">${q.audioFrances}</div>
                                     </div>
-                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-10 h-10 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-base shadow-lg transition active:scale-95 shrink-0" title="Ouvir montagem nativa">
+                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-10 h-10 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-base shadow-lg transition active:scale-95 shrink-0" title="Ouvir áudio nativo">
                                         🔊
                                     </button>
                                 </div>
@@ -357,10 +406,10 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🏆</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Construção Concluída!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você entendeu a lógica de todas as peças e blocos do francês A1 com sucesso. Ganhou <strong>+150 XP</strong>.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Jornada Concluída com Sucesso!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Você dominou os blocos lógicos, revisou os conceitos e concluiu o diálogo prático interativo. Ganhou <strong>+250 XP</strong>.</p>
                         <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
-                            REINICIAR CONSTRUÇÃO
+                            REINICIAR TUDO
                         </button>
                     </div>
                 `;
@@ -369,7 +418,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">💡</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Vidas esgotadas!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">A lógica precisa de encaixe visual. Revise as peças e tente novamente.</p>
+                        <p class="text-zinc-400 mb-8 text-sm">A prática leva à perfeição. Revise os blocos e tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -391,7 +440,7 @@
         }
 
         function reiniciarJornada() {
-            estado.xp += 150;
+            estado.xp += 250;
             estado.nivelAtual = 1;
             estado.questaoAtualIndex = 0;
             estado.tela = 'menu';

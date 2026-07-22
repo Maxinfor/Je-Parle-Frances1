@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Lógico - Banco Completo A1 a C2</title>
+    <title>LinguaDu Lógico - Todos os Níveis & Múltiplos Formatos</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -23,79 +23,61 @@
             nivelSelecionado: 'A1'
         };
 
-        // Banco de Questões Extensivo e Adaptado de Padrões Acadêmicos (A1 a C2)
+        // Banco de Questões Completo cobrindo Múltiplos Formatos para TODOS os Níveis (A1 a C2)
         const bancoNiveis = {
             A1: [
                 {
                     tipo: 'multipla',
-                    passo: "A1 - Módulo 1: Verbo Être & Identidade",
-                    ensinoTexto: "O verbo <strong>être</strong> é a base para expressar quem você é e sua nacionalidade.",
+                    passo: "A1 - Módulo 1: Verbo & Adjetivo Essencial",
+                    ensinoTexto: "Vamos aprender o verbo: <strong>être</strong> (ser/estar - ex: <em>suis</em>) e o adjetivo: <strong>fatigué</strong> (cansado).",
                     vocabulario: [
-                        { palavra: "Je suis", significado: "Eu sou / estou" },
-                        { palavra: "brésilien", significado: "Brasileiro" }
+                        { palavra: "Je suis", significado: "Eu sou / estou (Verbo être)" },
+                        { palavra: "fatigué", significado: "Cansado (Adjetivo masculino)" }
                     ],
-                    explicacaoLogica: "Estrutura padrão de apresentação pessoal: Sujeito + <em>être</em> conjugado + Nacionalidade ou Profissão.",
-                    imagem: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je suis brésilien",
+                    explicacaoLogica: "A lógica de construção básica: Colocamos o pronome e o verbo conjugado <strong>je suis</strong> seguido do adjetivo de estado <strong>fatigué</strong>.",
+                    imagem: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Je suis fatigué",
                     exercicio: {
-                        pergunta: "Como se diz corretamente 'Eu sou brasileiro' em francês?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je suis brésilien",
-                        opcoes: ['J\'ai brésilien', 'Je suis brésilien', 'Il est brésilien', 'Nous sommes brésilien'],
+                        pergunta: "Aplicando o verbo e o adjetivo aprendidos, como se diz \"Eu estou cansado\"?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Je suis fatigué",
+                        opcoes: ['J\'ai un chat', 'Je suis fatigué', 'Il fait beau', 'Nous allons au parc'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
-                    passo: "A1 - Módulo 2: Artigos Indefinidos",
-                    ensinoTexto: "Utilizamos <strong>un</strong> para substantivos masculinos e <strong>une</strong> para femininos.",
+                    passo: "A1 - Módulo 2: Validação de Desejo",
+                    ensinoTexto: "Verificando o uso do verbo <strong>voudrais</strong> para pedidos polidos no cotidiano.",
                     vocabulario: [
-                        { palavra: "Une fille", significado: "Uma garota" }
+                        { palavra: "Je voudrais", significado: "Eu gostaria" }
                     ],
-                    explicacaoLogica: "O substantivo 'fille' é feminino, exigindo o artigo indefinido correspondente.",
-                    imagem: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Une fille intelligente",
+                    explicacaoLogica: "A frase 'Je voudrais un café' significa literalmente 'Eu gostaria de um café'.",
+                    imagem: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Je voudrais un café",
                     exercicio: {
-                        pergunta: "A palavra 'fille' (menina/garota) utiliza o artigo feminino 'une'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Une fille",
+                        pergunta: "A frase 'Je voudrais un café' significa 'Eu odeio café'?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Je voudrais un café",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
-                        correta: 0
-                    }
-                },
-                {
-                    tipo: 'ordenacao',
-                    passo: "A1 - Módulo 3: Interrogativa Simples",
-                    ensinoTexto: "Perguntas cotidianas com a inversão ou entonação direta.",
-                    vocabulario: [
-                        { palavra: "Comment tu t'appelles?", significado: "Como você se chama?" }
-                    ],
-                    explicacaoLogica: "A fórmula 'Comment tu t'appelles' é o padrão universal para indagar o nome de alguém.",
-                    imagem: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Comment tu t'appelles?",
-                    exercicio: {
-                        pergunta: "Organize os blocos para formar a pergunta 'Como você se chama?':",
-                        imagemExercicio: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Comment tu t'appelles?",
-                        opcoes: ['Tu comment appelles t\'', 'Comment tu t\'appelles?', 'Appelles tu comment t\'', 'T\'appelles comment tu'],
                         correta: 1
                     }
                 },
                 {
-                    tipo: 'multipla',
-                    passo: "A1 - Módulo 4: Números e Idade",
-                    ensinoTexto: "O verbo <strong>avoir</strong> é usado em francês para declarar a idade.",
+                    tipo: 'ordenacao',
+                    passo: "A1 - Módulo 3: Construção Lógica de Posse",
+                    ensinoTexto: "Organize mentalmente os blocos da frase para formar a estrutura correta de posse com <strong>avoir</strong>.",
                     vocabulario: [
-                        { palavra: "J'ai vingt ans", significado: "Eu tenho vinte anos" }
+                        { palavra: "J'ai un chat", significado: "Eu tenho um gato" }
                     ],
-                    explicacaoLogica: "Em francês, diz-se 'eu tenho anos' (usando avoir), e não 'eu sou' (être).",
-                    imagem: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "J'ai vingt ans",
+                    explicacaoLogica: "A ordem padrão em francês para frases afirmativas simples é: Sujeito + Verbo + Artigo + Objeto.",
+                    imagem: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "J'ai un chat",
                     exercicio: {
-                        pergunta: "Qual das opções expressa corretamente 'Eu tenho vinte anos'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "J'ai vingt ans",
-                        opcoes: ['Je suis vingt ans', 'J\'ai vingt ans', 'Je fais vingt ans', 'J\'habite vingt ans'],
+                        pergunta: "Qual das opções apresenta a ordem correta para dizer 'Eu tenho um gato'?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "J'ai un chat",
+                        opcoes: ['Chat un ai J\'', 'J\'ai un chat', 'Un chat j\'ai', 'Ai j\' chat un'],
                         correta: 1
                     }
                 }
@@ -103,73 +85,56 @@
             A2: [
                 {
                     tipo: 'multipla',
-                    passo: "A2 - Módulo 1: Passé Composé com Avoir",
-                    ensinoTexto: "Para relatar eventos passados concluídos, usamos o auxiliar no presente + particípio passado.",
+                    passo: "A2 - Módulo 1: Passado Composto (Passé Composé)",
+                    ensinoTexto: "Expressando ações concluídas usando o auxiliar <strong>avoir</strong> + particípio (ex: <em>j'ai visité</em>).",
                     vocabulario: [
-                        { palavra: "J'ai mangé", significado: "Eu comi" }
+                        { palavra: "J'ai visité", significado: "Eu visitei" },
+                        { palavra: "la France", significado: "A França" }
                     ],
-                    explicacaoLogica: "A maioria dos verbos utiliza <em>avoir</em> no Passé Composé.",
-                    imagem: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "J'ai mangé une pomme",
+                    explicacaoLogica: "O Passé Composé conecta o presente do verbo auxiliar com a ação principal terminada.",
+                    imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "J'ai visité la France",
                     exercicio: {
-                        pergunta: "Como se traduz 'Eu comi uma maçã' no Passé Composé?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "J'ai mangé une pomme",
-                        opcoes: ['Je mange une pomme', 'J\'ai mangé une pomme', 'Je vais manger une pomme', 'Je mangeais une pomme'],
+                        pergunta: "Como dizer \"Eu visitei a França\" em francês?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "J'ai visité la France",
+                        opcoes: ['Je visite la France', 'J\'ai visité la France', 'Je vais visiter la France', 'Je visiterais la France'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
-                    passo: "A2 - Módulo 2: O Imperfeito para Descrições",
-                    ensinoTexto: "O <em>imparfait</em> é o tempo verbal ideal para descrever cenários ou hábitos no passado.",
+                    passo: "A2 - Módulo 2: O Passado com Être",
+                    ensinoTexto: "Verbos de movimento utilizam o auxiliar <strong>être</strong> no Passé Composé (ex: <em>je suis allé</em>).",
                     vocabulario: [
-                        { palavra: "Quand j'étais petit", significado: "Quando eu era pequeno" }
+                        { palavra: "Je suis allé", significado: "Eu fui" }
                     ],
-                    explicacaoLogica: "Ações repetidas ou estados contínuos no passado usam o Imperfeito.",
-                    imagem: "https://images.unsplash.com/photo-1472157511811-daaa3d641cf0?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Quand j'étais petit, je jouais au football",
+                    explicacaoLogica: "Verbos intransitivos de deslocamento exigem o verbo être como auxiliar.",
+                    imagem: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Je suis allé à Paris",
                     exercicio: {
-                        pergunta: "A frase 'je jouais' descreve um hábito contínuo no passado?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1472157511811-daaa3d641cf0?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je jouais au football",
+                        pergunta: "A frase 'Je suis allé' utiliza o auxiliar être para expressar movimento?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Je suis allé",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
                         correta: 0
                     }
                 },
                 {
                     tipo: 'ordenacao',
-                    passo: "A2 - Módulo 3: Proibições e Obrigações",
-                    ensinoTexto: "Uso do verbo modal <strong>devoir</strong> (dever / ter que).",
+                    passo: "A2 - Módulo 3: Rotina e Conectores",
+                    ensinoTexto: "Expressando ações cotidianas com conectores temporais de nível A2.",
                     vocabulario: [
-                        { palavra: "Tu dois", significado: "Você deve" }
+                        { palavra: "Le matin", significado: "De manhã" }
                     ],
-                    explicacaoLogica: "Sujeito + <em>devoir</em> conjugado + Verbo principal no infinitivo.",
-                    imagem: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Tu dois étudier pour l'examen",
+                    explicacaoLogica: "Conectores temporais costumam iniciar a frase seguidos de vírgula ou direto ao verbo.",
+                    imagem: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Le matin, je bois du café",
                     exercicio: {
-                        pergunta: "Organize os blocos para dizer 'Você deve estudar para o exame':",
-                        imagemExercicio: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Tu dois étudier pour l'examen",
-                        opcoes: ['Étudier dois pour tu l\'examen', 'Tu dois étudier pour l\'examen', 'Pour l\'examen tu dois étudier', 'Dois tu étudier pour examen l\''],
-                        correta: 1
-                    }
-                },
-                {
-                    tipo: 'multipla',
-                    passo: "A2 - Módulo 4: Futuro Próximo (Futur Composé)",
-                    ensinoTexto: "Formado pelo verbo <strong>aller</strong> no presente + infinitivo principal.",
-                    vocabulario: [
-                        { palavra: "Je vais voyager", significado: "Eu vou viajar" }
-                    ],
-                    explicacaoLogica: "Ideal para expressar planos imediatos no horizonte temporal.",
-                    imagem: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je vais voyager demain",
-                    exercicio: {
-                        pergunta: "Qual estrutura indica corretamente o Futuro Próximo ('eu vou viajar')?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je vais voyager",
-                        opcoes: ['J\'ai voyagé', 'Je vais voyager', 'Je voyageais', 'Je voyagerais'],
+                        pergunta: "Monte a frase que significa 'De manhã, eu bebo café':",
+                        imagemExercicio: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Le matin, je bois du café",
+                        opcoes: ['Café bois je matin le', 'Le matin, je bois du café', 'Bois je café matin', 'Du café bois le matin'],
                         correta: 1
                     }
                 }
@@ -177,73 +142,56 @@
             B1: [
                 {
                     tipo: 'multipla',
-                    passo: "B1 - Módulo 1: Condicional Simples",
-                    ensinoTexto: "Usado para expressar pedidos educados, conselhos ou hipóteses prováveis.",
+                    passo: "B1 - Módulo 1: Hipóteses com o Imperfeito",
+                    ensinoTexto: "Usando a estrutura condicional simples para expressar desejos educados ou cenários hipotéticos (<strong>Si j'étais...</strong>).",
                     vocabulario: [
-                        { palavra: "Je voudrais", significado: "Eu gostaria" }
+                        { palavra: "Si j'étais", significado: "Se eu fosse / estivesse" },
+                        { palavra: "riche", significado: "Rico(a)" }
                     ],
-                    explicacaoLogica: "A raiz do futuro acrescida das terminações do imperfeito forma o condicional.",
-                    imagem: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je voudrais un renseignement",
+                    explicacaoLogica: "Em francês, a conjunção <em>si</em> rege o imperfeito para formar hipóteses do tipo 'se eu fosse...'.",
+                    imagem: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Si j'étais riche, je voyagerais partout",
                     exercicio: {
-                        pergunta: "Como se expressa polidamente 'Eu gostaria de uma informação'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je voudrais un renseignement",
-                        opcoes: ['Je veux un renseignement', 'Je voudrais un renseignement', 'J\'ai voulu un renseignement', 'Je voulais un renseignement'],
+                        pergunta: "Como se traduz corretamente \"Se eu fosse rico...\"?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Si j'étais riche",
+                        opcoes: ['Si je suis riche', 'Si j\'étais riche', 'Si je serais riche', 'Quand je serai riche'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
-                    passo: "B1 - Módulo 2: Pronomes Pessoais COD (Le, La, Les)",
-                    ensinoTexto: "Substituem o objeto direto para evitar repetições desnecessárias no discurso.",
+                    passo: "B1 - Módulo 2: O Pronome 'Y' de Lugar",
+                    ensinoTexto: "O pronome <strong>y</strong> substitui complementos de lugar introduzidos por preposições como <em>à</em>, <em>en</em>, <em>dans</em>.",
                     vocabulario: [
-                        { palavra: "Je le connais", significado: "Eu o conheço" }
+                        { palavra: "J'y vais", significado: "Eu vou lá / Eu vou para lá" }
                     ],
-                    explicacaoLogica: "O pronome de objeto direto vem obrigatoriamente antes do verbo conjugado.",
-                    imagem: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je connais ce livre, je le lis",
+                    explicacaoLogica: "Substituímos o destino inteiro pelo pronome átono <em>y</em> antes do verbo.",
+                    imagem: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "J'y vais demain",
                     exercicio: {
-                        pergunta: "Na frase 'je le lis', o pronome 'le' substitui um objeto masculino singular?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je le lis",
+                        pergunta: "Na frase 'J'y vais', o pronome 'y' substitui um local mencionado anteriormente?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "J'y vais",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
                         correta: 0
                     }
                 },
                 {
                     tipo: 'ordenacao',
-                    passo: "B1 - Módulo 3: Comparação de Superioridade",
-                    ensinoTexto: "Estrutura comparativa com adjetivos: <strong>plus + adjetivo + que</strong>.",
+                    passo: "B1 - Módulo 3: Opiniões Complexas",
+                    ensinoTexto: "Estruturando argumentos com verbos de opinião e conjunções subordinativas.",
                     vocabulario: [
-                        { palavra: "Plus grand que", significado: "Maior que" }
+                        { palavra: "Je pense que", significado: "Eu acho que" }
                     ],
-                    explicacaoLogica: "Adjetivos seguem o padrão comparativo estabelecido pelo advérbio <em>plus</em>.",
-                    imagem: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Paris est plus grand que Lyon",
+                    explicacaoLogica: "A locução 'Je pense que' introduz uma oração subordinada direta indicativa.",
+                    imagem: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Je pense que c'est une bonne idée",
                     exercicio: {
-                        pergunta: "Organize para formar 'Paris é maior que Lyon':",
-                        imagemExercicio: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Paris est plus grand que Lyon",
-                        opcoes: ['Grand que plus est Paris Lyon', 'Paris est plus grand que Lyon', 'Que plus grand est Lyon Paris', 'Lyon est plus grand que Paris'],
-                        correta: 1
-                    }
-                },
-                {
-                    tipo: 'multipla',
-                    passo: "B1 - Módulo 4: Pronome Relativo 'Dont'",
-                    ensinoTexto: "Substitui complementos introduzidos pela preposição <em>de</em> (posse, origem, verbo com 'de').",
-                    vocabulario: [
-                        { palavra: "La fille dont tu parles", significado: "A garota de quem você fala" }
-                    ],
-                    explicacaoLogica: "Essencial para conectar frases coesas em narrativas B1.",
-                    imagem: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "C'est le film dont je t'ai parlé",
-                    exercicio: {
-                        pergunta: "Qual frase utiliza corretamente o pronome 'dont'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "C'est le film dont je t'ai parlé",
-                        opcoes: ['C\'est le film que je t\'ai parlé', 'C\'est le film dont je t\'ai parlé', 'C\'est le film qui je t\'ai parlé', 'C\'est le film où je t\'ai parlé'],
+                        pergunta: "Organize a estrutura para dizer 'Eu acho que é uma boa ideia':",
+                        imagemExercicio: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Je pense que c'est une bonne idée",
+                        opcoes: ['Idée bonne une c\'est que pense je', 'Je pense que c\'est une bonne idée', 'C\'est une bonne idée que je pense', 'Pense je que c\'est bonne'],
                         correta: 1
                     }
                 }
@@ -251,108 +199,91 @@
             B2: [
                 {
                     tipo: 'multipla',
-                    passo: "B2 - Módulo 1: O Subjuntivo Presente",
-                    ensinoTexto: "Obrigatório após expressões de vontade, dúvida, obrigação ou sentimento (<em>Il faut que...</em>).",
+                    passo: "B2 - Módulo 1: O Subjuntivo (Le Subjonctif)",
+                    ensinoTexto: "O subjuntivo expressa dúvida, obrigação ou subjetividade após a conjunção <strong>Il faut que</strong>.",
                     vocabulario: [
-                        { palavra: "Il faut que tu fasses", significado: "É preciso que você faça" }
+                        { palavra: "Il faut que tu", significado: "É preciso que você" },
+                        { palavra: "prennes", significado: "tomes" }
                     ],
-                    explicacaoLogica: "Mudança de foco modal introduzida pela conjunção <em>que</em>.",
+                    explicacaoLogica: "Expressões de obrigatoriedade como <em>il faut que</em> exigem obrigatoriamente o modo subjuntivo na oração seguinte.",
                     imagem: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Il faut que tu réussisses ton examen",
+                    audioFrase: "Il faut que tu comprennes la situation",
                     exercicio: {
-                        pergunta: "Qual alternativa emprega corretamente o subjuntivo após 'il faut que'?",
+                        pergunta: "Qual alternativa utiliza o subjuntivo corretamente após uma expressão de exigência?",
                         imagemExercicio: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Il faut que tu réussisses",
-                        opcoes: ['Il faut que tu réussis', 'Il faut que tu réussisses', 'Il faut que tu as réussi', 'Il faut que tu réussiras'],
+                        audioFrances: "Il faut que tu comprennes",
+                        opcoes: ['Il faut que tu comprends', 'Il faut que tu comprennes', 'Il faut tu as compris', 'Il faut de comprendre'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
                     passo: "B2 - Módulo 2: Conectores de Concessão",
-                    ensinoTexto: "Expressões como <strong>bien que</strong> ou <strong>quoique</strong> exigem subjuntivo.",
+                    ensinoTexto: "Expressões como <strong>bien que</strong> exigem o subjuntivo e expressam contraste lógico refinado.",
                     vocabulario: [
-                        { palavra: "Bien qu'il pleuve", significado: "Ainda que chova" }
+                        { palavra: "Bien que", significado: "Ainda que / Embora" }
                     ],
-                    explicacaoLogica: "A concessão expressa contraste argumentativo formal.",
-                    imagem: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Bien qu'il pleuve, nous sortons",
+                    explicacaoLogica: "'Bien que' denota oposição e exige o modo subjuntivo subsequente.",
+                    imagem: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Bien qu'il soit fatigué, il travaille",
                     exercicio: {
-                        pergunta: "A expressão 'bien que' é seguida pelo modo indicativo na norma culta?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Bien qu'il pleuve",
+                        pergunta: "A locução 'bien que' é seguida pelo modo indicativo na gramática padrão B2?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Bien qu'il soit",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'ordenacao',
-                    passo: "B2 - Módulo 3: Hipóteses com o Passado",
-                    ensinoTexto: "Estrutura condicional avançada: <em>Si + plus-que-parfait, conditionnel passé</em>.",
+                    passo: "B2 - Módulo 3: Argumentação Formal",
+                    ensinoTexto: "Construção de frases complexas com pronomes relativos avançados (<em>dont</em>, <em>lequel</em>).",
                     vocabulario: [
-                        { palavra: "Si j'avais su", significado: "Se eu soubesse / tivesse sabido" }
+                        { palavra: "Le projet dont", significado: "O projeto do qual" }
                     ],
-                    explicacaoLogica: "Concordância de passado hipotético complexo.",
-                    imagem: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Si j'avais su, j'aurais agi différemment",
+                    explicacaoLogica: "O pronome relativo <em>dont</em> substitui complementos regidos pela preposição <em>de</em>.",
+                    imagem: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Le projet dont nous parlons est important",
                     exercicio: {
-                        pergunta: "Organize para formar 'Se eu soubesse, teria agido de outro modo':",
-                        imagemExercicio: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Si j'avais su, j'aurais agi différemment",
-                        opcoes: ['Agi différemment aurais j\' su j\'avais si', 'Si j\'avais su, j'aurais agi différemment', 'J\'aurais agi si j\'avais su différemment', 'Su j\'avais si j\'aurais agi'],
+                        pergunta: "Organize para formar 'O projeto do qual falamos é importante':",
+                        imagemExercicio: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Le projet dont nous parlons est important",
+                        opcoes: ['Parle nous dont projet le est important', 'Le projet dont nous parlons est important', 'Est important projet le dont parlons nous', 'Important est le projet que nous'],
                         correta: 1
-                    }
-                },
-                {
-                    tipo: 'multipla',
-                    passo: "B2 - Módulo 4: Discurso Indireto no Passado",
-                    ensinoTexto: "Mudança de tempos verbais ao relatar o que alguém disse no passado (concordância de tempos).",
-                    vocabulario: [
-                        { palavra: "Il a dit qu'il viendrait", significado: "Ele disse que viria" }
-                    ],
-                    explicacaoLogica: "O futuro simples do discurso direto transforma-se em condicional no discurso indireto passado.",
-                    imagem: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Il a affirmé qu'il viendrait",
-                    exercicio: {
-                        pergunta: "Qual tempo verbal substitui o 'futur simple' no discurso indireto com verbo introdutório no passado?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Il viendrait",
-                        opcoes: ['Le présent', 'Le futur simple', 'Le conditionnel présent', 'L\'imparfait'],
-                        correta: 2
                     }
                 }
             ],
             C1: [
                 {
                     tipo: 'multipla',
-                    passo: "C1 - Módulo 1: Expressões Idiomáticas Complexas",
-                    ensinoTexto: "Domínio de metáforas corporativas, jornalísticas e cotidianas de alto nível.",
+                    passo: "C1 - Módulo 1: Nuances e Expressões Idiomáticas",
+                    ensinoTexto: "Domínio de registros de linguagem avançados, metáforas corporativas e locuções idiomáticas complexas.",
                     vocabulario: [
-                        { palavra: "Coûter les yeux de la tête", significado: "Custar os olhos da cara (ser muito caro)" }
+                        { palavra: "Mettre la main à la pâte", significado: "Colocar a mão na massa (contribuir)" }
                     ],
-                    explicacaoLogica: "Uso fluido de modismos sem tradução literal simplista.",
-                    imagem: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Cette voiture coûte les yeux de la tête",
+                    explicacaoLogica: "O nível C1 exige fluência idiomática natural sem recorrer a traduções literais.",
+                    imagem: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Il est temps de mettre la main à la pâte",
                     exercicio: {
-                        pergunta: "O que denota a expressão idiomática 'coûter les yeux de la tête'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Coûter les yeux de la tête",
-                        opcoes: ['Ser extremamente barato', 'Custar muito caro', 'Causar dor de cabeça', 'Ser invisível'],
+                        pergunta: "O que significa a expressão idiomática avançada \"mettre la main à la pâte\"?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Mettre la main à la pâte",
+                        opcoes: ['Fazer uma massa de bolo', 'Colocar a mão na massa / Ajudar', 'Comprar ingredientes', 'Desistir do trabalho'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
-                    passo: "C1 - Módulo 2: Inversão Estilística Literária",
-                    ensinoTexto: "Em ensaios acadêmicos ou jornais, o sujeito pode ser invertido após locuções adverbiais.",
+                    passo: "C1 - Módulo 2: Inversão Estilística Avançada",
+                    ensinoTexto: "Em registros altamente formais ou literários, o sujeito pode ser invertido após advérbios específicos.",
                     vocabulario: [
                         { palavra: "Peut-être est-il", significado: "Talvez ele seja" }
                     ],
-                    explicacaoLogica: "Elevação do registro discursivo.",
+                    explicacaoLogica: "A inversão sujeito-verbo após advérbios iniciais eleva o registro de discurso ao padrão C1/C2.",
                     imagem: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Peut-être a-t-il raison sur ce point",
+                    audioFrase: "Peut-être a-t-il raison",
                     exercicio: {
-                        pergunta: "A inversão do pronome sujeito após advérbios de dúvida é aceita em registros formais C1?",
+                        pergunta: "A estrutura de inversão estilística é aceita em dissertações e ensaios formais?",
                         imagemExercicio: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Peut-être a-t-il raison",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
@@ -361,86 +292,68 @@
                 },
                 {
                     tipo: 'ordenacao',
-                    passo: "C1 - Módulo 3: Realce Discursivo (Mise en relief)",
-                    ensinoTexto: "Estruturas de ênfase para focalizar argumentos centrais.",
+                    passo: "C1 - Módulo 3: Sintaxe Discursiva",
+                    ensinoTexto: "Estruturas de realce (mise en relief) para enfatizar elementos textuais.",
                     vocabulario: [
-                        { palavra: "C'est... qui", significado: "É... que (foco no sujeito)" }
+                        { palavra: "C'est... que", significado: "É... que (foco de ênfase)" }
                     ],
-                    explicacaoLogica: "Isolamento do agente principal da frase.",
+                    explicacaoLogica: "A clivagem de frase isola o foco informativo almejado.",
                     imagem: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "C'est l'innovation qui dynamise l'économie",
+                    audioFrase: "C'est la recherche qui nous intéresse",
                     exercicio: {
-                        pergunta: "Organize para formar a frase de realce 'É a inovação que dinamiza a economia':",
+                        pergunta: "Organize para formar 'É a pesquisa que nos interessa':",
                         imagemExercicio: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "C'est l'innovation qui dynamise l'économie",
-                        opcoes: ['Qui dynamise l\'économie innovation c\'est l\'', 'C\'est l\'innovation qui dynamise l\'économie', 'Innovation c\'est l\' qui dynamise l\'économie', 'Dinamise l\'économie c\'est qui innovation l\''],
+                        audioFrances: "C'est la recherche qui nous intéresse",
+                        opcoes: ['Qui nous intéresse recherche c\'est la', 'C\'est la recherche qui nous intéresse', 'Recherche c\'est qui nous la intéresse', 'Intéresse nous qui recherche c\'est la'],
                         correta: 1
-                    }
-                },
-                {
-                    tipo: 'multipla',
-                    passo: "C1 - Módulo 4: Nuances de Subjuntivo após Superlativos",
-                    ensinoTexto: "Superlativos de excelência exigem o subjuntivo na oração subordinada.",
-                    vocabulario: [
-                        { palavra: "Le plus beau que j'aie vu", significado: "O mais bonito que eu já vi" }
-                    ],
-                    explicacaoLogica: "A restrição superlativa restringe a realidade com o modo subjetivo.",
-                    imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                        audioFrase: "C'est le film le plus intéressant que j'aie vu",
-                    exercicio: {
-                        pergunta: "Qual verbo auxiliar no subjuntivo completa a estrutura após um superlativo?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Que j'aie vu",
-                        opcoes: ['J\'ai vu', 'Je voyais', 'J\'aie vu', 'Je verrai'],
-                        correta: 2
                     }
                 }
             ],
             C2: [
                 {
                     tipo: 'multipla',
-                    passo: "C2 - Módulo 1: Subjuntivo Pluperfeito Literario",
-                    ensinoTexto: "Emprego de formas verbais arcaicas e solenes restritas à alta literatura e crônicas eruditas.",
+                    passo: "C2 - Módulo 1: Maestria Literária e Discurso Abstrato",
+                    ensinoTexto: "Domínio equivalente a um falante nativo culto, capaz de interpretar textos literários densos e ironias sutis.",
                     vocabulario: [
-                        { palavra: "Eût fallu", significado: "Tivesse sido necessário" }
+                        { palavra: "Maîtrise absolue", significado: "Domínio absoluto" }
                     ],
-                    explicacaoLogica: "Concordância clássica de alta erudição.",
-                    imagem: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Il eût fallu qu'il vienne plus tôt",
+                    explicacaoLogica: "Análise crítica avançada de textos clássicos, filosofia e polissemia da língua francesa.",
+                    imagem: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "La subtilité de la langue française exige une maîtrise absolue",
                     exercicio: {
-                        pergunta: "O subjonctif plus-que-parfait é frequente na comunicação oral diária das ruas?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Subjonctif plus-que-parfait",
-                        opcoes: ['Sim, em conversas cotidianas', 'Não, é estritamente literário e arcaico', 'Apenas no passado composto', 'Usa-se no futuro do pretérito'],
+                        pergunta: "No contexto de C2, como se caracteriza a precisão lexical avançada?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Maîtrise absolue",
+                        opcoes: ['Uso restrito ao vocabulário básico', 'Capacidade de expressar nuances sutilezas de sentido com precisão exímia', 'Dificuldade de compreensão oral', 'Uso exclusivo de gírias'],
                         correta: 1
                     }
                 },
                 {
                     tipo: 'vf',
-                    passo: "C2 - Módulo 2: Polissemia e Sutileza Discursiva",
-                    ensinoTexto: "Capacidade de decodificar ironias refinadas, subtextos e ambiguidades textuais.",
+                    passo: "C2 - Módulo 2: Subjuntivo Pluperfeito Literário",
+                    ensinoTexto: "Uso do <em>subjonctif plus-que-parfait</em> em registros arcaicos, solenes ou de alta literatura.",
                     vocabulario: [
-                        { palavra: "Ironie subtile", significado: "Ironia sutil" }
+                        { palavra: "Eût fallu", significado: "Tivesse sido necessário" }
                     ],
-                    explicacaoLogica: "Nível máximo de proficiência equivalente a um falante nativo altamente instruído.",
-                    imagem: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "La polysémie enrichit la littérature classique",
+                    explicacaoLogica: "Formas verbais compostas do subjuntivo no passado raramente usadas na oralidade, mas essenciais para C2.",
+                    imagem: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Il eût fallu qu'il vienne",
                     exercicio: {
-                        pergunta: "A polissemia refere-se à multiplicidade de significados que uma mesma palavra pode assumir?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "La polysémie",
+                        pergunta: "O subjonctif plus-que-parfait é comumente empregado em conversas de rua cotidianas?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Subjonctif plus-que-parfait",
                         opcoes: ['Verdadeiro (V)', 'Falso (F)'],
-                        correta: 0
+                        correta: 1
                     }
                 },
                 {
                     tipo: 'ordenacao',
-                    passo: "C2 - Módulo 3: Retórica Poética e Hipótese Invertida",
-                    ensinoTexto: "Substituição da conjunção <em>si</em> por inversão verbal com o subjuntivo em tratados filosóficos.",
+                    passo: "C2 - Módulo 3: Retórica e Poética Avançada",
+                    ensinoTexto: "Construção de períodos hipotéticos complexos com concordâncias cruzadas do subjuntivo e condicional pretérito.",
                     vocabulario: [
                         { palavra: "Eût-il su", significado: "Tivesse ele sabido" }
                     ],
-                    explicacaoLogica: "Elevado grau estilístico na argumentação formal.",
+                    explicacaoLogica: "Estruturas inversas com o verbo auxiliar no subjuntivo substituindo a conjunção <em>si</em>.",
                     imagem: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80",
                     audioFrase: "Eût-il su la vérité, il aurait agi différemment",
                     exercicio: {
@@ -449,24 +362,6 @@
                         audioFrances: "Eût-il su la vérité, il aurait agi différemment",
                         opcoes: ['Verité la su eût-il agi différemment il aurait', 'Eût-il su la vérité, il aurait agi différemment', 'Agi différemment il aurait eût-il su vérité la', 'Il aurait agi su eût-il la vérité différemment'],
                         correta: 1
-                    }
-                },
-                {
-                    tipo: 'multipla',
-                    passo: "C2 - Módulo 4: Maestria Lexical Absoluta",
-                    ensinoTexto: "Uso de arcaísmos funcionais e precisão estilística semântica em teses e discursos de alto nível.",
-                    vocabulario: [
-                        { palavra: "Quintessence", significado: "Quintessência / O ponto mais puro" }
-                    ],
-                    explicacaoLogica: "Seleção rigorosa de termos de origem grega e latina adaptados ao francês clássico.",
-                    imagem: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "C'est la quintessence de la pensée philosophique",
-                    exercicio: {
-                        pergunta: "O termo 'quintessence' denota o que há de mais puro ou essencial em algo?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Quintessence",
-                        opcoes: ['A parte superficial ou descartável', 'O aspecto financeiro de um projeto', 'A quintessência / o elemento mais puro e essencial', 'Uma falha lógica argumentativa'],
-                        correta: 2
                     }
                 }
             ]
@@ -492,7 +387,7 @@
                             <span class="text-4xl">🇫🇷</span>
                         </div>
                         <h1 class="text-2xl font-extrabold mb-1 text-zinc-100">LinguaDu Lógico</h1>
-                        <p class="text-zinc-400 mb-5 text-xs">Banco Extensivo (A1 a C2) - Múltiplos Formatos</p>
+                        <p class="text-zinc-400 mb-5 text-xs">Todos os Níveis (A1 a C2) & Múltiplos Formatos</p>
                         
                         <!-- Seletor de Níveis -->
                         <div class="grid grid-cols-3 gap-2 w-full mb-6">
@@ -510,12 +405,12 @@
                             </div>
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
                                 <span class="text-blue-400">📈</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Desafios</div><div class="text-sm font-bold text-zinc-200">${questoes.length} módulos</div></div>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Módulos</div><div class="text-sm font-bold text-zinc-200">${questoes.length} desafios</div></div>
                             </div>
                         </div>
 
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/20 transition active:scale-95 text-sm">
-                            INICIAR PRÁTICA ${estado.nivelSelecionado}
+                            INICIAR NÍVEL ${estado.nivelSelecionado}
                         </button>
                     </div>
                 `;
@@ -632,7 +527,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🏆</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-green-400">Nível ${estado.nivelSelecionado} Superado!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você completou todas as questões extensivas com sucesso. Ganhou <strong>+350 XP</strong>.</p>
+                        <p class="text-zinc-400 mb-8 text-sm">Você completou todos os formatos com sucesso. Ganhou <strong>+300 XP</strong>.</p>
                         <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
                             VOLTAR AO MENU
                         </button>
@@ -643,7 +538,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">💡</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Vidas esgotadas!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">O reforço lógico ajuda a fixar o conteúdo. Tente novamente.</p>
+                        <p class="text-zinc-400 mb-8 text-sm">A revisão lógica consolida o aprendizado. Tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -670,7 +565,7 @@
         }
 
         function reiniciarJornada() {
-            estado.xp += 350;
+            estado.xp += 300;
             estado.questaoAtualIndex = 0;
             estado.tela = 'menu';
             renderizar();

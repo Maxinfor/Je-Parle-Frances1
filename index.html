@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Imersivo Pro - Diálogos Profissionais A1</title>
+    <title>LinguaDu Pro - Currículo Oficial A1 (CIL)</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -14,7 +14,7 @@
     </div>
 
     <script>
-        // Estado do Jogo de Diálogos Graduais
+        // Estado do Jogo - Currículo CIL A1
         let estado = {
             tela: 'menu', 
             vidas: 3,
@@ -32,185 +32,175 @@
             audio.play().catch(erro => console.log("Áudio indisponível:", erro));
         }
 
-        // Banco de 10 Questões Únicas baseadas estritamente em Diálogos Cotidianos e Profissionais
+        // Banco de Questões baseado estritamente nas diretrizes e eixos temáticos do Currículo A1 do CIL (Centros de Línguas)
         const questoes = [
             {
-                lugar: "A Padaria (La Boulangerie)",
-                personagens: "Cliente & Padeiro",
+                eixo: "Eixo 1: Identidade e Apresentações",
                 materia: {
-                    titulo: "O Pedido na Padaria",
-                    explicacao: "Você chega na padaria tradicional logo cedo. O padeiro te cumprimenta e você faz o seu pedido principal.",
-                    imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour monsieur! Je voudrais du pain frais s'il vous plaît."
+                    titulo: "Se présenter (Apresentação Pessoal)",
+                    explicacao: "Segundo o currículo do CIL, no nível A1 o aluno deve saber se apresentar, dizer o nome, idade e nacionalidade básica em interações simples.",
+                    imagem: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bonjour, je m'appelle Pierre et je suis brésilien."
                 },
                 exercicio: {
-                    pergunta: "O padeiro pergunta o que você deseja. Como você responde pedindo pão?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je voudrais du pain",
-                    audioTraducaoFR: "Eu gostaria de pão",
-                    opcoes: ['Je voudrais du pain', 'Je suis un chat', 'Il fait beau', 'Au revoir'],
+                    pergunta: "Em um diálogo de apresentação, como você diz o seu nome em francês?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je m'appelle...",
+                    audioTraducaoFR: "Eu me chamo...",
+                    opcoes: ['Je m\'appelle...', 'Au revoir', 'Merci beaucoup', 'Il fait froid'],
                     correta: 0
                 }
             },
             {
-                lugar: "A Escola (L'École)",
-                personagens: "Professor & Aluno",
+                eixo: "Eixo 2: A Família e Relações Próximas",
                 materia: {
-                    titulo: "Apresentação na Aula",
-                    explicacao: "Na sala de aula, o professor pergunta quem é você na primeira chamada do curso de francês.",
-                    imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour, je suis étudiant et je suis très heureux d'être ici."
+                    titulo: "La Famille (Membros da Família)",
+                    explicacao: "O programa aborda o vocabulário essencial para descrever os membros da família e lares.",
+                    imagem: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Voici ma mère, mon père et mon frère."
                 },
                 exercicio: {
-                    pergunta: "O professor pergunta sua ocupação. Como você diz que é estudante?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je suis étudiant",
-                    audioTraducaoFR: "Eu sou estudante",
-                    opcoes: ['J\'ai un chat', 'Je suis étudiant', 'Où est la gare', 'De l\'eau'],
+                    pergunta: "Como se diz \"mãe\" em francês no contexto familiar?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Ma mère",
+                    audioTraducaoFR: "Minha mãe",
+                    opcoes: ['Mon père', 'Ma mère', 'Mon frère', 'Ma sœur'],
                     correta: 1
                 }
             },
             {
-                lugar: "O Supermercado (Le Supermarché)",
-                personagens: "Cliente & Caixa",
-                materia: {
-                    titulo: "Pesagem de Frutas",
-                    explicacao: "No caixa do supermercado, o operador confere as frutas que você pegou na seção fresca.",
-                    imagem: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Ce sont de belles pommes rouges pour la tarte."
+                eixo: "Eixo 3: Habitação e Moradia",
+                    materia: {
+                    titulo: "La Maison (A Casa e Cômodos)",
+                    explicacao: "Descrever onde se mora, cômodos da casa e objetos do cotidiano doméstico.",
+                    imagem: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'habite dans un grand appartement à Paris."
                 },
                 exercicio: {
-                    pergunta: "O caixa aponta para a balança. Como você diz que vai levar uma maçã?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Une pomme",
-                    audioTraducaoFR: "Uma maçã",
-                    opcoes: ['Du pain', 'Une pomme', 'Du lait', 'Du vin'],
+                    pergunta: "Como você diz que mora em uma casa ou apartamento?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'habite à...",
+                    audioTraducaoFR: "Eu moro em...",
+                    opcoes: ['Je mange du pain', 'J\'habite à...', 'Je suis fatigué', 'Au revoir'],
                     correta: 1
                 }
             },
             {
-                lugar: "O Restaurante (Le Restaurant)",
-                personagens: "Garçom & Cliente",
+                eixo: "Eixo 4: Atividades Cotidianas e Lazer",
                 materia: {
-                    titulo: "O Pedido na Mesa",
-                    explicacao: "Você senta à mesa do bistrô e o garçom traz o cardápio perguntando o que você quer beber.",
-                    imagem: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Que désirez-vous boire? De l'eau fraîche?"
+                    titulo: "Les Loisirs (Hobbies e Esportes)",
+                    explicacao: "Falar sobre o que gosta de fazer no tempo livre, esportes e gostos pessoais.",
+                    imagem: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'aime jouer au football et écouter de la musique."
                 },
                 exercicio: {
-                    pergunta: "O garçom te oferece bebidas. Como você pede água?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "De l'eau",
-                    audioTraducaoFR: "Água",
-                    opcoes: ['Du fromage', 'De l\'eau', 'Du pain', 'Un croissant'],
+                    pergunta: "Como você expressa que gosta de algo no seu lazer?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'aime...",
+                    audioTraducaoFR: "Eu gosto de...",
+                    opcoes: ['Je déteste', 'J\'aime...', 'Je ne sais pas', 'Où est'],
                     correta: 1
                 }
             },
             {
-                lugar: "O Trabalho (Le Bureau)",
-                personagens: "Chefe & Funcionário",
+                eixo: "Eixo 5: Alimentação e Hábitos",
                 materia: {
-                    titulo: "Início do Expediente",
-                    explicacao: "Você chega pontualmente ao escritório e o gerente te cumprimenta pelo início do turno.",
-                    imagem: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour! Bon courage pour votre journée de travail."
+                    titulo: "L'Alimentation (Comidas e Bebidas)",
+                    explicacao: "Expressar preferências alimentares, fazer compras em feiras e mercados locais.",
+                    imagem: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je voudrais acheter des fruits frais et du pain."
                 },
                 exercicio: {
-                    pergunta: "O chefe te cumprimenta de manhã. Como você responde que está começando o trabalho?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Je commence le travail",
-                    audioTraducaoFR: "Eu começo o trabalho",
-                    opcoes: ['Je mange une pomme', 'Je commence le travail', 'J\'ai un chat', 'Il pleut'],
+                    pergunta: "Como você pede educadamente algo na padaria ou mercado?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je voudrais...",
+                    audioTraducaoFR: "Eu gostaria de...",
+                    opcoes: ['Je suis', 'Je voudrais...', 'Il y a', 'C\'est combien'],
                     correta: 1
                 }
             },
             {
-                lugar: "A Oficina Mecânica (L'Atelier)",
-                personagens: "Mecânico & Motorista",
+                eixo: "Eixo 6: A Cidade e Direções",
                 materia: {
-                    titulo: "Averiguação de Problema",
-                    explicacao: "Seu carro parou na via e você chega à oficina pedindo suporte urgente ao mecânico.",
-                    imagem: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour monsieur, j'ai un problème technique."
+                    titulo: "La Ville (Locais e Ruas)",
+                    explicacao: "Saber se orientar na cidade, perguntar por lugares públicos e direções básicas.",
+                    imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Pardon, où se trouve la pharmacie la plus proche?"
                 },
                 exercicio: {
-                    pergunta: "O mecânico te olha prestativo. Como você pede a ajuda dele?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Pouvez-vous m'aider?",
-                    audioTraducaoFR: "Você pode me ajudar?",
-                    opcoes: ['Au revoir', 'Pouvez-vous m\'aider?', 'Bon appétit', 'Merci'],
+                    pergunta: "Como perguntar onde fica um lugar específico na cidade?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Où se trouve...?",
+                    audioTraducaoFR: "Onde se encontra...?",
+                    opcoes: ['Comment ça va', 'Où se trouve...?', 'Bonne nuit', 'Merci bien'],
                     correta: 1
                 }
             },
             {
-                lugar: "O Hospital (L'Hôpital)",
-                personagens: "Médico & Paciente",
+                eixo: "Eixo 7: Profissões e Trabalho",
                 materia: {
-                    titulo: "Triagem Médica",
-                    explicacao: "No balcão de atendimento do hospital, a recepcionista quer saber o motivo da sua visita.",
-                    imagem: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Quel est votre problème de santé aujourd'hui?"
+                    titulo: "Les Professions (O Trabalho)",
+                    explicacao: "Identificar ocupações profissionais comuns e falar sobre o próprio trabalho.",
+                    imagem: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je travaille dans un bureau au centre-ville."
                 },
                 exercicio: {
-                    pergunta: "A atendente pergunta o que você precisa. Como você diz que precisa de um médico?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "J'ai besoin d'un médecin",
-                    audioTraducaoFR: "Eu preciso de um médico",
-                    opcoes: ['J\'ai un chat', 'J\'ai besoin d\'un médecin', 'Je veux du pain', 'Où est le parc'],
+                    pergunta: "Como dizer onde você trabalha?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je travaille...",
+                    audioTraducaoFR: "Eu trabalho...",
+                    opcoes: ['Je suis étudiant', 'Je travaille...', 'J\'ai un chat', 'Il fait beau'],
                     correta: 1
                 }
             },
             {
-                lugar: "Em Casa com Visitas (À La Maison)",
-                personagens: "Anfitrião & Amigo Convidado",
+                eixo: "Eixo 8: Saúde e Bem-Estar",
                 materia: {
-                    titulo: "Recepção na Porta",
-                    explicacao: "Seu amigo campainha e entra na sua casa. Você mostra o seu gatinho de estimação.",
-                    imagem: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bienvenue chez moi! Regarde comme il est mignon."
+                    titulo: "La Santé (Sintomas e Corpo)",
+                    explicacao: "Comunicar dores básicas, mal-estar e procurar ajuda médica com vocabulário simples.",
+                    imagem: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'ai mal à la tête et besoin d'un médecin."
                 },
                 exercicio: {
-                    pergunta: "Seu amigo te pergunta sobre animais. Como você diz que tem um gato?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "J'ai un chat",
-                    audioTraducaoFR: "Eu tenho um gato",
-                    opcoes: ['Je suis un chat', 'J\'ai un chat', 'Il a un chien', 'Nous avons une pomme'],
+                    pergunta: "Como relatar que está sentindo dor em alguma parte do corpo?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'ai mal à...",
+                    audioTraducaoFR: "Eu estou com dor em...",
+                    opcoes: ['J\'ai faim', 'J\'ai mal à...', 'Je suis heureux', 'J\'ai un livre'],
                     correta: 1
                 }
             },
             {
-                lugar: "Na Rua (Dans La Rue)",
-                personagens: "Turista Perdido & Morador Local",
+                eixo: "Eixo 9: Viagens e Meios de Transporte",
                 materia: {
-                    titulo: "Informação de Endereço",
-                    explicacao: "Você está caminhando na calçada e precisa abordar um morador para pedir com licença.",
-                    imagem: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Pardon monsieur, je cherche le métro."
+                    titulo: "Les Voyages (Transportes)",
+                    explicacao: "Comprar passagens, entender horários e interagir em estações de trem e aeroportos.",
+                    imagem: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je prends le train pour aller à Lyon."
                 },
                 exercicio: {
-                    pergunta: "Você precisa chamar a atenção de alguém educadamente na rua. O que você diz?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Excusez-moi",
-                    audioTraducaoFR: "Com licença / Desculpe-me",
-                    opcoes: ['Bonjour', 'Excusez-moi', 'Merci', 'Au revoir'],
+                    pergunta: "Como dizer que você pega um meio de transporte?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je prends...",
+                    audioTraducaoFR: "Eu pego...",
+                    opcoes: ['Je vends', 'Je prends...', 'Je regarde', 'Je marche'],
                     correta: 1
                 }
             },
             {
-                lugar: "O Velório / Homenagem (La Cérémonie)",
-                personagens: "Enlutados / Profissionais",
+                eixo: "Eixo 10: Clima e Estações do Ano",
                 materia: {
-                    titulo: "Expressando Condolências",
-                    explicacao: "Em um momento solene de despedida, você se aproxima de um colega para prestar solidariedade.",
-                    imagem: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Je suis désolé pour cette triste nouvelle."
+                    titulo: "La Météo (O Clima)",
+                    explicacao: "Descrever o tempo meteorológico atual, se está ensolarado, chovendo ou frio.",
+                    imagem: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Aujourd'hui, il fait beau et du soleil à Nice."
                 },
                 exercicio: {
-                    pergunta: "Como você expressa suas condolências respeitosamente em francês?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Mes condoléances",
-                    audioTraducaoFR: "Meus pêsames",
-                    opcoes: ['Bon anniversaire', 'Mes condoléances', 'Bon appétit', 'Salut'],
+                    pergunta: "Como descrever que está fazendo bom tempo lá fora?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Il fait beau",
+                    audioTraducaoFR: "Está bom tempo",
+                    opcoes: ['Il pleut', 'Il fait beau', 'Il fait froid', 'Il neige'],
                     correta: 1
                 }
             }
@@ -222,11 +212,11 @@
             if (estado.tela === 'menu') {
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="w-28 h-28 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/20 mb-6 animate-pulse border border-green-400/30">
-                            <span class="text-5xl">💬</span>
+                        <div class="w-28 h-28 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-500/20 mb-6 animate-pulse border border-blue-400/30">
+                            <span class="text-5xl">🏛️</span>
                         </div>
-                        <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">LinguaDu Diálogos</h1>
-                        <p class="text-zinc-400 mb-6 text-sm">10 Cenários Práticos e Profissionais Graduais (Nível A1)</p>
+                        <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">Currículo Oficial CIL</h1>
+                        <p class="text-zinc-400 mb-6 text-sm">Os 10 Eixos Temáticos Oficiais do Francês A1</p>
                         
                         <div class="flex gap-3 mb-8 w-full justify-center">
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
@@ -239,8 +229,8 @@
                             </div>
                         </div>
 
-                        <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition active:scale-95 text-base">
-                            COMEÇAR DIÁLOGOS
+                        <button onclick="iniciarLicao()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-2xl shadow-lg shadow-blue-600/20 transition active:scale-95 text-base">
+                            INICIAR MATRIZ CIL
                         </button>
                     </div>
                 `;
@@ -263,10 +253,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex justify-between items-center mb-2 px-1">
-                                <span class="text-blue-400 font-bold text-[11px] uppercase tracking-wider bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">📍 ${item.lugar}</span>
-                                <span class="text-zinc-400 text-[11px] font-semibold bg-zinc-900 px-2.5 py-1 rounded-lg border border-zinc-800">👤 ${item.personagens}</span>
-                            </div>
+                            <div class="text-blue-400 font-bold text-[11px] uppercase tracking-wider mb-2 text-center bg-blue-500/10 py-1.5 rounded-xl border border-blue-500/20">📘 ${item.eixo}</div>
 
                             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-1">
                                 <div class="relative h-40 w-full overflow-hidden">
@@ -276,7 +263,7 @@
                                 <div class="p-4">
                                     <div class="flex justify-between items-center mb-1.5">
                                         <h2 class="text-base font-bold text-zinc-100">${item.materia.titulo}</h2>
-                                        <button onclick="tocarAudio('${item.materia.audioExplicacao}')" class="w-8 h-8 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-full flex items-center justify-center transition shrink-0" title="Ouvir diálogo">
+                                        <button onclick="tocarAudio('${item.materia.audioExplicacao}')" class="w-8 h-8 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-full flex items-center justify-center transition shrink-0" title="Ouvir conteúdo">
                                             🔊
                                         </button>
                                     </div>
@@ -286,7 +273,7 @@
                         </div>
 
                         <button onclick="irParaExercicio()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/25 transition mt-3 active:scale-95 text-xs">
-                            RESPONDER NO DIÁLOGO
+                            PRATICAR EXERCÍCIO DO EIXO
                         </button>
                     </div>
                 `;
@@ -308,7 +295,7 @@
                                 </div>
                             </div>
 
-                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Sua Vez de Falar:</div>
+                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Aplicação Prática:</div>
                             <h2 class="text-zinc-300 font-semibold text-xs mb-3 leading-relaxed">${q.pergunta}</h2>
                             
                             <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-3 shadow-xl">
@@ -318,10 +305,10 @@
                                 </div>
                                 <div class="p-3 flex items-center justify-between bg-zinc-900">
                                     <div>
-                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Sua Fala (Français)</div>
+                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Estrutura em Francês</div>
                                         <div class="text-sm font-bold text-zinc-100">${q.audioFrances}</div>
                                     </div>
-                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-10 h-10 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-base shadow-lg transition active:scale-95 shrink-0" title="Ouvir sua fala nativa">
+                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-10 h-10 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-base shadow-lg transition active:scale-95 shrink-0" title="Ouvir áudio nativo">
                                         🔊
                                     </button>
                                 </div>
@@ -342,10 +329,10 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🏆</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Jornada Concluída!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você completou todos os 10 diálogos profissionais e cotidianos com sucesso. Ganhou <strong>+100 XP</strong>.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Matriz A1 Concluída!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Você concluiu todos os eixos temáticos oficiais do currículo com excelência. Ganhou <strong>+120 XP</strong>.</p>
                         <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
-                            REINICIAR DIÁLOGOS
+                            REINICIAR CURRÍCULO
                         </button>
                     </div>
                 `;
@@ -353,8 +340,8 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">💡</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">As vidas acabaram!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Pratique a escuta dos diálogos e tente novamente para fixar as expressões.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">Vidas esgotadas!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Revise os eixos temáticos com calma e tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -376,7 +363,7 @@
         }
 
         function reiniciarJornada() {
-            estado.xp += 100;
+            estado.xp += 120;
             estado.nivelAtual = 1;
             estado.questaoAtualIndex = 0;
             estado.tela = 'menu';

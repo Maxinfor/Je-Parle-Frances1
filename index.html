@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Profissional - Áudio Nativo Oficial</title>
+    <title>LinguaDu Imersivo Pro - Francês A1</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -14,98 +14,103 @@
     </div>
 
     <script>
-        // Estado do Jogo
+        // Estado Completo do App Imersivo
         let estado = {
             tela: 'menu', // 'menu', 'teoria', 'licao', 'vitoria', 'derrota'
             vidas: 3,
-            questaoAtualIndex: 0
+            questaoAtualIndex: 0,
+            xp: 0,
+            nivelAtual: 1
         };
 
-        // Função profissional usando a API oficial do Google TTS (voz nativa real de estúdio/servidor)
-        function tocarAudioOficial(texto) {
-            // Limpa espaços e formata o texto para a URL da API de áudio
+        // Função de Áudio Nativo Profissional (Français Oficial)
+        function tocarAudio(texto) {
             const textoCodificado = encodeURIComponent(texto);
-            // 'fr' garante o sotaque oficial autêntico da França direto dos servidores de tradução
             const urlAudio = `https://translate.google.com/translate_tts?ie=UTF-8&q=${textoCodificado}&tl=fr&client=tw-ob`;
-            
             const audio = new Audio(urlAudio);
-            audio.playbackRate = 0.9; // Velocidade ideal para compreensão A1
-            audio.play().catch(erro => {
-                console.log("Erro ao reproduzir áudio nativo:", erro);
-            });
+            audio.playbackRate = 0.85; // Velocidade otimizada para assimilação A1
+            audio.play().catch(erro => console.log("Áudio indisponível:", erro));
         }
 
-        // Banco de Questões com Áudios Nativos Reais Oficiais
+        // Banco de Questões com Foco Total no Dia a Dia e Imersão Visual (Unsplash)
         const questoes = [
             {
                 materia: {
-                    titulo: "O Verbo Être (Ser / Estar)",
-                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Ouça a gravação de áudio nativo oficial abaixo.",
-                    audioExplicacao: "Je suis étudiant. Je suis très heureux de vous rencontrer."
+                    titulo: "O Café da Manhã (Le Petit-Déjeuner)",
+                    explicacao: "Na França, começar o dia comendo um bom pão fresco ou tomando um café é tradição sagrada. Vamos aprender a pedir itens essenciais de padaria e café.",
+                    imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bonjour! Je voudrais un croissant et un café s'il vous plaît."
                 },
                 exercicio: {
-                    pergunta: "Como se diz \"Eu sou\" em francês?",
-                    audioFrances: "Je suis",
-                    audioTraducaoFR: "Eu sou / Eu estou",
-                    opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
+                    pergunta: "Como se diz \"Eu gostaria de um pão\" em francês?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je voudrais du pain",
+                    audioTraducaoFR: "Eu gostaria de pão",
+                    opcoes: ['Je voudrais du pain', 'Je suis une pomme', 'J\'ai un chat', 'Bonjour ça va'],
                     correta: 0
                 }
             },
             {
                 materia: {
-                    titulo: "O Verbo Avoir (Ter)",
-                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' ocorre porque 'je' perde a vogal 'e' antes de vogal. Escute o áudio nativo estúdio.",
-                    audioExplicacao: "J'ai un chat noir et un chien blanc."
+                    titulo: "Comprando Frutas no Mercado (Au Marché)",
+                    explicacao: "Ir à feira ou mercado livre nas ruas de Paris exige conhecer frutas frescas. 'Une pomme' significa uma maçã.",
+                    imagem: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Les fruits frais sont excellents pour la santé. Une pomme rouge s'il vous plaît."
                 },
                 exercicio: {
-                    pergunta: "Traduza a frase:",
-                    audioFrances: "J'ai un chat.",
-                    audioTraducaoFR: "Eu tenho um gato.",
-                    fraseDestaque: "J'ai un chat.",
-                    opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
-                    correta: 0
-                }
-            },
-            {
-                materia: {
-                    titulo: "Vocabulário de Alimentos",
-                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos. Ouça a pronúncia oficial limpa e cristalina.",
-                    audioExplicacao: "Je voudrais une pomme s'il vous plaît."
-                },
-                exercicio: {
-                    pergunta: "Qual destas palavras significa \"Maçã\"?",
-                    audioFrances: "Pomme",
-                    audioTraducaoFR: "Maçã",
-                    opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
+                    pergunta: "Qual imagem e palavra representam \"Maçã\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Une pomme",
+                    audioTraducaoFR: "Uma maçã",
+                    opcoes: ['Du pain', 'Une pomme', 'De l\'eau', 'Du lait'],
                     correta: 1
                 }
             },
             {
                 materia: {
-                    titulo: "Saudações Comuns",
-                    explicacao: "\"Bonjour\" significa Bom dia. A expressão \"Comment ça va?\" é a forma mais popular de perguntar como alguém está. Ouça a frase completa.",
+                    titulo: "Pedindo Água em um Bistrô (Au Restaurant)",
+                    explicacao: "Nos charmosos bistrôs franceses, pedir água fresca na mesa é gratuito e muito comum. 'De l'eau' é a palavra-chave.",
+                    imagem: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Garçon, un verre d'eau fraîche s'il vous plaît!"
+                },
+                exercicio: {
+                    pergunta: "Como você pede \"Água\" em um restaurante?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "De l'eau",
+                    audioTraducaoFR: "Água",
+                    opcoes: ['Du vin', 'De l\'eau', 'Du fromage', 'Du café'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "Apresentando seu Pet (Les Animaux de compagnie)",
+                    explicacao: "Os franceses amam animais de estimação. Dizer que você tem um gato ou cachorro é um ótimo assunto para quebrar o gelo em conversas informais.",
+                    imagem: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'ai un chat magnifique qui dort sur le canapé."
+                },
+                exercicio: {
+                    pergunta: "Traduza para o francês: \"Eu tenho um gato.\"",
+                    imagemExercicio: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'ai un chat",
+                    audioTraducaoFR: "Eu tenho um gato",
+                    opcoes: ['Je suis un chat', 'J\'ai un chat', 'Il a un chien', 'Nous avons un chat'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "Encontrando Amigos na Rua (Les Salutations)",
+                    explicacao: "Cumprimentar pessoas ao entrar em lojas ou encontrar conhecidos com um sorriso e um 'Bonjour' abre todas as portas na França.",
+                    imagem: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80",
                     audioExplicacao: "Bonjour! Comment ça va aujourd'hui?"
                 },
                 exercicio: {
-                    pergunta: "Traduza a frase:",
+                    pergunta: "Como você cumprimenta alguém de dia perguntando se está tudo bem?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80",
                     audioFrances: "Bonjour, comment ça va?",
                     audioTraducaoFR: "Bom dia, tudo bem?",
-                    fraseDestaque: "Bonjour, comment ça va?",
-                    opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
-                    correta: 1
-                }
-            },
-            {
-                materia: {
-                    titulo: "Conjugação do Pronome Tu",
-                    explicacao: "Para o pronome 'tu' (você/tu) com o verbo être, a forma correta é 'Tu es'. Ouça o áudio de estúdio.",
-                    audioExplicacao: "Tu es français? Oui, je suis de Paris."
-                },
-                exercicio: {
-                    pergunta: "Complete: \"Tu ___ français(e)?\"",
-                    audioFrances: "Tu es français?",
-                    audioTraducaoFR: "Você é francês?",
-                    opcoes: ['suis', 'es', 'est', 'sont'],
+                    opcoes: ['Au revoir', 'Bonjour, comment ça va?', 'Bonne nuit', 'Merci beaucoup'],
                     correta: 1
                 }
             }
@@ -117,13 +122,25 @@
             if (estado.tela === 'menu') {
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 mb-6">
-                            <span class="text-5xl">🦉</span>
+                        <div class="w-28 h-28 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/20 mb-6 animate-pulse border border-green-400/30">
+                            <span class="text-5xl">🇫🇷</span>
                         </div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu Profissional</h1>
-                        <p class="text-zinc-400 mb-10 text-sm">Áudio de alta fidelidade nativo direto de servidores oficiais em francês.</p>
-                        <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition active:scale-95">
-                            COMEÇAR LIÇÃO
+                        <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">LinguaDu Imersivo</h1>
+                        <p class="text-zinc-400 mb-6 text-sm">Francês prático do dia a dia com fotos reais e áudio nativo</p>
+                        
+                        <div class="flex gap-3 mb-8 w-full justify-center">
+                            <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
+                                <span class="text-yellow-400">⚡</span>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">XP</div><div class="text-sm font-bold text-zinc-200">${estado.xp}</div></div>
+                            </div>
+                            <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
+                                <span class="text-blue-400">📈</span>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Nível</div><div class="text-sm font-bold text-zinc-200">${estado.nivelAtual}</div></div>
+                            </div>
+                        </div>
+
+                        <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition active:scale-95 text-base">
+                            EXPLORAR O COTIDIANO
                         </button>
                     </div>
                 `;
@@ -131,16 +148,13 @@
                 const item = questoes[estado.questaoAtualIndex];
                 const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
-                // Toca automaticamente o áudio oficial ao entrar na teoria
-                if (item.materia && item.materia.audioExplicacao) {
-                    setTimeout(() => tocarAudioOficial(item.materia.audioExplicacao), 600);
-                }
+                setTimeout(() => tocarAudio(item.materia.audioExplicacao), 400);
 
                 app.innerHTML = `
                     <div class="flex flex-col justify-between flex-grow">
                         <div>
                             <!-- Barra Superior -->
-                            <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center justify-between mb-5">
                                 <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
                                 <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
                                     <div class="bg-blue-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
@@ -150,20 +164,26 @@
                                 </div>
                             </div>
 
-                            <!-- Cartão de Teoria -->
-                            <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-3xl shadow-xl mt-4">
-                                <div class="flex justify-between items-center mb-3">
-                                    <div class="text-blue-400 font-bold text-xs uppercase tracking-wider">📚 Hora da Matéria</div>
-                                    <button onclick="tocarAudioOficial('${item.materia.audioExplicacao}')" class="flex items-center gap-1 text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 px-3 py-1.5 rounded-full transition font-semibold" title="Ouvir áudio oficial">
-                                        🇫🇷 🔊 Ouvir Áudio Oficial
-                                    </button>
+                            <!-- Cartão de Teoria Dinâmico com Imagem -->
+                            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-2">
+                                <div class="relative h-48 w-full overflow-hidden">
+                                    <img src="${item.materia.imagem}" class="w-full h-full object-cover brightness-90 hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
+                                    <span class="absolute bottom-3 left-4 text-xs font-bold bg-blue-600/90 text-white px-3 py-1 rounded-full backdrop-blur-sm uppercase tracking-wider">Cotidiano Francês</span>
                                 </div>
-                                <h2 class="text-2xl font-bold mb-4 text-zinc-100">${item.materia.titulo}</h2>
-                                <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
+                                <div class="p-6">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h2 class="text-xl font-bold text-zinc-100">${item.materia.titulo}</h2>
+                                        <button onclick="tocarAudio('${item.materia.audioExplicacao}')" class="w-10 h-10 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-full flex items-center justify-center transition shrink-0" title="Ouvir explicação">
+                                            🔊
+                                        </button>
+                                    </div>
+                                    <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
+                                </div>
                             </div>
                         </div>
 
-                        <button onclick="irParaExercicio()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg transition mt-6">
+                        <button onclick="irParaExercicio()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/25 transition mt-6 active:scale-95">
                             PRATICAR AGORA
                         </button>
                     </div>
@@ -177,7 +197,7 @@
                     <div class="flex flex-col justify-between flex-grow">
                         <div>
                             <!-- Barra Superior -->
-                            <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center justify-between mb-6">
                                 <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
                                 <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
                                     <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
@@ -187,28 +207,30 @@
                                 </div>
                             </div>
 
-                            <!-- Pergunta / Exercício -->
-                            <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
+                            <!-- Pergunta -->
+                            <h2 class="text-zinc-400 font-semibold text-xs mb-3 uppercase tracking-wider">${q.pergunta}</h2>
                             
-                            <!-- Bloco de Áudio Profissional -->
-                            <div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800 mb-6 flex flex-col gap-3">
-                                <div class="flex items-center justify-between">
-                                    <div class="text-xl font-bold text-zinc-100">
-                                        ${q.fraseDestaque || q.audioFrances}
-                                    </div>
-                                    <button onclick="tocarAudioOficial('${q.audioFrances}')" class="flex items-center gap-2 bg-green-500 hover:bg-green-400 text-zinc-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition active:scale-95" title="Ouvir áudio estúdio">
-                                        🇫🇷 🔊 Ouvir Áudio Oficial
-                                    </button>
+                            <!-- Imagem e Caixa de Áudio Intuitiva -->
+                            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-5 shadow-xl">
+                                <div class="h-36 w-full overflow-hidden relative">
+                                    <img src="${q.imagemExercicio}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
                                 </div>
-                                <div class="border-t border-zinc-800 pt-2 text-xs text-zinc-400">
-                                    Tradução: <strong class="text-zinc-200">${q.audioTraducaoFR}</strong>
+                                <div class="p-4 flex items-center justify-between bg-zinc-900">
+                                    <div>
+                                        <div class="text-xs text-zinc-500 uppercase font-semibold">Frase ou Palavra</div>
+                                        <div class="text-lg font-bold text-zinc-100">${q.audioFrances}</div>
+                                    </div>
+                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-12 h-12 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-xl shadow-lg transition active:scale-95 shrink-0" title="Ouvir áudio nativo">
+                                        🔊
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Opções -->
-                            <div class="flex flex-col gap-3 mt-4" id="opcoes-container">
+                            <!-- Opções de Resposta Dinâmicas -->
+                            <div class="flex flex-col gap-2.5" id="opcoes-container">
                                 ${q.opcoes.map((opcao, index) => `
-                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-4 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98]">
+                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-3.5 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98] text-sm">
                                         ${opcao}
                                     </button>
                                 `).join('')}
@@ -220,21 +242,21 @@
             } else if (estado.tela === 'vitoria') {
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="text-6xl mb-4 animate-bounce">🎉</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Lição Concluída!</h1>
-                        <p class="text-zinc-400 mb-8">Parabéns! Você concluiu a lição com áudio de estúdio profissional. Ganhou <strong>+15 XP</strong>.</p>
-                        <button onclick="voltarMenu()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition">
-                            CONTINUAR
+                        <div class="text-6xl mb-4 animate-bounce">🏆</div>
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Módulo Concluído!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Você vivenciou situações reais do cotidiano francês e ganhou <strong>+30 XP</strong>.</p>
+                        <button onclick="avancarNivel()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
+                            CONTINUAR AVANÇANDO
                         </button>
                     </div>
                 `;
             } else if (estado.tela === 'derrota') {
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="text-6xl mb-4">💔</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">Acabaram as vidas!</h1>
-                        <p class="text-zinc-400 mb-8">Ouça os áudios oficiais novamente para fixar a fonética.</p>
-                        <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-lg transition">
+                        <div class="text-6xl mb-4 animate-bounce">💡</div>
+                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">Quase lá!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">O aprendizado é feito de repetição. Revise as imagens e os áudios com calma.</p>
+                        <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
                     </div>
@@ -251,6 +273,13 @@
 
         function irParaExercicio() {
             estado.tela = 'licao';
+            renderizar();
+        }
+
+        function avancarNivel() {
+            estado.xp += 30;
+            estado.nivelAtual++;
+            estado.tela = 'menu';
             renderizar();
         }
 

@@ -3,139 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jornada A1: 50 Níveis Acumulativos</title>
+    <title>Duolingo Style - Francês A1</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-black text-white p-6 flex flex-col items-center min-h-screen">
-    <div id="app" class="w-full max-w-lg bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-2xl">
-        <!-- O motor de jogo vai injetar tudo aqui -->
+<body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
+
+    <!-- Container Principal do App -->
+    <div id="app" class="w-full max-w-md mx-auto p-6 flex flex-col justify-between flex-grow">
+        <!-- O conteúdo dinâmico será injetado aqui pelo JavaScript -->
     </div>
 
     <script>
-        // Banco de temas
-        const temas = ["Verbo Être", "Verbo Avoir", "Verbos -ER", "Contrações", "Passado", "Futuro", "Partitivos", "Negação", "Perguntas", "Plurais"];
-        
-        // Banco de questões simulado por tema (Foco A1)
-        const bancoQuestoes = {
-            "Verbo Être": [
-                { q: "Je ___ étudiant(e).", opcoes: ["suis", "es", "est", "sommes"], correta: 0 },
-                { q: "Tu ___ français(e)?", opcoes: ["suis", "es", "est", "sont"], correta: 1 },
-                { q: "Elle ___ heureuse.", opcoes: ["suis", "es", "est", "sommes"], correta: 2 }
-            ],
-            "Verbo Avoir": [
-                { q: "J'___ un chat.", opcoes: ["ai", "as", "a", "avons"], correta: 0 },
-                { q: "Nous ___ faim.", opcoes: ["avez", "ont", "avons", "suis"], correta: 2 },
-                { q: "Ils ___ 20 ans.", opcoes: ["ont", "ont", "ont", "ont"], correta: 0 }
-            ],
-            "Verbos -ER": [
-                { q: "Tu ___ (parler) français.", opcoes: ["parles", "parle", "parlons", "parlez"], correta: 0 },
-                { q: "Nous ___ (aimer) voyager.", opcoes: ["aimes", "aime", "aimons", "aiment"], correta: 2 }
-            ],
-            "Contrações": [
-                { q: "Je vais ___ école.", opcoes: ["à la", "au", "à l'", "aux"], correta: 2 },
-                { q: "Il vient ___ États-Unis.", opcoes: ["du", "de la", "des", "de l'"], correta: 2 }
-            ],
-            "Passado": [
-                { q: "Hier, je ___ mangé une pomme.", opcoes: ["suis", "ai", "es", "as"], correta: 1 },
-                { q: "Elles ___ arrivées hier.", opcoes: ["sont", "ont", "ont", "sont"], correta: 0 }
-            ],
-            "Futuro": [
-                { q: "Demain, je vais ___.", opcoes: ["partir", "partis", "part", "partons"], correta: 0 }
-            ],
-            "Partitivos": [
-                { q: "Je bois ___ eau.", opcoes: ["de l'", "du", "de la", "des"], correta: 0 },
-                { q: "Tu manges ___ pain.", opcoes: ["du", "de la", "des", "de l'"], correta: 0 }
-            ],
-            "Negação": [
-                { q: "Je ___ ne mange pas de viande.", opcoes: ["ne", "n'", "pas", "plus"], correta: 1 }
-            ],
-            "Perguntas": [
-                { q: "___ tu viens?", opcoes: ["Où", "Comment", "Pourquoi", "Quand"], correta: 0 }
-            ],
-            "Plurais": [
-                { q: "Le cheval devient : les ___", opcoes: ["chevals", "chevals", "chevaux", "chevaus"], correta: 2 }
-            ]
+        // Estado do Jogo
+        let estado = {
+            tela: 'menu', // 'menu', 'licao', 'vitoria', 'derrota'
+            vidas: 3,
+            progressoQuestao: 0,
+            questaoAtualIndex: 0,
+            pontos: 0
         };
 
-        // Gerador de Níveis Acumulativos
-        const jogo = Array.from({ length: 50 }, (_, i) => {
-            const nivelAtual = i + 1;
-            const qtdQuestoes = 10 + (i * 2); // Ajustado para 10 inicial para fluidez
-            const temasIncluidos = temas.slice(0, Math.ceil(nivelAtual / 5));
-            
-            return {
-                id: nivelAtual,
-                total: qtdQuestoes,
-                temas: temasIncluidos,
-                premio: `https://picsum.photos/id/${(i + 20) % 100}/300/300`
-            };
-        });
-
-        let nIdx = 0, qIdx = 0, pontuation = 0;
-        let questaoAtualCache = null;
-
-        function obterQuestaoAleatoria(temasAtivos) {
-            // Escolhe aleatoriamente um tema dos disponíveis no nível atual
-            const temaEscolhido = temasAtivos[Math.floor(Math.random() * temasAtivos.length)];
-            const lista = bancoQuestoes[temaEscolhido] || bancoQuestoes["Verbo Être"];
-            const q = lista[Math.floor(Math.random() * lista.length)];
-            return { ...q, tema: temaEscolhido };
-        }
-
-        function render() {
-            const nivel = jogo[nIdx];
-            if (qIdx >= nivel.total) return mostrarPremio();
-
-            // Gera uma questão nova se ainda não existir para o índice atual
-            if (!questaoAtualCache || questaoAtualCache.nivelIndex !== qIdx) {
-                questaoAtualCache = { ...obterQuestaoAleatoria(nivel.temas), nivelIndex: qIdx };
+        // Banco de Questões (Estilo Duolingo)
+        const questoes = [
+            {
+                tipo: 'multipla-escolha',
+                pergunta: 'Como se diz "Eu sou" em francês?',
+                opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
+                correta: 0
+            },
+            {
+                tipo: 'traducao',
+                pergunta: 'Traduza a frase:',
+                fraseDestaque: 'J\'ai un chat.',
+                opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
+                correta: 0
+            },
+            {
+                tipo: 'multipla-escolha',
+                pergunta: 'Qual destas palavras significa "Maçã"?',
+                opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
+                correta: 1
+            },
+            {
+                tipo: 'traducao',
+                pergunta: 'Traduza a frase:',
+                fraseDestaque: 'Bonjour, comment ça va?',
+                opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
+                correta: 1
+            },
+            {
+                tipo: 'multipla-escolha',
+                pergunta: 'Complete: "Tu ___ français(e)?"',
+                opcoes: ['suis', 'es', 'est', 'sont'],
+                correta: 1
             }
+        ];
 
-            const q = questaoAtualCache;
-
-            document.getElementById('app').innerHTML = `
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-blue-400 font-bold text-xs uppercase">Nível ${nivel.id} | Progresso: ${qIdx + 1}/${nivel.total}</span>
-                    <span class="text-zinc-500 text-xs">${q.tema}</span>
-                </div>
-                <h1 class="text-xl font-bold mb-6 text-zinc-100">${q.q}</h1>
-                <div class="flex flex-col gap-3">
-                    ${q.opcoes.map((opcao, index) => `
-                        <button onclick="responder(${index}, ${q.correta})" class="p-4 bg-zinc-800 rounded-xl hover:bg-zinc-700 text-left transition border border-zinc-700/50">
-                            ${opcao}
+        function renderizar() {
+            const app = document.getElementById('app');
+            
+            if (estado.tela === 'menu') {
+                app.innerHTML = `
+                    <div class="flex flex-col items-center justify-center flex-grow text-center">
+                        <div class="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 mb-6">
+                            <span class="text-5xl">🦉</span>
+                        </div>
+                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu</h1>
+                        <p class="text-zinc-400 mb-10 text-sm">Aprenda francês de forma rápida, divertida e gratuita.</p>
+                        <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition active:scale-95">
+                            COMEÇAR LIÇÃO
                         </button>
-                    `).join('')}
-                </div>
-            `;
+                    </div>
+                `;
+            } else if (estado.tela === 'licao') {
+                const q = questoes[estado.questaoAtualIndex];
+                const porcentagem = ((estado.questaoAtualIndex) / questoes.length) * 100;
+
+                app.innerHTML = `
+                    <div>
+                        <!-- Barra Superior (Progresso e Vidas) -->
+                        <div class="flex items-center justify-between mb-8">
+                            <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
+                            <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
+                                <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
+                            </div>
+                            <div class="flex items-center gap-1 text-red-500 font-bold">
+                                <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
+                            </div>
+                        </div>
+
+                        <!-- Pergunta -->
+                        <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
+                        ${q.fraseDestaque ? `<div class="text-2xl font-bold mb-6 text-zinc-100 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">${q.fraseDestaque}</div>` : ''}
+
+                        <!-- Opções -->
+                        <div class="flex flex-col gap-3 mt-4" id="opcoes-container">
+                            ${q.opcoes.map((opcao, index) => `
+                                <button onclick="verificarResposta(${index})" class="opcao-btn p-4 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98]">
+                                    ${opcao}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div></div> <!-- Espaçador flexível -->
+                `;
+            } else if (estado.tela === 'vitoria') {
+                app.innerHTML = `
+                    <div class="flex flex-col items-center justify-center flex-grow text-center">
+                        <div class="text-6xl mb-4 animate-bounce">🎉</div>
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Lição Concluída!</h1>
+                        <p class="text-zinc-400 mb-8">Você ganhou <strong>+15 XP</strong> e manteve sua ofensiva.</p>
+                        <button onclick="voltarMenu()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition">
+                            CONTINUAR
+                        </button>
+                    </div>
+                `;
+            } else if (estado.tela === 'derrota') {
+                app.innerHTML = `
+                    <div class="flex flex-col items-center justify-center flex-grow text-center">
+                        <div class="text-6xl mb-4">💔</div>
+                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">Acabaram as vidas!</h1>
+                        <p class="text-zinc-400 mb-8">Não desista, tente novamente para fixar o conteúdo.</p>
+                        <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-lg transition">
+                            TENTAR NOVAMENTE
+                        </button>
+                    </div>
+                `;
+            }
         }
 
-        function responder(selecionada, correta) {
-            const botoes = document.querySelectorAll('#app button');
-            botoes.forEach((b, i) => {
-                b.disabled = true;
-                if (i === correta) b.classList.add('bg-green-600', 'border-green-500');
-                if (i === selecionada && selecionada !== correta) b.classList.add('bg-red-600', 'border-red-500');
-            });
-
-            setTimeout(() => {
-                qIdx++;
-                questaoAtualCache = null; // Reseta cache para a próxima
-                render();
-            }, 800);
+        function iniciarLicao() {
+            estado.vidas = 3;
+            estado.questaoAtualIndex = 0;
+            estado.tela = 'licao';
+            renderizar();
         }
 
-        function mostrarPremio() {
-            document.getElementById('app').innerHTML = `
-                <h1 class="text-3xl font-bold text-center mb-2">Nível ${jogo[nIdx].id} Concluído! 🎉</h1>
-                <p class="text-zinc-400 text-center mb-6">Excelente progresso na sua jornada básica.</p>
-                <img src="${jogo[nIdx].premio}" class="w-full h-64 object-cover rounded-2xl mb-6 shadow-xl border border-zinc-800">
-                <button onclick="nIdx++; qIdx=0; questaoAtualCache=null; render()" class="w-full py-4 bg-yellow-600 hover:bg-yellow-500 text-black rounded-xl font-bold transition shadow-lg">
-                    COLETAR E IR PARA NÍVEL ${nIdx + 2}
-                </button>
-            `;
+        function verificarResposta(indexSelecionado) {
+            const q = questoes[estado.questaoAtualIndex];
+            const botoes = document.querySelectorAll('.opcao-btn');
+            
+            // Desativa cliques temporariamente
+            botoes.forEach(b => b.disabled = true);
+
+            if (indexSelecionado === q.correta) {
+                botoes[indexSelecionado].classList.remove('bg-zinc-900', 'border-zinc-800');
+                botoes[indexSelecionado].classList.add('bg-green-600/30', 'border-green-500', 'text-green-300');
+                
+                setTimeout(() => {
+                    estado.questaoAtualIndex++;
+                    if (estado.questaoAtualIndex >= questoes.length) {
+                        estado.tela = 'vitoria';
+                    }
+                    renderizar();
+                }, 900);
+            } else {
+                botoes[indexSelecionado].classList.remove('bg-zinc-900', 'border-zinc-800');
+                botoes[indexSelecionado].classList.add('bg-red-600/30', 'border-red-500', 'text-red-300');
+                botoes[q.correta].classList.remove('bg-zinc-900', 'border-zinc-800');
+                botoes[q.correta].classList.add('bg-green-600/30', 'border-green-500', 'text-green-300');
+
+                estado.vidas--;
+
+                setTimeout(() => {
+                    if (estado.vidas <= 0) {
+                        estado.tela = 'derrota';
+                    } else {
+                        renderizar();
+                    }
+                }, 1200);
+            }
         }
 
-        render();
+        function voltarMenu() {
+            estado.tela = 'menu';
+            renderizar();
+        }
+
+        // Inicializa o app ao carregar a página
+        renderizar();
     </script>
 </body>
 </html>

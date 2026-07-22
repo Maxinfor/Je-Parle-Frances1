@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Lógico - Todos os Níveis (A1 a C2)</title>
+    <title>LinguaDu Lógico - Múltiplos Formatos de Exercícios</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -14,7 +14,7 @@
     </div>
 
     <script>
-        // Estado do Sistema de Aprendizagem Progressiva
+        // Estado do Sistema de Aprendizagem Progressiva com múltiplos tipos de exercícios
         let estado = {
             tela: 'menu', 
             vidas: 3,
@@ -23,10 +23,11 @@
             nivelSelecionado: 'A1'
         };
 
-        // Banco de Questões Completo por Nível (A1 a C2)
+        // Banco de Questões Expandido com Múltiplos Formatos (Múltipla Escolha, Verdadeiro/Falso, Ordenação e Associação)
         const bancoNiveis = {
             A1: [
                 {
+                    tipo: 'multipla',
                     passo: "A1 - Módulo 1: Verbo & Adjetivo Essencial",
                     ensinoTexto: "Vamos aprender o verbo: <strong>être</strong> (ser/estar - ex: <em>suis</em>) e o adjetivo: <strong>fatigué</strong> (cansado).",
                     vocabulario: [
@@ -40,33 +41,50 @@
                         pergunta: "Aplicando o verbo e o adjetivo aprendidos, como se diz \"Eu estou cansado\"?",
                         imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Je suis fatigué",
-                        audioTraducaoFR: "Eu estou cansado",
                         opcoes: ['J\'ai un chat', 'Je suis fatigué', 'Il fait beau', 'Nous allons au parc'],
                         correta: 1
                     }
                 },
                 {
-                    passo: "A1 - Módulo 2: Verbo de Desejo & Adjetivo",
-                    ensinoTexto: "Vamos aprender o verbo: <strong>voudrais</strong> (quero / gostaria) e o adjetivo: <strong>grand</strong> (grande).",
+                    tipo: 'vf',
+                    passo: "A1 - Módulo 2: Validação de Desejo",
+                    ensinoTexto: "Verificando o uso do verbo <strong>voudrais</strong> para pedidos polidos no cotidiano.",
                     vocabulario: [
-                        { palavra: "Je voudrais", significado: "Eu gostaria / quero (Verbo vouloir)" },
-                        { palavra: "un grand", significado: "Um grande (Adjetivo masculino)" }
+                        { palavra: "Je voudrais", significado: "Eu gostaria" }
                     ],
-                    explicacaoLogica: "O verbo de polidez <strong>je voudrais</strong> expressa um pedido, acompanhado do adjetivo qualificativo <strong>grand</strong>.",
+                    explicacaoLogica: "A frase 'Je voudrais un café' significa literalmente 'Eu gostaria de um café'.",
                     imagem: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je voudrais un grand café",
+                    audioFrase: "Je voudrais un café",
                     exercicio: {
-                        pergunta: "Utilizando o verbo voudrais e o adjetivo grand, como se diz \"Eu gostaria de um café grande\"?",
+                        pergunta: "A frase 'Je voudrais un café' significa 'Eu odeio café'?",
                         imagemExercicio: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je voudrais un grand café",
-                        audioTraducaoFR: "Eu gostaria de um café grande",
-                        opcoes: ['Je mange du pain', 'Je voudrais un grand café', 'Il pleut fort', 'Tu as une voiture'],
+                        audioFrances: "Je voudrais un café",
+                        opcoes: ['Verdadeiro (V)', 'Falso (F)'],
+                        correta: 1
+                    }
+                },
+                {
+                    tipo: 'ordenacao',
+                    passo: "A1 - Módulo 3: Construção Lógica de Posse",
+                    ensinoTexto: "Organize mentalmente os blocos da frase para formar a estrutura correta de posse com <strong>avoir</strong>.",
+                    vocabulario: [
+                        { palavra: "J'ai un chat", significado: "Eu tenho um gato" }
+                    ],
+                    explicacaoLogica: "A ordem padrão em francês para frases afirmativas simples é: Sujeito + Verbo + Artigo + Objeto.",
+                    imagem: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "J'ai un chat",
+                    exercicio: {
+                        pergunta: "Qual das opções apresenta a ordem correta para dizer 'Eu tenho um gato'?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "J'ai un chat",
+                        opcoes: ['Chat un ai J\'', 'J\'ai un chat', 'Un chat j\'ai', 'Ai j\' chat un'],
                         correta: 1
                     }
                 }
             ],
             A2: [
                 {
+                    tipo: 'multipla',
                     passo: "A2 - Módulo 1: Passado Composto (Passé Composé)",
                     ensinoTexto: "Expressando ações concluídas usando o auxiliar <strong>avoir</strong> + particípio (ex: <em>j'ai visité</em>).",
                     vocabulario: [
@@ -75,19 +93,37 @@
                     ],
                     explicacaoLogica: "O Passé Composé conecta o presente do verbo auxiliar com a ação principal terminada.",
                     imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "J'ai visité la France l'année dernière",
+                    audioFrase: "J'ai visité la France",
                     exercicio: {
                         pergunta: "Como dizer \"Eu visitei a França\" em francês?",
                         imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "J'ai visité la France",
-                        audioTraducaoFR: "Eu visitei a França",
                         opcoes: ['Je visite la France', 'J\'ai visité la France', 'Je vais visiter la France', 'Je visiterais la France'],
                         correta: 1
+                    }
+                },
+                {
+                    tipo: 'vf',
+                    passo: "A2 - Módulo 2: O Passado com Être",
+                    ensinoTexto: "Verbos de movimento utilizam o auxiliar <strong>être</strong> no Passé Composé (ex: <em>je suis allé</em>).",
+                    vocabulario: [
+                        { palavra: "Je suis allé", significado: "Eu fui" }
+                    ],
+                    explicacaoLogica: "Verbos intransitivos de deslocamento exigem o verbo être como auxiliar.",
+                    imagem: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                    audioFrase: "Je suis allé à Paris",
+                    exercicio: {
+                        pergunta: "A frase 'Je suis allé' utiliza o auxiliar être para expressar movimento?",
+                        imagemExercicio: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
+                        audioFrances: "Je suis allé",
+                        opcoes: ['Verdadeiro (V)', 'Falso (F)'],
+                        correta: 0
                     }
                 }
             ],
             B1: [
                 {
+                    tipo: 'multipla',
                     passo: "B1 - Módulo 1: Hipóteses com o Imperfeito",
                     ensinoTexto: "Usando a estrutura condicional simples para expressar desejos educados ou cenários hipotéticos (<strong>Si j'étais...</strong>).",
                     vocabulario: [
@@ -101,7 +137,6 @@
                         pergunta: "Como se traduz corretamente \"Se eu fosse rico...\"?",
                         imagemExercicio: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Si j'étais riche",
-                        audioTraducaoFR: "Se eu fosse rico",
                         opcoes: ['Si je suis riche', 'Si j\'étais riche', 'Si je serais riche', 'Quand je serai riche'],
                         correta: 1
                     }
@@ -109,11 +144,12 @@
             ],
             B2: [
                 {
+                    tipo: 'multipla',
                     passo: "B2 - Módulo 1: O Subjuntivo (Le Subjonctif)",
                     ensinoTexto: "O subjuntivo expressa dúvida, obrigação ou subjetividade após a conjunção <strong>Il faut que</strong>.",
                     vocabulario: [
                         { palavra: "Il faut que tu", significado: "É preciso que você" },
-                        { palavra: "prennes", significado: "tomes (do verbo prendre)" }
+                        { palavra: "prennes", significado: "tomes" }
                     ],
                     explicacaoLogica: "Expressões de obrigatoriedade como <em>il faut que</em> exigem obrigatoriamente o modo subjuntivo na oração seguinte.",
                     imagem: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
@@ -122,7 +158,6 @@
                         pergunta: "Qual alternativa utiliza o subjuntivo corretamente após uma expressão de exigência?",
                         imagemExercicio: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Il faut que tu comprennes",
-                        audioTraducaoFR: "É preciso que você compreenda",
                         opcoes: ['Il faut que tu comprends', 'Il faut que tu comprennes', 'Il faut tu as compris', 'Il faut de comprendre'],
                         correta: 1
                     }
@@ -130,6 +165,7 @@
             ],
             C1: [
                 {
+                    tipo: 'multipla',
                     passo: "C1 - Módulo 1: Nuances e Expressões Idiomáticas",
                     ensinoTexto: "Domínio de registros de linguagem avançados, metáforas corporativas e locuções idiomáticas complexas.",
                     vocabulario: [
@@ -142,7 +178,6 @@
                         pergunta: "O que significa a expressão idiomática avançada \"mettre la main à la pâte\"?",
                         imagemExercicio: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Mettre la main à la pâte",
-                        audioTraducaoFR: "Colocar a mão na massa",
                         opcoes: ['Fazer uma massa de bolo', 'Colocar a mão na massa / Ajudar', 'Comprar ingredientes', 'Desistir do trabalho'],
                         correta: 1
                     }
@@ -150,10 +185,11 @@
             ],
             C2: [
                 {
+                    tipo: 'multipla',
                     passo: "C2 - Módulo 1: Maestria Literária e Discurso Abstrato",
                     ensinoTexto: "Domínio equivalente a um falante nativo culto, capaz de interpretar textos literários densos e ironias sutis.",
                     vocabulario: [
-                        { palavra: "Non Nonchalance", significado: "Desprendimento / Descaso refinado" }
+                        { palavra: "Maîtrise absolue", significado: "Domínio absoluto" }
                     ],
                     explicacaoLogica: "Análise crítica avançada de textos clássicos, filosofia e polissemia da língua francesa.",
                     imagem: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
@@ -162,7 +198,6 @@
                         pergunta: "No contexto de C2, como se caracteriza a precisão lexical avançada?",
                         imagemExercicio: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
                         audioFrances: "Maîtrise absolue",
-                        audioTraducaoFR: "Domínio absoluto",
                         opcoes: ['Uso restrito ao vocabulário básico', 'Capacidade de expressar nuances sutilezas de sentido com precisão exímia', 'Dificuldade de compreensão oral', 'Uso exclusivo de gírias'],
                         correta: 1
                     }
@@ -190,7 +225,7 @@
                             <span class="text-4xl">🇫🇷</span>
                         </div>
                         <h1 class="text-2xl font-extrabold mb-1 text-zinc-100">LinguaDu Lógico</h1>
-                        <p class="text-zinc-400 mb-5 text-xs">Escolha seu nível no Quadro Europeu (CEFR)</p>
+                        <p class="text-zinc-400 mb-5 text-xs">Prática Dinâmica e Multiformato (CEFR)</p>
                         
                         <!-- Seletor de Níveis -->
                         <div class="grid grid-cols-3 gap-2 w-full mb-6">
@@ -208,12 +243,12 @@
                             </div>
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
                                 <span class="text-blue-400">📈</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Módulos</div><div class="text-sm font-bold text-zinc-200">${questoes.length} disponíveis</div></div>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Desafios</div><div class="text-sm font-bold text-zinc-200">${questoes.length} formatos</div></div>
                             </div>
                         </div>
 
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/20 transition active:scale-95 text-sm">
-                            INICIAR NÍVEL ${estado.nivelSelecionado}
+                            INICIAR PRÁTICA ${estado.nivelSelecionado}
                         </button>
                     </div>
                 `;
@@ -222,6 +257,8 @@
                 const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
                 setTimeout(() => tocarAudio(item.audioFrase), 400);
+
+                let badgeTipo = item.tipo === 'vf' ? 'Verdadeiro ou Falso' : item.tipo === 'ordenacao' ? 'Ordenação Lógica' : 'Múltipla Escolha';
 
                 app.innerHTML = `
                     <div class="flex flex-col justify-between flex-grow">
@@ -236,7 +273,10 @@
                                 </div>
                             </div>
 
-                            <div class="font-bold text-[11px] uppercase tracking-wider mb-2 text-center py-1.5 rounded-xl border bg-orange-500/10 text-orange-400 border-orange-500/20">📍 ${item.passo}</div>
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="font-bold text-[10px] uppercase tracking-wider py-1.5 px-3 rounded-xl border bg-orange-500/10 text-orange-400 border-orange-500/20">📍 ${item.passo}</div>
+                                <div class="font-bold text-[10px] uppercase tracking-wider py-1.5 px-3 rounded-xl border bg-blue-500/10 text-blue-400 border-blue-500/20">🎯 ${badgeTipo}</div>
+                            </div>
 
                             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-1">
                                 <div class="relative h-28 w-full overflow-hidden">
@@ -269,7 +309,7 @@
                         </div>
 
                         <button onclick="irParaExercicio()" class="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/25 transition mt-3 active:scale-95 text-xs">
-                            FAZER EXERCÍCIO
+                            RESPONDER DESAFIO
                         </button>
                     </div>
                 `;
@@ -277,6 +317,7 @@
                 const item = questoes[estado.questaoAtualIndex];
                 const q = item.exercicio;
                 const porcentagem = ((estado.questaoAtualIndex + 0.5) / questoes.length) * 100;
+                let instrucaoTipo = item.tipo === 'vf' ? 'Julgue o enunciado:' : item.tipo === 'ordenacao' ? 'Organize a estrutura:' : 'Aplicação Prática:';
 
                 app.innerHTML = `
                     <div class="flex flex-col justify-between flex-grow">
@@ -291,7 +332,7 @@
                                 </div>
                             </div>
 
-                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">Aplicação Prática (${estado.nivelSelecionado}):</div>
+                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">${instrucaoTipo}</div>
                             <h2 class="text-zinc-300 font-semibold text-xs mb-3 leading-relaxed">${q.pergunta}</h2>
                             
                             <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-3 shadow-xl">
@@ -301,7 +342,7 @@
                                 </div>
                                 <div class="p-3 flex items-center justify-between bg-zinc-900">
                                     <div>
-                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Referência</div>
+                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Áudio de Apoio</div>
                                         <div class="text-xs font-bold text-zinc-100">${q.audioFrances}</div>
                                     </div>
                                     <button onclick="tocarAudio('${q.audioFrances}')" class="w-8 h-8 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-xl flex items-center justify-center text-sm shadow-lg transition active:scale-95 shrink-0">🔊</button>
@@ -323,8 +364,8 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🏆</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Nível ${estado.nivelSelecionado} Concluído!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você dominou as estruturas lógicas deste estágio. Ganhou <strong>+200 XP</strong>.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Nível ${estado.nivelSelecionado} Superado!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Você completou todos os formatos com sucesso. Ganhou <strong>+250 XP</strong>.</p>
                         <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
                             VOLTAR AO MENU
                         </button>
@@ -335,7 +376,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">💡</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Vidas esgotadas!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">A revisão lógica consolida o aprendizado. Tente novamente.</p>
+                        <p class="text-zinc-400 mb-8 text-sm">A prática com formatos variados fixa o idioma. Tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -362,7 +403,7 @@
         }
 
         function reiniciarJornada() {
-            estado.xp += 200;
+            estado.xp += 250;
             estado.questaoAtualIndex = 0;
             estado.tela = 'menu';
             renderizar();

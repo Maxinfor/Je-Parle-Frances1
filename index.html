@@ -4,9 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>LinguaDu Lógico PRO 🇫🇷</title>
+
+<title>
+LinguaDu Lógico PRO 🇫🇷
+</title>
+
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -14,40 +19,59 @@
 <style>
 
 body{
-    font-family: 'Arial', sans-serif;
+
+font-family:Arial, sans-serif;
+
 }
 
 
 .botao{
-    transition:.3s;
+
+transition:.3s;
+
 }
 
+
 .botao:hover{
-    transform:scale(1.05);
+
+transform:scale(1.05);
+
 }
 
 
 .animar{
-    animation:pular 2s infinite;
+
+animation:pular 2s infinite;
+
 }
+
 
 
 @keyframes pular{
 
 0%,100%{
+
 transform:translateY(0);
+
 }
+
 
 50%{
+
 transform:translateY(-10px);
-}
 
 }
+
+
+}
+
 
 
 .card{
-    box-shadow:
-    0 10px 25px rgba(0,0,0,.15);
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.15);
+
 }
 
 
@@ -59,23 +83,21 @@ transform:translateY(-10px);
 
 
 <body class="
-bg-gradient-to-b 
-from-blue-600 
-via-white 
-to-red-500
 min-h-screen
+bg-gradient-to-b
+from-blue-600
+via-white
+to-red-500
 ">
 
 
-<div 
+<div
 id="app"
 class="
 max-w-md
 mx-auto
 min-h-screen
 p-5
-flex
-flex-col
 ">
 </div>
 
@@ -84,9 +106,9 @@ flex-col
 <script>
 
 
-// ==============================
+// ==================================
 // ESTADO DO APLICATIVO
-// ==============================
+// ==================================
 
 
 let estado={
@@ -99,109 +121,70 @@ vidas:3,
 
 xp:0,
 
-questao:0,
+moedas:0,
 
-moedas:0
+questao:0
 
 };
 
 
 
-// ==============================
-// BANCO DE NÍVEIS
-// ==============================
+// ==================================
+// PERFIL
+// ==================================
+
+
+let perfil={
+
+nome:"Aluno Francês",
+
+medalhas:[]
+
+};
+
+
+
+// ==================================
+// NÍVEIS
+// ==================================
 
 
 const niveis={
 
 
 A1:{
-
 nome:"Iniciante",
-
-icone:"🌱",
-
-cor:"green",
-
-descricao:
-"Primeiros passos no francês"
-
-
+icone:"🌱"
 },
 
 
 A2:{
-
 nome:"Básico",
-
-icone:"📚",
-
-cor:"blue",
-
-descricao:
-"Conversas do dia a dia"
-
-
+icone:"📚"
 },
 
 
 B1:{
-
 nome:"Intermediário",
-
-icone:"🚀",
-
-cor:"purple",
-
-descricao:
-"Comunicação natural"
-
-
+icone:"🚀"
 },
 
 
 B2:{
-
 nome:"Avançado",
-
-icone:"🎓",
-
-cor:"orange",
-
-descricao:
-"Domínio da gramática"
-
-
+icone:"🎓"
 },
 
 
 C1:{
-
 nome:"Fluente",
-
-icone:"🏆",
-
-cor:"yellow",
-
-descricao:
-"Francês profissional"
-
-
+icone:"🏆"
 },
 
 
 C2:{
-
 nome:"Mestre",
-
-icone:"👑",
-
-cor:"red",
-
-descricao:
-"Nível nativo"
-
-
+icone:"👑"
 }
 
 
@@ -209,10 +192,9 @@ descricao:
 
 
 
-
-// ==============================
-// DESENHOS DO APP
-// ==============================
+// ==================================
+// IMAGENS
+// ==================================
 
 
 const desenhos={
@@ -220,14 +202,6 @@ const desenhos={
 
 mascote:
 "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-
-
-franca:
-"https://cdn-icons-png.flaticon.com/512/330/330490.png",
-
-
-livro:
-"https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
 
 
 trofeu:
@@ -239,298 +213,9 @@ trofeu:
 
 
 
-// ==============================
-// TELA MENU
-// ==============================
-
-
-function renderizar(){
-
-
-let app=document.getElementById("app");
-
-
-
-if(estado.tela==="menu"){
-
-
-app.innerHTML=`
-
-<div class="
-flex
-flex-col
-items-center
-text-center
-">
-
-
-<img 
-
-src="${desenhos.mascote}"
-
-class="
-w-32
-h-32
-animar
-mb-4
-">
-
-
-<h1 class="
-text-4xl
-font-black
-text-blue-900
-">
-
-LinguaDu
-
-</h1>
-
-
-<h2 class="
-text-2xl
-font-bold
-text-red-600
-">
-
-Lógico PRO 🇫🇷
-
-</h2>
-
-
-
-<p class="
-text-lg
-text-gray-700
-mt-3
-">
-
-Aprenda francês brincando!
-
-</p>
-
-
-
-
-<div class="
-bg-white
-rounded-3xl
-p-5
-mt-6
-w-full
-card
-">
-
-
-<div class="
-flex
-justify-around
-text-xl
-font-bold
-">
-
-
-<div>
-
-⚡
-
-<br>
-
-${estado.xp}
-
-XP
-
-</div>
-
-
-
-<div>
-
-❤️
-
-<br>
-
-${estado.vidas}
-
-</div>
-
-
-
-<div>
-
-🪙
-
-<br>
-
-${estado.moedas}
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-<h3 class="
-text-2xl
-font-black
-mt-8
-text-blue-900
-">
-
-Escolha seu nível
-
-</h3>
-
-
-
-
-
-<div class="
-grid
-grid-cols-2
-gap-4
-w-full
-mt-5
-">
-
-
-${Object.keys(niveis).map(n=>`
-
-<button
-
-onclick="selecionarNivel('${n}')"
-
-class="
-botao
-bg-white
-rounded-3xl
-p-5
-card
-border-4
-border-blue-200
-">
-
-
-<div class="
-text-4xl
-">
-
-${niveis[n].icone}
-
-</div>
-
-
-<div class="
-text-2xl
-font-black
-">
-
-${n}
-
-</div>
-
-
-<div class="
-text-sm
-font-bold
-">
-
-${niveis[n].nome}
-
-</div>
-
-
-
-</button>
-
-
-`).join("")}
-
-
-
-</div>
-
-
-
-
-
-
-<button
-
-onclick="iniciar()"
-
-class="
-botao
-mt-8
-bg-blue-700
-text-white
-text-xl
-font-black
-rounded-3xl
-py-5
-w-full
-">
-
-
-COMEÇAR AVENTURA 🚀
-
-
-</button>
-
-
-
-</div>
-
-
-`;
-
-}
-
-
-}
-
-
-
-
-function selecionarNivel(n){
-
-estado.nivel=n;
-
-}
-
-
-
-function iniciar(){
-
-estado.tela="aula";
-
-estado.questao=0;
-
-renderizar();
-
-}
-
-
-
-renderizar();
-
-
-
-</script>
-
-
-</body>
-
-</html>
-// =====================================
+// ==================================
 // BANCO DE AULAS
-// =====================================
+// ==================================
 
 
 const aulas={
@@ -540,63 +225,44 @@ A1:[
 
 {
 
-frances:"Bonjour 👋",
+frances:"Bonjour",
 
 traducao:"Olá",
 
-explicacao:
-"Uma das primeiras palavras que todo estudante de francês aprende.",
+imagem:"👋",
 
-imagem:
-"👋"
+explicacao:
+"Cumprimento básico em francês."
 
 },
 
 
 {
 
-frances:"Je m'appelle Max",
+frances:"Je m'appelle",
 
-traducao:"Meu nome é Max",
+traducao:"Meu nome é",
+
+imagem:"🙂",
 
 explicacao:
-"Usamos esta frase para nos apresentar.",
-
-imagem:
-"🙂"
+"Usado para apresentação."
 
 },
 
 
 {
 
-frances:"Je suis brésilien",
+frances:"Merci",
 
-traducao:"Eu sou brasileiro",
+traducao:"Obrigado",
 
-explicacao:
-"Je suis significa: Eu sou / Eu estou.",
-
-imagem:
-"🇧🇷"
-
-},
-
-
-{
-
-frances:"Merci beaucoup",
-
-traducao:"Muito obrigado",
+imagem:"🙏",
 
 explicacao:
-"Uma forma educada de agradecer.",
-
-imagem:
-"🙏"
+"Forma educada de agradecer."
 
 }
-
 
 ],
 
@@ -606,30 +272,14 @@ A2:[
 
 {
 
-frances:"J'aime apprendre le français",
+frances:"J'aime le français",
 
-traducao:
-"Eu gosto de aprender francês",
+traducao:"Eu gosto do francês",
 
-explicacao:
-"O verbo aimer significa gostar ou amar.",
-
-imagem:"📚"
-
-},
-
-
-{
-
-frances:"Je vais au travail",
-
-traducao:
-"Eu vou ao trabalho",
+imagem:"📚",
 
 explicacao:
-"Je vais vem do verbo aller (ir).",
-
-imagem:"🚶"
+"O verbo aimer significa gostar."
 
 }
 
@@ -638,21 +288,18 @@ imagem:"🚶"
 
 
 
-
 B1:[
 
 {
 
-frances:
-"Si j'avais le temps",
+frances:"Je voudrais apprendre",
 
-traducao:
-"Se eu tivesse tempo",
+traducao:"Eu gostaria de aprender",
+
+imagem:"🚀",
 
 explicacao:
-"Estrutura usada para situações hipotéticas.",
-
-imagem:"⏰"
+"Forma educada de expressar desejo."
 
 }
 
@@ -665,16 +312,15 @@ B2:[
 
 {
 
-frances:
-"Il faut que tu comprennes",
+frances:"Il faut que tu comprennes",
 
 traducao:
 "É necessário que você compreenda",
 
-explicacao:
-"Usamos o subjuntivo após algumas expressões.",
+imagem:"🎓",
 
-imagem:"🎓"
+explicacao:
+"Uso do subjuntivo."
 
 }
 
@@ -693,10 +339,10 @@ frances:
 traducao:
 "Colocar a mão na massa",
 
-explicacao:
-"Expressão idiomática francesa.",
+imagem:"💪",
 
-imagem:"💪"
+explicacao:
+"Expressão idiomática."
 
 }
 
@@ -715,957 +361,30 @@ frances:
 traducao:
 "A sutileza da linguagem",
 
-explicacao:
-"Expressão usada em contextos avançados.",
+imagem:"👑",
 
-imagem:"👑"
+explicacao:
+"Nível avançado."
 
 }
 
 
 ]
 
-};
-
-
-
-
-// =====================================
-// TELA DE AULA
-// =====================================
-
-
-function telaAula(){
-
-
-let app=document.getElementById("app");
-
-
-let lista=aulas[estado.nivel];
-
-
-let aula=lista[estado.questao];
-
-
-
-app.innerHTML=`
-
-
-<div class="flex flex-col min-h-screen">
-
-
-<!-- CABEÇALHO -->
-
-
-<div class="
-flex
-justify-between
-items-center
-mb-5
-">
-
-
-<button
-
-onclick="voltarMenu()"
-
-class="
-bg-white
-rounded-full
-p-3
-text-xl
-">
-
-⬅️
-
-</button>
-
-
-
-<div class="
-bg-white
-rounded-full
-px-5
-py-3
-font-black
-text-xl
-">
-
-${estado.nivel}
-
-</div>
-
-
-
-<div class="
-bg-red-600
-text-white
-rounded-full
-px-4
-py-3
-font-black
-">
-
-❤️ ${estado.nivel?estado.vidas:0}
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- PROGRESSO -->
-
-
-<div class="
-bg-white
-rounded-full
-h-5
-mb-6
-overflow-hidden
-">
-
-
-<div
-
-class="
-bg-green-500
-h-full
-"
-
-style="width:${((estado.questao+1)/lista.length)*100}%"
-
-></div>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- CARD PRINCIPAL -->
-
-
-<div class="
-bg-white
-rounded-3xl
-p-6
-card
-text-center
-">
-
-
-<img
-
-src="${desenhos.mascote}"
-
-class="
-w-24
-mx-auto
-animar
-">
-
-
-<div class="
-text-7xl
-mt-3
-">
-
-${aula.imagem}
-
-</div>
-
-
-
-
-<h1 class="
-text-4xl
-font-black
-text-blue-700
-mt-5
-">
-
-${aula.frances}
-
-</h1>
-
-
-
-<button
-
-onclick="ouvir('${aula.frances}')"
-
-class="
-mt-5
-bg-green-500
-text-white
-rounded-full
-px-8
-py-4
-text-xl
-font-black
-">
-
-🔊 Ouvir
-
-</button>
-
-
-
-
-
-
-<div class="
-bg-blue-50
-rounded-3xl
-p-5
-mt-6
-">
-
-
-<p class="
-text-3xl
-font-black
-text-gray-800
-">
-
-${aula.traducao}
-
-</p>
-
-
-
-</div>
-
-
-
-
-<p class="
-text-lg
-mt-5
-text-gray-700
-">
-
-${aula.explicacao}
-
-</p>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<button
-
-onclick="proximo()"
-
-class="
-mt-auto
-mb-5
-bg-blue-700
-text-white
-rounded-3xl
-py-5
-text-xl
-font-black
-">
-
-
-CONTINUAR ➡️
-
-
-</button>
-
-
-
-
-</div>
-
-
-
-`;
-
-
-
-}
-
-
-
-
-// =====================================
-// FUNÇÕES
-// =====================================
-
-
-function proximo(){
-
-
-let lista=aulas[estado.nivel];
-
-
-estado.questao++;
-
-
-if(estado.questao>=lista.length){
-
-
-estado.tela="exercicio";
-
-
-estado.questao=0;
-
-
-}
-
-renderizar();
-
-
-}
-
-
-
-
-function ouvir(texto){
-
-
-let fala=new SpeechSynthesisUtterance(texto);
-
-
-fala.lang="fr-FR";
-
-
-fala.rate=0.8;
-
-
-speechSynthesis.speak(fala);
-
-
-}
-
-
-
-function voltarMenu(){
-
-estado.tela="menu";
-
-renderizar();
-
-}
-
-
-
-
-
-// Atualiza o renderizador principal
-
-let renderAntigo=renderizar;
-
-
-renderizar=function(){
-
-
-if(estado.tela==="aula"){
-
-telaAula();
-
-}
-
-else{
-
-renderAntigo();
-
-}
-// =====================================
-// BANCO DE AULAS
-// =====================================
-
-
-const aulas={
-
-
-A1:[
-
-{
-
-frances:"Bonjour 👋",
-
-traducao:"Olá",
-
-explicacao:
-"Uma das primeiras palavras que todo estudante de francês aprende.",
-
-imagem:
-"👋"
-
-},
-
-
-{
-
-frances:"Je m'appelle Max",
-
-traducao:"Meu nome é Max",
-
-explicacao:
-"Usamos esta frase para nos apresentar.",
-
-imagem:
-"🙂"
-
-},
-
-
-{
-
-frances:"Je suis brésilien",
-
-traducao:"Eu sou brasileiro",
-
-explicacao:
-"Je suis significa: Eu sou / Eu estou.",
-
-imagem:
-"🇧🇷"
-
-},
-
-
-{
-
-frances:"Merci beaucoup",
-
-traducao:"Muito obrigado",
-
-explicacao:
-"Uma forma educada de agradecer.",
-
-imagem:
-"🙏"
-
-}
-
-
-],
-
-
-
-A2:[
-
-{
-
-frances:"J'aime apprendre le français",
-
-traducao:
-"Eu gosto de aprender francês",
-
-explicacao:
-"O verbo aimer significa gostar ou amar.",
-
-imagem:"📚"
-
-},
-
-
-{
-
-frances:"Je vais au travail",
-
-traducao:
-"Eu vou ao trabalho",
-
-explicacao:
-"Je vais vem do verbo aller (ir).",
-
-imagem:"🚶"
-
-}
-
-
-],
-
-
-
-
-B1:[
-
-{
-
-frances:
-"Si j'avais le temps",
-
-traducao:
-"Se eu tivesse tempo",
-
-explicacao:
-"Estrutura usada para situações hipotéticas.",
-
-imagem:"⏰"
-
-}
-
-
-],
-
-
-
-B2:[
-
-{
-
-frances:
-"Il faut que tu comprennes",
-
-traducao:
-"É necessário que você compreenda",
-
-explicacao:
-"Usamos o subjuntivo após algumas expressões.",
-
-imagem:"🎓"
-
-}
-
-
-],
-
-
-
-C1:[
-
-{
-
-frances:
-"Mettre la main à la pâte",
-
-traducao:
-"Colocar a mão na massa",
-
-explicacao:
-"Expressão idiomática francesa.",
-
-imagem:"💪"
-
-}
-
-
-],
-
-
-
-C2:[
-
-{
-
-frances:
-"La subtilité du langage",
-
-traducao:
-"A sutileza da linguagem",
-
-explicacao:
-"Expressão usada em contextos avançados.",
-
-imagem:"👑"
-
-}
-
-
-]
 
 };
-
-
-
-
-// =====================================
-// TELA DE AULA
-// =====================================
-
-
-function telaAula(){
-
-
-let app=document.getElementById("app");
-
-
-let lista=aulas[estado.nivel];
-
-
-let aula=lista[estado.questao];
-
-
-
-app.innerHTML=`
-
-
-<div class="flex flex-col min-h-screen">
-
-
-<!-- CABEÇALHO -->
-
-
-<div class="
-flex
-justify-between
-items-center
-mb-5
-">
-
-
-<button
-
-onclick="voltarMenu()"
-
-class="
-bg-white
-rounded-full
-p-3
-text-xl
-">
-
-⬅️
-
-</button>
-
-
-
-<div class="
-bg-white
-rounded-full
-px-5
-py-3
-font-black
-text-xl
-">
-
-${estado.nivel}
-
-</div>
-
-
-
-<div class="
-bg-red-600
-text-white
-rounded-full
-px-4
-py-3
-font-black
-">
-
-❤️ ${estado.nivel?estado.vidas:0}
-
-</div>
-
-
-</div>
-
-
-
-
-
-<!-- PROGRESSO -->
-
-
-<div class="
-bg-white
-rounded-full
-h-5
-mb-6
-overflow-hidden
-">
-
-
-<div
-
-class="
-bg-green-500
-h-full
-"
-
-style="width:${((estado.questao+1)/lista.length)*100}%"
-
-></div>
-
-
-</div>
-
-
-
-
-
-
-
-<!-- CARD PRINCIPAL -->
-
-
-<div class="
-bg-white
-rounded-3xl
-p-6
-card
-text-center
-">
-
-
-<img
-
-src="${desenhos.mascote}"
-
-class="
-w-24
-mx-auto
-animar
-">
-
-
-<div class="
-text-7xl
-mt-3
-">
-
-${aula.imagem}
-
-</div>
-
-
-
-
-<h1 class="
-text-4xl
-font-black
-text-blue-700
-mt-5
-">
-
-${aula.frances}
-
-</h1>
-
-
-
-<button
-
-onclick="ouvir('${aula.frances}')"
-
-class="
-mt-5
-bg-green-500
-text-white
-rounded-full
-px-8
-py-4
-text-xl
-font-black
-">
-
-🔊 Ouvir
-
-</button>
-
-
-
-
-
-
-<div class="
-bg-blue-50
-rounded-3xl
-p-5
-mt-6
-">
-
-
-<p class="
-text-3xl
-font-black
-text-gray-800
-">
-
-${aula.traducao}
-
-</p>
-
-
-
-</div>
-
-
-
-
-<p class="
-text-lg
-mt-5
-text-gray-700
-">
-
-${aula.explicacao}
-
-</p>
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<button
-
-onclick="proximo()"
-
-class="
-mt-auto
-mb-5
-bg-blue-700
-text-white
-rounded-3xl
-py-5
-text-xl
-font-black
-">
-
-
-CONTINUAR ➡️
-
-
-</button>
-
-
-
-
-</div>
-
-
-
-`;
-
-
-
-}
-
-
-
-
-// =====================================
-// FUNÇÕES
-// =====================================
-
-
-function proximo(){
-
-
-let lista=aulas[estado.nivel];
-
-
-estado.questao++;
-
-
-if(estado.questao>=lista.length){
-
-
-estado.tela="exercicio";
-
-
-estado.questao=0;
-
-
-}
-
-renderizar();
-
-
-}
-
-
-
-
-function ouvir(texto){
-
-
-let fala=new SpeechSynthesisUtterance(texto);
-
-
-fala.lang="fr-FR";
-
-
-fala.rate=0.8;
-
-
-speechSynthesis.speak(fala);
-
-
-}
-
-
-
-function voltarMenu(){
-
-estado.tela="menu";
-
-renderizar();
-
-}
-
-
-
-
-
-// Atualiza o renderizador principal
-
-let renderAntigo=renderizar;
-
-
-renderizar=function(){
-
-
-if(estado.tela==="aula"){
-
-telaAula();
-
-}
-
-else{
-
-renderAntigo();
-
-}
-
-
-}
-
-
-}// =====================================
+// ==================================
 // BANCO DE EXERCÍCIOS
-// =====================================
+// ==================================
 
 
-const exercicios = {
+const exercicios={
 
 
 A1:[
 
 {
-pergunta:
-"Como dizemos 'Olá' em francês?",
+pergunta:"Como dizemos Olá em francês?",
 
 opcoes:[
 "Bonjour",
@@ -1675,36 +394,37 @@ opcoes:[
 ],
 
 correta:0
+
 },
 
 
 {
-pergunta:
-"Qual significa 'Obrigado'?",
+pergunta:"Merci significa:",
 
 opcoes:[
-"Salut",
-"Merci",
-"Oui",
-"Non"
+"Olá",
+"Obrigado",
+"Até logo",
+"Sim"
 ],
 
 correta:1
+
 },
 
 
 {
-pergunta:
-"Je m'appelle significa:",
+pergunta:"Je m'appelle significa:",
 
 opcoes:[
-"Eu estudo",
-"Eu moro",
 "Meu nome é",
-"Eu gosto"
+"Eu vou",
+"Eu gosto",
+"Eu tenho"
 ],
 
-correta:2
+correta:0
+
 }
 
 ],
@@ -1715,37 +435,18 @@ A2:[
 
 {
 
-pergunta:
-"O verbo aimer significa:",
+pergunta:"J'aime significa:",
 
 opcoes:[
-"Ir",
-"Gostar",
-"Comer",
-"Falar"
-],
-
-correta:1
-
-},
-
-
-{
-
-pergunta:
-"Je vais significa:",
-
-opcoes:[
+"Eu gosto",
 "Eu vou",
 "Eu sou",
-"Eu tenho",
-"Eu quero"
+"Eu tenho"
 ],
 
 correta:0
 
 }
-
 
 ],
 
@@ -1755,14 +456,13 @@ B1:[
 
 {
 
-pergunta:
-"Si j'avais le temps significa:",
+pergunta:"Je voudrais significa:",
 
 opcoes:[
-"Se eu tivesse tempo",
-"Eu tenho tempo",
-"Eu perdi tempo",
-"Tenho pressa"
+"Eu gostaria",
+"Eu perdi",
+"Eu sei",
+"Eu vejo"
 ],
 
 correta:0
@@ -1777,14 +477,13 @@ B2:[
 
 {
 
-pergunta:
-"Il faut que significa:",
+pergunta:"Il faut que significa:",
 
 opcoes:[
 "Talvez",
 "É necessário que",
-"Eu penso",
-"Eu vejo"
+"Eu quero",
+"Eu posso"
 ],
 
 correta:1
@@ -1822,13 +521,13 @@ C2:[
 {
 
 pergunta:
-"Maîtrise absolue significa:",
+"La subtilité du langage significa:",
 
 opcoes:[
-"Domínio absoluto",
-"Erro grave",
-"Começo básico",
-"Frase curta"
+"Sutileza da linguagem",
+"Erro de escrita",
+"Frase simples",
+"Palavra curta"
 ],
 
 correta:0
@@ -1845,36 +544,607 @@ correta:0
 
 
 
-// =====================================
-// TELA DE EXERCÍCIO
-// =====================================
+// ==================================
+// ÁUDIO FRANCÊS
+// ==================================
+
+
+function ouvir(texto){
+
+
+let fala =
+new SpeechSynthesisUtterance(texto);
+
+
+fala.lang="fr-FR";
+
+
+fala.rate=0.8;
+
+
+speechSynthesis.speak(fala);
+
+
+}
 
 
 
-function telaExercicio(){
+
+
+
+// ==================================
+// SALVAR PROGRESSO
+// ==================================
+
+
+function salvar(){
+
+
+localStorage.setItem(
+
+"LinguaDu",
+
+JSON.stringify({
+
+estado:estado,
+
+perfil:perfil
+
+})
+
+);
+
+
+}
+
+
+
+
+
+// ==================================
+// CARREGAR PROGRESSO
+// ==================================
+
+
+function carregar(){
+
+
+let dados =
+localStorage.getItem("LinguaDu");
+
+
+
+if(dados){
+
+
+let salvo =
+JSON.parse(dados);
+
+
+
+estado =
+salvo.estado;
+
+
+perfil =
+salvo.perfil;
+
+
+
+}
+
+
+}
+
+
+
+carregar();
+
+
+
+
+
+
+// ==================================
+// CONTROLE DO NÍVEL
+// ==================================
+
+
+function selecionarNivel(nivel){
+
+
+estado.nivel=nivel;
+
+
+estado.questao=0;
+
+
+renderizar();
+
+
+}
+
+
+
+
+
+
+// ==================================
+// INICIAR CURSO
+// ==================================
+
+
+function iniciar(){
+
+
+estado.tela="aula";
+
+
+estado.vidas=3;
+
+
+estado.questao=0;
+
+
+renderizar();
+
+
+}
+
+
+
+
+
+// ==================================
+// VOLTAR MENU
+// ==================================
+
+
+function voltarMenu(){
+
+
+estado.tela="menu";
+
+
+renderizar();
+
+
+}
+
+
+
+
+// ==================================
+// PRÓXIMA AULA
+// ==================================
+
+
+function proximaAula(){
+
+
+let lista =
+aulas[estado.nivel];
+
+
+
+estado.questao++;
+
+
+
+if(
+estado.questao >= lista.length
+){
+
+
+estado.questao=0;
+
+
+estado.tela="exercicio";
+
+
+}
+
+
+
+renderizar();
+
+
+}
+// ==================================
+// TELA PRINCIPAL / MENU
+// ==================================
+
+
+function telaMenu(){
 
 
 let app=document.getElementById("app");
 
 
-let lista=exercicios[estado.nivel];
+
+app.innerHTML=`
+
+<div class="
+flex
+flex-col
+items-center
+text-center
+">
 
 
-let pergunta=lista[estado.questao];
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-32
+h-32
+animar
+mb-4
+">
+
+
+<h1 class="
+text-5xl
+font-black
+text-blue-900
+">
+
+LinguaDu
+
+</h1>
+
+
+<h2 class="
+text-3xl
+font-black
+text-red-600
+">
+
+Lógico PRO 🇫🇷
+
+</h2>
+
+
+<p class="
+text-lg
+font-bold
+text-gray-700
+mt-3
+">
+
+Aprenda francês brincando!
+
+</p>
+
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-5
+mt-6
+w-full
+card
+">
+
+
+<div class="
+grid
+grid-cols-3
+text-center
+text-xl
+font-black
+">
+
+
+<div>
+
+⭐
+
+<br>
+
+${estado.xp}
+
+</div>
+
+
+<div>
+
+❤️
+
+<br>
+
+${estado.vidas}
+
+</div>
+
+
+<div>
+
+🪙
+
+<br>
+
+${estado.moedas}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<h3 class="
+text-2xl
+font-black
+text-blue-900
+mt-8
+">
+
+Escolha seu nível
+
+</h3>
+
+
+
+
+
+
+<div class="
+grid
+grid-cols-2
+gap-4
+mt-5
+w-full
+">
+
+
+${Object.keys(niveis).map(n=>`
+
+
+<button
+
+onclick="selecionarNivel('${n}')"
+
+class="
+botao
+bg-white
+rounded-3xl
+p-5
+card
+border-4
+${estado.nivel===n
+?
+"border-red-500"
+:
+"border-blue-200"}
+">
+
+
+<div class="
+text-5xl
+">
+
+${niveis[n].icone}
+
+</div>
+
+
+<div class="
+text-3xl
+font-black
+">
+
+${n}
+
+</div>
+
+
+
+<div class="
+text-sm
+font-bold
+">
+
+${niveis[n].nome}
+
+</div>
+
+
+
+</button>
+
+
+
+`).join("")}
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+onclick="iniciar()"
+
+class="
+botao
+mt-8
+w-full
+bg-blue-700
+text-white
+rounded-3xl
+py-5
+text-xl
+font-black
+">
+
+
+COMEÇAR AVENTURA 🚀
+
+
+</button>
+
+
+
+
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+
+
+
+// ==================================
+// RENDERIZADOR PRINCIPAL
+// ==================================
+
+
+function renderizar(){
+
+
+
+switch(estado.tela){
+
+
+
+case "menu":
+
+telaMenu();
+
+break;
+
+
+
+case "aula":
+
+telaAula();
+
+break;
+
+
+
+case "exercicio":
+
+telaExercicio();
+
+break;
+
+
+
+case "vitoria":
+
+telaVitoria();
+
+break;
+
+
+
+case "derrota":
+
+telaDerrota();
+
+break;
+
+
+
+case "perfil":
+
+telaPerfil();
+
+break;
+
+
+
+case "loja":
+
+telaLoja();
+
+break;
+
+
+
+default:
+
+telaMenu();
+
+
+}
+
+
+
+}
+
+
+// ==================================
+// INICIAR APLICAÇÃO
+// ==================================
+
+
+renderizar();
+// ==================================
+// TELA DE AULA
+// ==================================
+
+
+function telaAula(){
+
+
+let app=document.getElementById("app");
+
+
+
+let lista =
+aulas[estado.nivel];
+
+
+
+let aula =
+lista[estado.questao];
+
 
 
 
 app.innerHTML=`
 
 
-<div class="flex flex-col min-h-screen">
+<div class="
+min-h-screen
+flex
+flex-col
+">
 
+
+
+
+
+<!-- CABEÇALHO -->
 
 
 <div class="
 flex
 justify-between
-mb-6
+items-center
+mb-5
 ">
 
 
@@ -1895,8 +1165,9 @@ text-xl
 
 
 
+
 <div class="
-bg-yellow-400
+bg-white
 rounded-full
 px-5
 py-3
@@ -1904,9 +1175,11 @@ font-black
 text-xl
 ">
 
-⭐ ${estado.xp}
+${estado.nivel}
 
 </div>
+
+
 
 
 
@@ -1924,10 +1197,54 @@ font-black
 </div>
 
 
+
 </div>
 
 
 
+
+
+
+
+<!-- PROGRESSO -->
+
+
+<div class="
+bg-white
+rounded-full
+h-4
+overflow-hidden
+mb-6
+">
+
+
+<div
+
+class="
+bg-green-500
+h-full
+"
+
+style="width:${
+((estado.questao+1)/
+lista.length)*100
+}%"
+
+>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- CARTÃO DA AULA -->
 
 
 <div class="
@@ -1935,7 +1252,11 @@ bg-white
 rounded-3xl
 p-6
 card
+text-center
 ">
+
+
+
 
 
 <img
@@ -1949,17 +1270,324 @@ animar
 ">
 
 
+
+
+
+<div class="
+text-7xl
+mt-4
+">
+
+${aula.imagem}
+
+</div>
+
+
+
+
+
+
+<h1 class="
+text-4xl
+font-black
+text-blue-700
+mt-5
+">
+
+${aula.frances}
+
+</h1>
+
+
+
+
+
+
+<button
+
+onclick="ouvir('${aula.frances}')"
+
+class="
+mt-5
+bg-green-600
+text-white
+rounded-full
+px-8
+py-4
+text-xl
+font-black
+botao
+">
+
+🔊 ESCUTAR
+
+</button>
+
+
+
+
+
+
+
+
+<div class="
+bg-blue-50
+rounded-3xl
+p-5
+mt-6
+">
+
+
+<p class="
+text-3xl
+font-black
+text-gray-800
+">
+
+${aula.traducao}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="
+mt-5
+bg-yellow-50
+rounded-3xl
+p-5
+">
+
+
+<h2 class="
+font-black
+text-xl
+text-yellow-700
+">
+
+💡 Explicação
+
+</h2>
+
+
+
+<p class="
+text-lg
+font-bold
+text-gray-700
+mt-2
+">
+
+${aula.explicacao}
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<button
+
+onclick="proximaAula()"
+
+class="
+mt-auto
+mb-5
+bg-blue-700
+text-white
+rounded-3xl
+py-5
+text-xl
+font-black
+botao
+">
+
+
+CONTINUAR ➡️
+
+
+</button>
+
+
+
+
+
+
+
+</div>
+
+
+
+`;
+
+
+
+}
+// ==================================
+// TELA DE EXERCÍCIO
+// ==================================
+
+
+function telaExercicio(){
+
+
+let app=document.getElementById("app");
+
+
+let lista =
+exercicios[estado.nivel];
+
+
+
+let pergunta =
+lista[estado.questao];
+
+
+
+
+
+app.innerHTML=`
+
+
+<div class="
+min-h-screen
+flex
+flex-col
+">
+
+
+
+
+
+<div class="
+flex
+justify-between
+items-center
+mb-6
+">
+
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-white
+rounded-full
+p-3
+text-xl
+">
+
+⬅️
+
+</button>
+
+
+
+
+
+<div class="
+bg-yellow-400
+rounded-full
+px-5
+py-3
+font-black
+">
+
+⭐ ${estado.xp}
+
+</div>
+
+
+
+
+
+<div class="
+bg-red-600
+text-white
+rounded-full
+px-5
+py-3
+font-black
+">
+
+❤️ ${estado.vidas}
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+card
+text-center
+">
+
+
+
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-28
+mx-auto
+animar
+">
+
+
+
+
+
 <h1 class="
 text-3xl
 font-black
 text-blue-900
-text-center
 mt-5
 ">
 
-Desafio 🇫🇷
+Desafio Francês 🇫🇷
 
 </h1>
+
+
+
 
 
 
@@ -1967,13 +1595,15 @@ Desafio 🇫🇷
 text-xl
 font-bold
 text-gray-700
-text-center
-mt-5
+mt-6
 ">
 
 ${pergunta.pergunta}
 
 </p>
+
+
+
 
 
 
@@ -1985,17 +1615,18 @@ space-y-4
 ">
 
 
-${pergunta.opcoes.map((op,i)=>`
+${pergunta.opcoes.map((opcao,index)=>`
+
 
 
 <button
 
-onclick="responder(${i})"
+onclick="verificarResposta(${index})"
 
 class="
-opcao
+resposta
 w-full
-bg-blue-600
+bg-blue-700
 text-white
 rounded-3xl
 py-5
@@ -2005,7 +1636,7 @@ botao
 ">
 
 
-${op}
+${opcao}
 
 
 </button>
@@ -2015,7 +1646,11 @@ ${op}
 `).join("")}
 
 
+
 </div>
+
+
+
 
 
 </div>
@@ -2028,47 +1663,68 @@ ${op}
 
 `;
 
+
+
 }
 
 
 
 
-// =====================================
-// RESPOSTA
-// =====================================
-
-
-function responder(valor){
-
-
-let lista=exercicios[estado.nivel];
-
-
-let pergunta=lista[estado.questao];
 
 
 
-let botoes=document.querySelectorAll(".opcao");
+
+// ==================================
+// VERIFICAR RESPOSTA
+// ==================================
+
+
+function verificarResposta(escolha){
 
 
 
-if(valor===pergunta.correta){
-
-
-botoes[valor].classList.remove(
-"bg-blue-600"
-);
-
-
-botoes[valor].classList.add(
-"bg-green-600"
-);
+let lista =
+exercicios[estado.nivel];
 
 
 
-estado.xp+=20;
+let pergunta =
+lista[estado.questao];
 
-estado.moedas+=5;
+
+
+let botoes =
+document.querySelectorAll(".resposta");
+
+
+
+
+
+// ACERTO
+
+
+if(escolha===pergunta.correta){
+
+
+
+botoes[escolha]
+.classList
+.remove("bg-blue-700");
+
+
+
+botoes[escolha]
+.classList
+.add("bg-green-600");
+
+
+
+
+
+estado.xp +=20;
+
+
+estado.moedas +=5;
 
 
 
@@ -2079,68 +1735,26 @@ estado.questao++;
 
 
 
-if(estado.questao>=lista.length){
+
+if(
+estado.questao>=lista.length
+){
 
 
-estado.tela="vitoria";
 
 estado.questao=0;
 
 
+estado.tela="vitoria";
+
+
+
 }
 
-else{
 
 
 renderizar();
 
-
-}
-
-
-
-},900);
-
-
-
-}
-
-else{
-
-
-botoes[valor].classList.remove(
-"bg-blue-600"
-);
-
-
-botoes[valor].classList.add(
-"bg-red-600"
-);
-
-
-
-estado.vidas--;
-
-
-
-setTimeout(()=>{
-
-
-if(estado.vidas<=0){
-
-
-estado.tela="derrota";
-
-
-}
-
-else{
-
-
-renderizar();
-
-
-}
 
 
 },1000);
@@ -2151,15 +1765,73 @@ renderizar();
 
 
 
+
+// ERRO
+
+
+else{
+
+
+botoes[escolha]
+.classList
+.remove("bg-blue-700");
+
+
+
+botoes[escolha]
+.classList
+.add("bg-red-600");
+
+
+
+estado.vidas--;
+
+
+
+
+setTimeout(()=>{
+
+
+
+if(
+estado.vidas<=0
+){
+
+
+estado.tela="derrota";
+
+
+estado.vidas=3;
+
+
+}
+
+else{
+
+
+renderizar();
+
+
 }
 
 
 
+},1000);
 
-// =====================================
-// VITÓRIA
-// =====================================
 
+
+}
+
+
+
+salvar();
+
+
+
+}
+// ==================================
+// TELA DE VITÓRIA
+// ==================================
 
 
 function telaVitoria(){
@@ -2168,27 +1840,39 @@ function telaVitoria(){
 let app=document.getElementById("app");
 
 
+
+ganharMedalha("Mestre do Francês");
+
+
+
 app.innerHTML=`
 
 
 <div class="
+min-h-screen
 flex
 flex-col
 items-center
 justify-center
-min-h-screen
 text-center
 ">
 
 
-<img
 
-src="${desenhos.trofeu}"
 
-class="
-w-40
+
+<div class="
+text-8xl
 animar
 ">
+
+🏆
+
+</div>
+
+
+
+
 
 
 <h1 class="
@@ -2204,24 +1888,103 @@ Parabéns! 🎉
 
 
 
+
+
 <p class="
 text-2xl
 font-bold
 text-white
-mt-4
+mt-5
 ">
 
-Você ganhou:
+Você concluiu o nível
 
 <br>
 
-⭐ ${estado.xp} XP
+<span class="
+text-yellow-300
+">
 
-<br>
+${estado.nivel}
 
-🪙 ${estado.moedas} moedas
+</span>
 
 </p>
+
+
+
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+mt-8
+w-full
+card
+">
+
+
+<p class="
+text-2xl
+font-black
+text-blue-900
+">
+
+Recompensas
+
+</p>
+
+
+
+
+<div class="
+grid
+grid-cols-2
+gap-5
+mt-5
+text-xl
+font-black
+">
+
+
+<div>
+
+⭐
+
+<br>
+
+${estado.xp}
+
+XP
+
+</div>
+
+
+
+
+<div>
+
+🪙
+
+<br>
+
+${estado.moedas}
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
 
 
 
@@ -2230,14 +1993,15 @@ Você ganhou:
 onclick="voltarMenu()"
 
 class="
+mt-8
 bg-blue-700
 text-white
 rounded-3xl
 px-10
 py-5
-mt-8
 text-xl
 font-black
+botao
 ">
 
 
@@ -2247,10 +2011,15 @@ CONTINUAR APRENDENDO 🚀
 </button>
 
 
+
+
 </div>
 
 
+
 `;
+
+
 
 }
 
@@ -2258,33 +2027,38 @@ CONTINUAR APRENDENDO 🚀
 
 
 
-// =====================================
-// DERROTA
-// =====================================
-
+// ==================================
+// TELA DE DERROTA
+// ==================================
 
 
 function telaDerrota(){
 
 
+
 let app=document.getElementById("app");
+
 
 
 app.innerHTML=`
 
 
 <div class="
+min-h-screen
 flex
 flex-col
 items-center
 justify-center
-min-h-screen
 text-center
 ">
 
 
+
+
+
 <div class="
 text-8xl
+animar
 ">
 
 💔
@@ -2292,15 +2066,23 @@ text-8xl
 </div>
 
 
+
+
+
+
 <h1 class="
-text-4xl
+text-5xl
 font-black
 text-red-600
+mt-5
 ">
 
-Fim das vidas
+Ops!
 
 </h1>
+
+
+
 
 
 <p class="
@@ -2310,209 +2092,151 @@ text-white
 mt-4
 ">
 
-Continue treinando!
+Suas vidas acabaram.
+
+<br>
+
+Continue treinando o francês!
 
 </p>
 
 
+
+
+
+
+
 <button
 
-onclick="voltarMenu()"
+onclick="reiniciarNivel()"
 
 class="
-bg-blue-700
+mt-8
+bg-red-600
 text-white
 rounded-3xl
-px-8
+px-10
 py-5
-mt-8
-font-black
 text-xl
+font-black
+botao
 ">
 
-TENTAR NOVAMENTE
+
+TENTAR NOVAMENTE 🔄
+
 
 </button>
+
+
 
 
 
 </div>
 
 
-
 `;
 
-}
-
-
-
-// =====================================
-// ATUALIZAR RENDER
-// =====================================
-
-
-let renderAnterior=renderizar;
-
-
-renderizar=function(){
-
-
-if(estado.tela==="aula"){
-
-telaAula();
-
-}
-
-else if(estado.tela==="exercicio"){
-
-telaExercicio();
-
-}
-
-else if(estado.tela==="vitoria"){
-
-telaVitoria();
-
-}
-
-else if(estado.tela==="derrota"){
-
-telaDerrota();
-
-}
-
-else{
-
-renderAnterior();
-
-}
-
-
-};
-
-// =====================================
-// SISTEMA DE PERFIL
-// =====================================
-
-
-let perfil={
-
-nome:"Aluno Francês",
-
-nivel:"A1",
-
-medalhas:[],
-
-sequencia:0
-
-};
-
-
-
-// =====================================
-// SALVAR PROGRESSO
-// =====================================
-
-
-function salvar(){
-
-
-localStorage.setItem(
-
-"linguadu",
-
-JSON.stringify({
-
-estado,
-
-perfil
-
-})
-
-);
 
 
 }
 
 
 
-function carregar(){
 
 
-let dados=
-localStorage.getItem("linguadu");
 
 
-if(dados){
+// ==================================
+// REINICIAR NÍVEL
+// ==================================
 
 
-let salvo=JSON.parse(dados);
+function reiniciarNivel(){
 
 
-estado=salvo.estado;
+estado.vidas=3;
 
-perfil=salvo.perfil;
+
+estado.questao=0;
+
+
+estado.tela="aula";
+
+
+renderizar();
+
 
 
 }
 
 
+
+
+
+
+
+// ==================================
+// VOLTAR MENU
+// ==================================
+
+
+function voltarMenu(){
+
+
+estado.tela="menu";
+
+
+estado.questao=0;
+
+
+estado.vidas=3;
+
+
+salvar();
+
+
+renderizar();
+
+
+
 }
 
 
-carregar();
 
 
 
-
-// =====================================
-// MEDALHAS
-// =====================================
+// ==================================
+// GANHAR MEDALHAS
+// ==================================
 
 
 const medalhas={
 
 
-primeira:
-
-{
+primeira:{
 
 nome:"Primeira Palavra",
 
-icone:"🥉",
-
-descricao:
-"Aprendeu sua primeira frase"
+icone:"🥉"
 
 },
 
 
-
-dez:
-
-{
+aprendiz:{
 
 nome:"Aprendiz Francês",
 
-icone:"🥈",
-
-descricao:
-"Conquistou 10 exercícios"
+icone:"🥈"
 
 },
 
 
-
-mestre:
-
-{
+mestre:{
 
 nome:"Mestre do Francês",
 
-icone:"🥇",
-
-descricao:
-"Completou um nível"
+icone:"🥇"
 
 }
 
@@ -2528,13 +2252,11 @@ descricao:
 function ganharMedalha(nome){
 
 
+
 if(!perfil.medalhas.includes(nome)){
 
 
 perfil.medalhas.push(nome);
-
-
-}
 
 
 salvar();
@@ -2544,69 +2266,13 @@ salvar();
 
 
 
-
-
-
-// =====================================
-// LOJA DE RECOMPENSAS
-// =====================================
-
-
-const premios=[
-
-
-{
-
-nome:"Bandeira Francesa",
-
-icone:"🇫🇷",
-
-preco:50
-
-},
-
-
-{
-
-nome:"Chapéu Francês",
-
-icone:"🎩",
-
-preco:100
-
-},
-
-
-{
-
-nome:"Torre Eiffel",
-
-icone:"🗼",
-
-preco:200
-
-},
-
-
-{
-
-nome:"Coroa Mestre",
-
-icone:"👑",
-
-preco:500
-
 }
+// ==================================
+// PERFIL DO ALUNO
+// ==================================
 
 
-];
-
-
-
-
-
-
-function loja(){
+function telaPerfil(){
 
 
 let app=document.getElementById("app");
@@ -2616,7 +2282,298 @@ let app=document.getElementById("app");
 app.innerHTML=`
 
 
-<div class="text-center">
+<div class="
+min-h-screen
+flex
+flex-col
+items-center
+text-center
+">
+
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+w-full
+card
+">
+
+
+
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-36
+mx-auto
+animar
+">
+
+
+
+
+
+<h1 class="
+text-4xl
+font-black
+text-blue-900
+mt-5
+">
+
+${perfil.nome}
+
+</h1>
+
+
+
+
+
+
+<div class="
+mt-5
+bg-blue-50
+rounded-3xl
+p-5
+">
+
+
+<p class="
+text-2xl
+font-black
+">
+
+Nível atual
+
+</p>
+
+
+<p class="
+text-5xl
+font-black
+text-red-600
+">
+
+${estado.nivel}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="
+grid
+grid-cols-2
+gap-4
+mt-6
+">
+
+
+
+<div class="
+bg-yellow-100
+rounded-3xl
+p-5
+">
+
+⭐
+
+<br>
+
+<b>
+
+${estado.xp}
+
+XP
+
+</b>
+
+</div>
+
+
+
+
+<div class="
+bg-green-100
+rounded-3xl
+p-5
+">
+
+🪙
+
+<br>
+
+<b>
+
+${estado.moedas}
+
+</b>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="
+bg-purple-50
+rounded-3xl
+p-5
+mt-6
+">
+
+
+<h2 class="
+text-2xl
+font-black
+">
+
+🏅 Medalhas
+
+</h2>
+
+
+
+<div class="
+text-5xl
+mt-4
+">
+
+
+${
+perfil.medalhas.length>0
+
+?
+
+perfil.medalhas.join(" ")
+
+:
+
+"🔒"
+
+}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+mt-8
+bg-blue-700
+text-white
+rounded-3xl
+px-10
+py-5
+font-black
+text-xl
+botao
+">
+
+
+VOLTAR
+
+</button>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+`;
+
+
+
+}
+    // ==================================
+// LOJA DE RECOMPENSAS
+// ==================================
+
+
+const premios=[
+
+{
+nome:"Bandeira da França",
+icone:"🇫🇷",
+preco:50
+},
+
+{
+nome:"Chapéu Francês",
+icone:"🎩",
+preco:100
+},
+
+{
+nome:"Torre Eiffel",
+icone:"🗼",
+preco:200
+},
+
+{
+nome:"Coroa Mestre",
+icone:"👑",
+preco:500
+}
+
+];
+
+
+
+let inventario=[];
+
+
+
+function telaLoja(){
+
+
+let app=document.getElementById("app");
+
+
+
+app.innerHTML=`
+
+
+<div class="
+min-h-screen
+text-center
+">
 
 
 <h1 class="
@@ -2625,15 +2582,15 @@ font-black
 text-white
 ">
 
-🎁 Loja Francês
+🎁 Loja Francesa
 
 </h1>
 
 
 
 <p class="
-text-xl
-font-bold
+text-2xl
+font-black
 text-yellow-300
 mt-4
 ">
@@ -2644,13 +2601,18 @@ mt-4
 
 
 
+
+
+
 <div class="
+space-y-5
 mt-8
-space-y-4
 ">
 
 
+
 ${premios.map((p,i)=>`
+
 
 
 <div class="
@@ -2658,20 +2620,25 @@ bg-white
 rounded-3xl
 p-5
 flex
-justify-between
 items-center
+justify-between
+card
 ">
 
 
-<div class="text-5xl">
+
+<div class="
+text-5xl
+">
 
 ${p.icone}
 
 </div>
 
 
-<div>
 
+
+<div>
 
 <h2 class="
 text-xl
@@ -2694,9 +2661,11 @@ ${p.nome}
 
 
 
+
+
 <button
 
-onclick="comprar(${i})"
+onclick="comprarPremio(${i})"
 
 class="
 bg-blue-700
@@ -2707,19 +2676,28 @@ py-3
 font-black
 ">
 
+
 Comprar
+
 
 </button>
 
 
+
 </div>
+
 
 
 `).join("")}
 
 
 
+
 </div>
+
+
+
+
 
 
 <button
@@ -2727,18 +2705,21 @@ Comprar
 onclick="voltarMenu()"
 
 class="
+mt-8
 bg-red-600
 text-white
 rounded-3xl
 px-8
-py-4
-mt-8
+py-5
 font-black
 ">
 
-Voltar
+
+VOLTAR
+
 
 </button>
+
 
 
 </div>
@@ -2746,21 +2727,39 @@ Voltar
 
 `;
 
+
+
 }
 
 
 
 
-function comprar(i){
 
 
-let premio=premios[i];
+
+// ==================================
+// COMPRAR PRÊMIO
+// ==================================
+
+
+function comprarPremio(id){
+
+
+
+let premio=premios[id];
+
 
 
 if(estado.moedas>=premio.preco){
 
 
+
 estado.moedas-=premio.preco;
+
+
+
+inventario.push(premio);
+
 
 
 alert(
@@ -2768,11 +2767,16 @@ alert(
 );
 
 
+
 salvar();
 
 
-}
 
+renderizar();
+
+
+
+}
 
 else{
 
@@ -2782,6 +2786,91 @@ alert(
 );
 
 
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+// ==================================
+// SALVAR PROGRESSO
+// ==================================
+
+
+function salvar(){
+
+
+localStorage.setItem(
+
+"LinguaDuPRO",
+
+JSON.stringify({
+
+estado:estado,
+
+perfil:perfil,
+
+inventario:inventario
+
+})
+
+
+);
+
+
+}
+
+
+
+
+
+
+
+// ==================================
+// CARREGAR PROGRESSO
+// ==================================
+
+
+function carregar(){
+
+
+
+let dados=
+
+localStorage.getItem(
+"LinguaDuPRO"
+);
+
+
+
+if(dados){
+
+
+
+let salvo=
+JSON.parse(dados);
+
+
+
+estado=salvo.estado;
+
+
+perfil=salvo.perfil;
+
+
+inventario=
+salvo.inventario || [];
+
+
+
 }
 
 
@@ -2791,13 +2880,22 @@ alert(
 
 
 
-// =====================================
-// PERFIL
-// =====================================
+
+
+carregar();
 
 
 
-function mostrarPerfil(){
+
+
+
+
+// ==================================
+// MENU FINAL
+// ==================================
+
+
+function menuPrincipal(){
 
 
 let app=document.getElementById("app");
@@ -2808,131 +2906,9 @@ app.innerHTML=`
 
 
 <div class="
-bg-white
-rounded-3xl
-p-6
 text-center
 ">
 
-
-<img
-
-src="${desenhos.mascote}"
-
-class="
-w-32
-mx-auto
-">
-
-
-<h1 class="
-text-3xl
-font-black
-text-blue-800
-mt-4
-">
-
-${perfil.nome}
-
-</h1>
-
-
-<p class="
-text-xl
-font-bold
-">
-
-Nível:
-
-${estado.nivel}
-
-</p>
-
-
-
-<div class="
-mt-6
-bg-yellow-100
-rounded-3xl
-p-5
-">
-
-
-<h2 class="
-text-2xl
-font-black
-">
-
-Medalhas
-
-</h2>
-
-
-
-<p class="
-text-5xl
-mt-3
-">
-
-${perfil.medalhas.length ?
-
-perfil.medalhas.join(" ")
-
-:
-
-"🔒"}
-
-</p>
-
-
-</div>
-
-
-
-<button
-
-onclick="voltarMenu()"
-
-class="
-bg-blue-700
-text-white
-rounded-3xl
-px-8
-py-4
-mt-6
-font-black
-">
-
-Voltar
-
-</button>
-
-
-</div>
-
-
-`;
-
-}
-
-
-
-
-// =====================================
-// MENU FINAL COM MAIS OPÇÕES
-// =====================================
-
-
-function menuCompleto(){
-
-
-let app=document.getElementById("app");
-
-
-app.innerHTML=`
-
-
-<div class="text-center">
 
 
 <img
@@ -2946,6 +2922,9 @@ animar
 ">
 
 
+
+
+
 <h1 class="
 text-5xl
 font-black
@@ -2957,24 +2936,32 @@ LinguaDu
 </h1>
 
 
+
+
 <h2 class="
 text-3xl
 font-black
 text-yellow-300
 ">
 
-PRO 🇫🇷
+Lógico PRO 🇫🇷
 
 </h2>
+
+
+
 
 
 
 <div class="
 grid
 grid-cols-2
-gap-4
-mt-8
+gap-5
+mt-10
 ">
+
+
+
 
 
 <button
@@ -2996,12 +2983,14 @@ font-black
 
 
 
+
+
 <button
 
-onclick="loja()"
+onclick="abrirLoja()"
 
 class="
-bg-yellow-500
+bg-yellow-400
 rounded-3xl
 p-5
 text-xl
@@ -3014,9 +3003,11 @@ font-black
 
 
 
+
+
 <button
 
-onclick="mostrarPerfil()"
+onclick="abrirPerfil()"
 
 class="
 bg-white
@@ -3029,6 +3020,8 @@ font-black
 👤 Perfil
 
 </button>
+
+
 
 
 
@@ -3048,20 +3041,40 @@ font-black
 </button>
 
 
+
+
 </div>
 
 
 </div>
+
 
 `;
+
+
 
 }
 
 
 
 
-// SALVAR SEMPRE QUE ALTERAR XP
 
+
+function abrirLoja(){
+
+estado.tela="loja";
+
+renderizar();
+
+}
+
+
+
+
+
+
+
+// SALVAR AUTOMATICAMENTE
 
 setInterval(()=>{
 

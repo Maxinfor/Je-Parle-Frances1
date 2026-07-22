@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Imersivo Pro - Francês A1</title>
+    <title>LinguaDu Master - Jornada A1 Gradual</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
@@ -14,7 +14,7 @@
     </div>
 
     <script>
-        // Estado Completo do App Imersivo
+        // Estado Completo do App Gradual
         let estado = {
             tela: 'menu', // 'menu', 'teoria', 'licao', 'vitoria', 'derrota'
             vidas: 3,
@@ -32,85 +32,268 @@
             audio.play().catch(erro => console.log("Áudio indisponível:", erro));
         }
 
-        // Banco de Questões com Foco Total no Dia a Dia e Imersão Visual (Unsplash)
+        // Banco de Questões Gradual (Cenários completos solicitados)
         const questoes = [
             {
+                cenario: "O Cotidiano",
                 materia: {
-                    titulo: "O Café da Manhã (Le Petit-Déjeuner)",
-                    explicacao: "Na França, começar o dia comendo um bom pão fresco ou tomando um café é tradição sagrada. Vamos aprender a pedir itens essenciais de padaria e café.",
-                    imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour! Je voudrais un croissant et un café s'il vous plaît."
+                    titulo: "O Cotidiano e a Rotina",
+                    explicacao: "No dia a dia em francês, começar o dia bem é fundamental. Vamos aprender a cumprimentar e dizer que está tudo bem.",
+                    imagem: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bonjour! Ça va bien aujourd'hui."
                 },
                 exercicio: {
-                    pergunta: "Como se diz \"Eu gostaria de um pão\" em francês?",
+                    pergunta: "Como você diz \"Bom dia, tudo bem?\" em francês?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Bonjour, ça va?",
+                    audioTraducaoFR: "Bom dia, tudo bem?",
+                    opcoes: ['Au revoir', 'Bonjour, ça va?', 'Bonne nuit', 'Merci beaucoup'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "A Padaria (La Boulangerie)",
+                    explicacao: "Comprar pão fresquinho e croissants nas charmosas padarias francesas logo cedo.",
+                    imagem: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je voudrais du pain frais et un croissant."
+                },
+                exercicio: {
+                    pergunta: "Como pedir pão na padaria?",
                     imagemExercicio: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
                     audioFrances: "Je voudrais du pain",
                     audioTraducaoFR: "Eu gostaria de pão",
-                    opcoes: ['Je voudrais du pain', 'Je suis une pomme', 'J\'ai un chat', 'Bonjour ça va'],
+                    opcoes: ['Je voudrais du pain', 'Je suis fatigué', 'Où est la gare', 'J\'ai un chat'],
                     correta: 0
                 }
             },
             {
                 materia: {
-                    titulo: "Comprando Frutas no Mercado (Au Marché)",
-                    explicacao: "Ir à feira ou mercado livre nas ruas de Paris exige conhecer frutas frescas. 'Une pomme' significa uma maçã.",
-                    imagem: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Les fruits frais sont excellents pour la santé. Une pomme rouge s'il vous plaît."
+                    titulo: "O Supermercado (Le Supermarché)",
+                    explicacao: "Escolhendo frutas frescas e itens essenciais de alimentação no mercado.",
+                    imagem: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je cherche des pommes rouges et du lait."
                 },
                 exercicio: {
-                    pergunta: "Qual imagem e palavra representam \"Maçã\"?",
+                    pergunta: "Qual palavra significa \"Maçã\" no mercado?",
                     imagemExercicio: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=600&q=80",
                     audioFrances: "Une pomme",
                     audioTraducaoFR: "Uma maçã",
-                    opcoes: ['Du pain', 'Une pomme', 'De l\'eau', 'Du lait'],
+                    opcoes: ['Du pain', 'Une pomme', 'De l\'eau', 'Du fromage'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "O Ambiente Escolar",
+                materia: {
+                    titulo: "Na Sala de Aula (L'École)",
+                    explicacao: "Interagindo com colegas e professores na escola, aprendendo o básico.",
+                    imagem: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je suis un élève studieux. J'écoute le professeur."
+                },
+                exercicio: {
+                    pergunta: "Como dizer \"Eu sou estudante\"?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je suis étudiant",
+                    audioTraducaoFR: "Eu sou estudante",
+                    opcoes: ['Je suis étudiant', 'J\'ai une voiture', 'Tu es fatigué', 'Il a un livre'],
+                    correta: 0
+                }
+            },
+            {
+                materia: {
+                    titulo: "Na Faculdade (L'Université)",
+                    explicacao: "Discutindo horários de aulas e encontrando amigos nos corredores da universidade.",
+                    imagem: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bonjour mes amis! On va en cours de français?"
+                },
+                exercicio: {
+                    pergunta: "Como cumprimentar os amigos na faculdade?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Bonjour mes amis",
+                    audioTraducaoFR: "Olá meus amigos",
+                    opcoes: ['Au revoir', 'Bonjour mes amis', 'Bonne nuit', 'Pardon'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "O Trabalho e Serviços",
+                materia: {
+                    titulo: "No Escritório de Trabalho (Le Travail)",
+                    explicacao: "Chegando ao trabalho, cumprimentando chefes e colegas de equipe.",
+                    imagem: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bonjour patron, je commence mon travail."
+                },
+                exercicio: {
+                    pergunta: "Como dizer que você está começando o trabalho?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je commence le travail",
+                    audioTraducaoFR: "Eu começo o trabalho",
+                    opcoes: ['Je mange une pomme', 'Je commence le travail', 'J\'ai un chat', 'Il pleut'],
                     correta: 1
                 }
             },
             {
                 materia: {
-                    titulo: "Pedindo Água em um Bistrô (Au Restaurant)",
-                    explicacao: "Nos charmosos bistrôs franceses, pedir água fresca na mesa é gratuito e muito comum. 'De l'eau' é a palavra-chave.",
+                    titulo: "Na Oficina Mecânica (L'Atelier)",
+                    explicacao: "Quando o carro precisa de reparos urgentes na oficina da cidade.",
+                    imagem: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Mon voiture est en panne. Pouvez-vous m'aider?"
+                },
+                exercicio: {
+                    pergunta: "Como pedir ajuda na oficina mecânica?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Pouvez-vous m'aider?",
+                    audioTraducaoFR: "Você pode me ajudar?",
+                    opcoes: ['Au revoir', 'Pouvez-vous m\'aider?', 'Bon appétit', 'Merci'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "Alimentação e Lazer",
+                materia: {
+                    titulo: "No Restaurante e Bistrô (Le Restaurant)",
+                    explicacao: "Fazendo pedidos elegantes e pedindo água fresca na mesa do bistrô.",
                     imagem: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Garçon, un verre d'eau fraîche s'il vous plaît!"
+                    audioExplicacao: "Garçon, un verre d'eau fraîche s'il vous plaît."
                 },
                 exercicio: {
-                    pergunta: "Como você pede \"Água\" em um restaurante?",
+                    pergunta: "Como pedir água em um restaurante?",
                     imagemExercicio: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "De l'eau",
-                    audioTraducaoFR: "Água",
-                    opcoes: ['Du vin', 'De l\'eau', 'Du fromage', 'Du café'],
+                    audioFrances: "De l'eau s'il vous plaît",
+                    audioTraducaoFR: "Água, por favor",
+                    opcoes: ['Du vin', 'De l\'eau s\'il vous plaît', 'Du fromage', 'Du café'],
                     correta: 1
                 }
             },
             {
                 materia: {
-                    titulo: "Apresentando seu Pet (Les Animaux de compagnie)",
-                    explicacao: "Os franceses amam animais de estimação. Dizer que você tem um gato ou cachorro é um ótimo assunto para quebrar o gelo em conversas informais.",
-                    imagem: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "J'ai un chat magnifique qui dort sur le canapé."
+                    titulo: "Num Passeio pela Cidade (La Promenade)",
+                    explicacao: "Caminhando pelas ruas charmosas e aproveitando o dia de sol.",
+                    imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Quelle belle journée pour une promenade!"
                 },
                 exercicio: {
-                    pergunta: "Traduza para o francês: \"Eu tenho um gato.\"",
-                    imagemExercicio: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
+                    pergunta: "Como dizer que é um belo dia?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Quelle belle journée",
+                    audioTraducaoFR: "Que belo dia",
+                    opcoes: ['Il fait froid', 'Quelle belle journée', 'Il pleut fort', 'Je suis fatigué'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "Numa Corrida ao Ar Livre (La Course)",
+                    explicacao: "Mantendo a forma com uma corrida matinal no parque da cidade.",
+                    imagem: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je cours tous les matins pour rester en forme."
+                },
+                exercicio: {
+                    pergunta: "Como dizer que você corre pela manhã?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Je cours le matin",
+                    audioTraducaoFR: "Eu corro de manhã",
+                    opcoes: ['Je dors beaucoup', 'Je cours le matin', 'Je mange du pain', 'Je lis un livre'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "Saúde e Bem-Estar",
+                materia: {
+                    titulo: "No Hospital (L'Hôpital)",
+                    explicacao: "Explicando sintomas básicos ou pedindo atendimento médico com calma.",
+                    imagem: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'ai besoin d'un médecin s'il vous plaît."
+                },
+                exercicio: {
+                    pergunta: "Como pedir um médico no hospital?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "J'ai besoin d'un médecin",
+                    audioTraducaoFR: "Eu preciso de um médico",
+                    opcoes: ['J\'ai un chat', 'J\'ai besoin d\'un médecin', 'Je veux du pain', 'Où est le parc'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "Casa, Ruas e Espaços Públicos",
+                materia: {
+                    titulo: "Em Casa (À La Maison)",
+                    explicacao: "Relaxando no lar doce lar, conversando com familiares e cuidando dos pets.",
+                    imagem: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "J'ai un chat mignon qui dort à la maison."
+                },
+                exercicio: {
+                    pergunta: "Como dizer que você tem um gato em casa?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
                     audioFrances: "J'ai un chat",
                     audioTraducaoFR: "Eu tenho um gato",
-                    opcoes: ['Je suis un chat', 'J\'ai un chat', 'Il a un chien', 'Nous avons un chat'],
+                    opcoes: ['Je suis un chat', 'J\'ai un chat', 'Il a un chien', 'Nous avons une pomme'],
                     correta: 1
                 }
             },
             {
                 materia: {
-                    titulo: "Encontrando Amigos na Rua (Les Salutations)",
-                    explicacao: "Cumprimentar pessoas ao entrar em lojas ou encontrar conhecidos com um sorriso e um 'Bonjour' abre todas as portas na França.",
-                    imagem: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80",
-                    audioExplicacao: "Bonjour! Comment ça va aujourd'hui?"
+                    titulo: "Com Visitas em Casa (Les Visiteurs)",
+                    explicacao: "Recebendo amigos e parentes para tomar um café e conversar.",
+                    imagem: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Bienvenue chez moi! Entrez s'il vous plaît."
                 },
                 exercicio: {
-                    pergunta: "Como você cumprimenta alguém de dia perguntando se está tudo bem?",
-                    imagemExercicio: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80",
-                    audioFrances: "Bonjour, comment ça va?",
-                    audioTraducaoFR: "Bom dia, tudo bem?",
-                    opcoes: ['Au revoir', 'Bonjour, comment ça va?', 'Bonne nuit', 'Merci beaucoup'],
+                    pergunta: "Como dar as boas-vindas a visitas em casa?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Bienvenue chez moi",
+                    audioTraducaoFR: "Bem-vindo à minha casa",
+                    opcoes: ['Au revoir', 'Bienvenue chez moi', 'Bonne nuit', 'Pardon'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "Na Rua (Dans La Rue)",
+                    explicacao: "Pedindo orientações ou cumprimentando pessoas ao caminhar pela cidade.",
+                    imagem: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Excusez-moi, où est la station de métro?"
+                },
+                exercicio: {
+                    pergunta: "Como pedir desculpas na rua para perguntar algo?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Excusez-moi",
+                    audioTraducaoFR: "Com licença / Desculpe-me",
+                    opcoes: ['Bonjour', 'Excusez-moi', 'Merci', 'Au revoir'],
+                    correta: 1
+                }
+            },
+            {
+                materia: {
+                    titulo: "No Parque (Au Parc)",
+                    explicacao: "Desfrutando da natureza, conversando ao ar livre com amigos.",
+                    imagem: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Il fait beau au parc aujourd'hui."
+                },
+                exercicio: {
+                    pergunta: "Como dizer que está bonito no parque?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Il fait beau",
+                    audioTraducaoFR: "Está bonito / Faz bom tempo",
+                    opcoes: ['Il fait froid', 'Il fait beau', 'Il pleut', 'Il neige'],
+                    correta: 1
+                }
+            },
+            {
+                cenario: "Momentos Solenes da Vida",
+                materia: {
+                    titulo: "No Velório e Luto (Les Condoléances)",
+                    explicacao: "Demonstrando respeito, empatia e solidariedade em momentos difíceis e despedidas.",
+                    imagem: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+                    audioExplicacao: "Je vous présente mes sincères condoléances."
+                },
+                exercicio: {
+                    pergunta: "Como expressar condolências respeitosamente?",
+                    imagemExercicio: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80",
+                    audioFrances: "Mes condoléances",
+                    audioTraducaoFR: "Meus pêsames / condolências",
+                    opcoes: ['Bon anniversaire', 'Mes condoléances', 'Bon appétit', 'Salut'],
                     correta: 1
                 }
             }
@@ -125,8 +308,8 @@
                         <div class="w-28 h-28 bg-gradient-to-tr from-green-500 to-emerald-400 rounded-3xl flex items-center justify-center shadow-2xl shadow-green-500/20 mb-6 animate-pulse border border-green-400/30">
                             <span class="text-5xl">🇫🇷</span>
                         </div>
-                        <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">LinguaDu Imersivo</h1>
-                        <p class="text-zinc-400 mb-6 text-sm">Francês prático do dia a dia com fotos reais e áudio nativo</p>
+                        <h1 class="text-3xl font-extrabold mb-1 text-zinc-100">LinguaDu Master</h1>
+                        <p class="text-zinc-400 mb-6 text-sm">Jornada A1 Gradual por Ambientes do Dia a Dia</p>
                         
                         <div class="flex gap-3 mb-8 w-full justify-center">
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
@@ -135,12 +318,12 @@
                             </div>
                             <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
                                 <span class="text-blue-400">📈</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Nível</div><div class="text-sm font-bold text-zinc-200">${estado.nivelAtual}</div></div>
+                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Progresso</div><div class="text-sm font-bold text-zinc-200">${estado.nivelAtual}/${questoes.length}</div></div>
                             </div>
                         </div>
 
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition active:scale-95 text-base">
-                            EXPLORAR O COTIDIANO
+                            INICIAR JORNADA GRADUAL
                         </button>
                     </div>
                 `;
@@ -164,27 +347,29 @@
                                 </div>
                             </div>
 
+                            ${item.cenario ? `<div class="text-blue-400 font-bold text-xs uppercase tracking-wider mb-2 text-center bg-blue-500/10 py-1.5 rounded-xl border border-blue-500/20">📍 Cenário: ${item.cenario}</div>` : ''}
+
                             <!-- Cartão de Teoria Dinâmico com Imagem -->
                             <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-2">
-                                <div class="relative h-48 w-full overflow-hidden">
+                                <div class="relative h-44 w-full overflow-hidden">
                                     <img src="${item.materia.imagem}" class="w-full h-full object-cover brightness-90 hover:scale-105 transition duration-500">
                                     <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
-                                    <span class="absolute bottom-3 left-4 text-xs font-bold bg-blue-600/90 text-white px-3 py-1 rounded-full backdrop-blur-sm uppercase tracking-wider">Cotidiano Francês</span>
+                                    <span class="absolute bottom-3 left-4 text-xs font-bold bg-blue-600/90 text-white px-3 py-1 rounded-full backdrop-blur-sm uppercase tracking-wider">Teoria A1</span>
                                 </div>
-                                <div class="p-6">
+                                <div class="p-5">
                                     <div class="flex justify-between items-center mb-2">
-                                        <h2 class="text-xl font-bold text-zinc-100">${item.materia.titulo}</h2>
-                                        <button onclick="tocarAudio('${item.materia.audioExplicacao}')" class="w-10 h-10 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-full flex items-center justify-center transition shrink-0" title="Ouvir explicação">
+                                        <h2 class="text-lg font-bold text-zinc-100">${item.materia.titulo}</h2>
+                                        <button onclick="tocarAudio('${item.materia.audioExplicacao}')" class="w-9 h-9 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 rounded-full flex items-center justify-center transition shrink-0" title="Ouvir explicação">
                                             🔊
                                         </button>
                                     </div>
-                                    <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
+                                    <p class="text-zinc-300 text-xs leading-relaxed">${item.materia.explicacao}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <button onclick="irParaExercicio()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/25 transition mt-6 active:scale-95">
-                            PRATICAR AGORA
+                        <button onclick="irParaExercicio()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-600/25 transition mt-4 active:scale-95 text-sm">
+                            PRATICAR EXERCÍCIO
                         </button>
                     </div>
                 `;
@@ -197,7 +382,7 @@
                     <div class="flex flex-col justify-between flex-grow">
                         <div>
                             <!-- Barra Superior -->
-                            <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center justify-between mb-5">
                                 <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
                                 <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
                                     <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
@@ -208,29 +393,29 @@
                             </div>
 
                             <!-- Pergunta -->
-                            <h2 class="text-zinc-400 font-semibold text-xs mb-3 uppercase tracking-wider">${q.pergunta}</h2>
+                            <h2 class="text-zinc-400 font-semibold text-xs mb-2 uppercase tracking-wider">${q.pergunta}</h2>
                             
                             <!-- Imagem e Caixa de Áudio Intuitiva -->
-                            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-5 shadow-xl">
-                                <div class="h-36 w-full overflow-hidden relative">
+                            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-4 shadow-xl">
+                                <div class="h-32 w-full overflow-hidden relative">
                                     <img src="${q.imagemExercicio}" class="w-full h-full object-cover">
                                     <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
                                 </div>
-                                <div class="p-4 flex items-center justify-between bg-zinc-900">
+                                <div class="p-3.5 flex items-center justify-between bg-zinc-900">
                                     <div>
-                                        <div class="text-xs text-zinc-500 uppercase font-semibold">Frase ou Palavra</div>
-                                        <div class="text-lg font-bold text-zinc-100">${q.audioFrances}</div>
+                                        <div class="text-[10px] text-zinc-500 uppercase font-semibold">Expressão em Francês</div>
+                                        <div class="text-base font-bold text-zinc-100">${q.audioFrances}</div>
                                     </div>
-                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-12 h-12 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-xl shadow-lg transition active:scale-95 shrink-0" title="Ouvir áudio nativo">
+                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-11 h-11 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-2xl flex items-center justify-center text-lg shadow-lg transition active:scale-95 shrink-0" title="Ouvir áudio nativo">
                                         🔊
                                     </button>
                                 </div>
                             </div>
 
                             <!-- Opções de Resposta Dinâmicas -->
-                            <div class="flex flex-col gap-2.5" id="opcoes-container">
+                            <div class="flex flex-col gap-2" id="opcoes-container">
                                 ${q.opcoes.map((opcao, index) => `
-                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-3.5 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98] text-sm">
+                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-3 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98] text-xs">
                                         ${opcao}
                                     </button>
                                 `).join('')}
@@ -243,10 +428,10 @@
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🏆</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Módulo Concluído!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você vivenciou situações reais do cotidiano francês e ganhou <strong>+30 XP</strong>.</p>
-                        <button onclick="avancarNivel()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
-                            CONTINUAR AVANÇANDO
+                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Jornada Concluída!</h1>
+                        <p class="text-zinc-400 mb-8 text-sm">Você passou por todos os cenários do cotidiano francês com sucesso e ganhou <strong>+50 XP</strong>.</p>
+                        <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
+                            REINICIAR OU REVISAR JORNADA
                         </button>
                     </div>
                 `;
@@ -255,7 +440,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">💡</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Quase lá!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">O aprendizado é feito de repetição. Revise as imagens e os áudios com calma.</p>
+                        <p class="text-zinc-400 mb-8 text-sm">O aprendizado gradual precisa de repetição. Tente novamente para fixar os cenários.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -276,9 +461,10 @@
             renderizar();
         }
 
-        function avancarNivel() {
-            estado.xp += 30;
-            estado.nivelAtual++;
+        function reiniciarJornada() {
+            estado.xp += 50;
+            estado.nivelAtual = 1;
+            estado.questaoAtualIndex = 0;
             estado.tela = 'menu';
             renderizar();
         }
@@ -296,6 +482,7 @@
                 
                 setTimeout(() => {
                     estado.questaoAtualIndex++;
+                    estado.nivelAtual = estado.questaoAtualIndex + 1;
                     if (estado.questaoAtualIndex >= questoes.length) {
                         estado.tela = 'vitoria';
                     } else {

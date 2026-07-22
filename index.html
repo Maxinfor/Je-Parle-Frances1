@@ -386,7 +386,7 @@
                     ],
                     explicacaoLogica: "A restrição superlativa restringe a realidade com o modo subjetivo.",
                     imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                        audioFrase: "C'est le film le plus intéressant que j'aie vu",
+                    audioFrase: "C'est le film le plus intéressant que j'aie vu",
                     exercicio: {
                         pergunta: "Qual verbo auxiliar no subjuntivo completa a estrutura após um superlativo?",
                         imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
@@ -472,13 +472,37 @@
             ]
         };
 
-        // Função de Áudio Profissional Oficial (Français Natif)
+        // Função de Áudio Profissional com Web Speech API Nativa do Dispositivo (Alta Qualidade)
         function tocarAudio(texto) {
-            const textoCodificado = encodeURIComponent(texto);
-            const urlAudio = `https://translate.google.com/translate_tts?ie=UTF-8&q=${textoCodificado}&tl=fr&client=tw-ob`;
-            const audio = new Audio(urlAudio);
-            audio.playbackRate = 0.85;
-            audio.play().catch(erro => console.log("Áudio indisponível:", erro));
+            if (!('speechSynthesis' in window)) {
+                console.log("Síntese de fala não suportada neste navegador.");
+                return;
+            }
+
+            // Cancela qualquer áudio anterior em andamento
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'fr-FR'; // Francês nativo da França
+            utterance.rate = 0.9;     // Velocidade ligeiramente pausada para absorção ideal
+            utterance.pitch = 1.0;    // Tom natural de voz
+
+            // Busca por uma voz em francês de alta qualidade instalada no aparelho (Google, Siri ou Microsoft)
+            const voces = window.speechSynthesis.getVoices();
+            const vozFrancesa = voces.find(v => v.lang === 'fr-FR' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Siri') || v.name.includes('Amélie') || v.name.includes('Thomas')));
+            
+            if (vozFrancesa) {
+                utterance.voice = vozFrancesa;
+            }
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Garante o mapeamento correto das vozes assíncronas do sistema
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
         }
 
         function renderizar() {
@@ -492,7 +516,7 @@
                             <span class="text-4xl">🇫🇷</span>
                         </div>
                         <h1 class="text-2xl font-extrabold mb-1 text-zinc-100">LinguaDu Lógico</h1>
-                        <p class="text-zinc-400 mb-5 text-xs">Banco Extensivo (A1 a C2) - Múltiplos Formatos</p>
+                        <p class="text-zinc-400 mb-5 text-xs">Banco Extensivo (A1 a C2) - Áudio Profissional</p>
                         
                         <!-- Seletor de Níveis -->
                         <div class="grid grid-cols-3 gap-2 w-full mb-6">
@@ -609,7 +633,7 @@
                                 </div>
                                 <div class="p-3 flex items-center justify-between bg-zinc-900">
                                     <div>
-                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Áudio de Apoio</div>
+                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Áudio Nativo</div>
                                         <div class="text-xs font-bold text-zinc-100">${q.audioFrances}</div>
                                     </div>
                                     <button onclick="tocarAudio('${q.audioFrances}')" class="w-8 h-8 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-xl flex items-center justify-center text-sm shadow-lg transition active:scale-95 shrink-0">🔊</button>

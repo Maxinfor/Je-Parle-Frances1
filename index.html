@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duolingo Style - Francês A1 com Áudio Nativo e Tradução</title>
+    <title>LinguaDu - Francês A1 com Voz Nativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importa o motor de voz natural (ResponsiveVoice) -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=free"></script>
 </head>
 <body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
 
@@ -21,53 +23,32 @@
             questaoAtualIndex: 0
         };
 
-        // Função otimizada para buscar a melhor voz humana disponível no navegador e reproduzir
-        function falar(texto, idioma) {
-            if (!('speechSynthesis' in window)) return;
-            
-            window.speechSynthesis.cancel();
-            
-            const utterance = new SpeechSynthesisUtterance(texto);
-            utterance.lang = idioma; // 'fr-FR' para Francês ou 'pt-BR' para Português
-            utterance.rate = 0.85;   // Velocidade um pouco mais natural e pausada para aprendizado A1
-            utterance.pitch = 1.0;
-
-            const voices = window.speechSynthesis.getVoices();
-            
-            if (voices.length > 0) {
-                if (idioma === 'fr-FR') {
-                    // Tenta encontrar vozes naturais/premium de francês da França
-                    const vozFrancesa = voices.find(v => v.lang === 'fr-FR' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Hortense') || v.name.includes('Pauline'))) || 
-                                       voices.find(v => v.lang.startsWith('fr'));
-                    if (vozFrancesa) utterance.voice = vozFrancesa;
-                } else {
-                    // Tenta encontrar vozes naturais/premium de português do Brasil
-                    const vozPortuguesa = voices.find(v => v.lang === 'pt-BR' && (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Luciana'))) || 
-                                          voices.find(v => v.lang.startsWith('pt'));
-                    if (vozPortuguesa) utterance.voice = vozPortuguesa;
-                }
+        // Função de áudio usando voz nativa da França (French Female) com fallback inteligente
+        function falarFrances(texto) {
+            if (typeof responsiveVoice !== 'undefined') {
+                // 'French Female' usa vozes ultra naturais optimizadas para francês nativo
+                responsiveVoice.speak(texto, "French Female", { rate: 0.9 });
+            } else if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
             }
-
-            window.speechSynthesis.speak(utterance);
         }
 
-        // Garante o carregamento das vozes assíncronas em alguns navegadores (Chrome)
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
-        }
-
-        // Banco de Questões com Teoria, Exercício, Áudio em Francês e Áudio na Língua Materna (Português)
+        // Banco de Questões com Teoria e Exercícios focados em imersão com sotaque francês
         const questoes = [
             {
                 materia: {
                     titulo: "O Verbo Être (Ser / Estar)",
-                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Ouça a pronúncia em francês e a tradução em português.",
-                    audioExplicacaoPT: "Significa Eu sou ou Eu estou."
+                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Ouça a pronúncia nativa e a explicação com sotaque francês.",
+                    audioExplicacaoFR: "Je suis étudiant. Cela signifie: Eu sou ou Eu estou."
                 },
                 exercicio: {
                     pergunta: "Como se diz \"Eu sou\" em francês?",
                     audioFrances: "Je suis",
-                    audioPortugues: "Eu sou",
+                    audioTraducaoFR: "Eu sou / Eu estou",
                     opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
                     correta: 0
                 }
@@ -75,13 +56,13 @@
             {
                 materia: {
                     titulo: "O Verbo Avoir (Ter)",
-                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' é usada porque 'je' perde a vogal 'e' antes de outra vogal. Escute com atenção.",
-                    audioExplicacaoPT: "Significa Eu tenho um gato."
+                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' ocorre porque 'je' perde a vogal 'e' antes de outra vogal. Escute a fluência nativa.",
+                    audioExplicacaoFR: "J'ai un chat. Le verbe avoir signifie: Ter."
                 },
                 exercicio: {
                     pergunta: "Traduza a frase:",
                     audioFrances: "J'ai un chat.",
-                    audioPortugues: "Eu tenho um gato.",
+                    audioTraducaoFR: "Eu tenho um gato.",
                     fraseDestaque: "J'ai un chat.",
                     opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
                     correta: 0
@@ -90,13 +71,13 @@
             {
                 materia: {
                     titulo: "Vocabulário de Alimentos",
-                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos definidos ou indefinidos. Ouça como se pronuncia a palavra para maçã.",
-                    audioExplicacaoPT: "Maçã."
+                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos. Ouça a pronúncia nativa da palavra maçã.",
+                    audioExplicacaoFR: "Une pomme. La pomme est délicieuse."
                 },
                 exercicio: {
                     pergunta: "Qual destas palavras significa \"Maçã\"?",
                     audioFrances: "Pomme",
-                    audioPortugues: "Maçã",
+                    audioTraducaoFR: "Maçã",
                     opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
                     correta: 1
                 }
@@ -104,13 +85,13 @@
             {
                 materia: {
                     titulo: "Saudações Comuns",
-                    explicacao: "\"Bonjour\" significa Bom dia. A expressão \"Comment ça va?\" é a forma mais popular de perguntar \"Como vai?\". Ouça a frase completa.",
-                    audioExplicacaoPT: "Bom dia, como vai?"
+                    explicacao: "\"Bonjour\" significa Bom dia. A expressão \"Comment ça va?\" é a forma mais popular de perguntar como alguém está. Ouça a frase completa.",
+                    audioExplicacaoFR: "Bonjour! Comment ça va aujourd'hui?"
                 },
                 exercicio: {
                     pergunta: "Traduza a frase:",
                     audioFrances: "Bonjour, comment ça va?",
-                    audioPortugues: "Bom dia, tudo bem?",
+                    audioTraducaoFR: "Bom dia, tudo bem?",
                     fraseDestaque: "Bonjour, comment ça va?",
                     opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
                     correta: 1
@@ -119,13 +100,13 @@
             {
                 materia: {
                     titulo: "Conjugação do Pronome Tu",
-                    explicacao: "Para o pronome 'tu' (você/tu) com o verbo être, a forma correta é 'Tu es'. Ouça o som da pronúncia.",
-                    audioExplicacaoPT: "Você é francês?"
+                    explicacao: "Para o pronome 'tu' (você/tu) com o verbo être, a forma correta é 'Tu es'. Ouça o som nativo.",
+                    audioExplicacaoFR: "Tu es français? Oui, je suis français."
                 },
                 exercicio: {
                     pergunta: "Complete: \"Tu ___ français(e)?\"",
                     audioFrances: "Tu es français?",
-                    audioPortugues: "Você é francês?",
+                    audioTraducaoFR: "Você é francês?",
                     opcoes: ['suis', 'es', 'est', 'sont'],
                     correta: 1
                 }
@@ -141,8 +122,8 @@
                         <div class="w-28 h-28 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 mb-6">
                             <span class="text-5xl">🦉</span>
                         </div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu Áudio Avançado</h1>
-                        <p class="text-zinc-400 mb-10 text-sm">Aprenda com pronúncia otimizada em francês e suporte na língua materna.</p>
+                        <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu Nativo</h1>
+                        <p class="text-zinc-400 mb-10 text-sm">Aprenda com sotaque e pronúncia totalmente francesa em todos os áudios.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition active:scale-95">
                             COMEÇAR LIÇÃO
                         </button>
@@ -152,9 +133,9 @@
                 const item = questoes[estado.questaoAtualIndex];
                 const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
-                // Toca automaticamente o áudio da teoria em francês ao entrar na tela
-                if (item.exercicio && item.exercicio.audioFrances) {
-                    setTimeout(() => falar(item.exercicio.audioFrances, 'fr-FR'), 400);
+                // Toca automaticamente a explicação nativa em francês ao entrar na tela
+                if (item.materia && item.materia.audioExplicacaoFR) {
+                    setTimeout(() => falarFrances(item.materia.audioExplicacaoFR), 500);
                 }
 
                 app.innerHTML = `
@@ -175,14 +156,9 @@
                             <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-3xl shadow-xl mt-4">
                                 <div class="flex justify-between items-center mb-3">
                                     <div class="text-blue-400 font-bold text-xs uppercase tracking-wider">📚 Hora da Matéria</div>
-                                    <div class="flex gap-2">
-                                        <button onclick="falar('${item.exercicio.audioFrances}', 'fr-FR')" class="flex items-center gap-1 text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 px-3 py-1.5 rounded-full transition font-semibold" title="Ouvir em Francês">
-                                            🇫🇷 Ouvir FR
-                                        </button>
-                                        <button onclick="falar('${item.materia.audioExplicacaoPT}', 'pt-BR')" class="flex items-center gap-1 text-xs bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 px-3 py-1.5 rounded-full transition font-semibold" title="Ouvir em Português">
-                                            🇧🇷 Ouvir PT
-                                        </button>
-                                    </div>
+                                    <button onclick="falarFrances('${item.materia.audioExplicacaoFR}')" class="flex items-center gap-1 text-xs bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 px-3 py-1.5 rounded-full transition font-semibold" title="Ouvir explicação em francês">
+                                        🇫🇷 🔊 Ouvir Explicação Nativa
+                                    </button>
                                 </div>
                                 <h2 class="text-2xl font-bold mb-4 text-zinc-100">${item.materia.titulo}</h2>
                                 <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
@@ -216,21 +192,18 @@
                             <!-- Pergunta / Exercício -->
                             <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
                             
-                            <!-- Bloco de Áudio Duplo (Français & Português) -->
+                            <!-- Bloco de Áudio Nativo em Francês -->
                             <div class="bg-zinc-900 p-4 rounded-2xl border border-zinc-800 mb-6 flex flex-col gap-3">
                                 <div class="flex items-center justify-between">
                                     <div class="text-xl font-bold text-zinc-100">
                                         ${q.fraseDestaque || q.audioFrances}
                                     </div>
-                                    <button onclick="falar('${q.audioFrances}', 'fr-FR')" class="flex items-center gap-2 bg-green-500 hover:bg-green-400 text-zinc-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition active:scale-95" title="Ouvir em Francês">
-                                        🇫🇷 🔊 Ouvir FR
+                                    <button onclick="falarFrances('${q.audioFrances}')" class="flex items-center gap-2 bg-green-500 hover:bg-green-400 text-zinc-950 px-4 py-2 rounded-xl font-bold text-sm shadow-md transition active:scale-95" title="Ouvir em Francês Nativo">
+                                        🇫🇷 🔊 Ouvir Áudio Nativo
                                     </button>
                                 </div>
-                                <div class="border-t border-zinc-800 pt-2 flex items-center justify-between text-xs text-zinc-400">
-                                    <span>Tradução: <strong class="text-zinc-200">${q.audioPortugues}</strong></span>
-                                    <button onclick="falar('${q.audioPortugues}', 'pt-BR')" class="flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-emerald-400 px-3 py-1.5 rounded-lg font-semibold transition active:scale-95" title="Ouvir em Português">
-                                        🇧🇷 🔊 Ouvir PT
-                                    </button>
+                                <div class="border-t border-zinc-800 pt-2 text-xs text-zinc-400">
+                                    Contexto / Tradução: <strong class="text-zinc-200">${q.audioTraducaoFR}</strong>
                                 </div>
                             </div>
 
@@ -251,7 +224,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🎉</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-green-400">Lição Concluída!</h1>
-                        <p class="text-zinc-400 mb-8">Você treinou a escuta nativa e o entendimento com sua língua materna. Ganhou <strong>+15 XP</strong>.</p>
+                        <p class="text-zinc-400 mb-8">Excelente! Você treinou com pronúncia totalmente nativa em francês. Ganhou <strong>+15 XP</strong>.</p>
                         <button onclick="voltarMenu()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition">
                             CONTINUAR
                         </button>
@@ -262,7 +235,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4">💔</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Acabaram as vidas!</h1>
-                        <p class="text-zinc-400 mb-8">Ouça os áudios em francês e português novamente para fixar.</p>
+                        <p class="text-zinc-400 mb-8">Não desista, repita os áudios nativos para treinar o ouvido.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-lg transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -322,7 +295,7 @@
         }
 
         function voltarMenu() {
-            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (typeof responsiveVoice !== 'undefined') responsiveVoice.cancel();
             estado.tela = 'menu';
             renderizar();
         }

@@ -16,46 +16,69 @@
     <script>
         // Estado do Jogo
         let estado = {
-            tela: 'menu', // 'menu', 'licao', 'vitoria', 'derrota'
+            tela: 'menu', // 'menu', 'teoria', 'licao', 'vitoria', 'derrota'
             vidas: 3,
-            progressoQuestao: 0,
-            questaoAtualIndex: 0,
-            pontos: 0
+            questaoAtualIndex: 0
         };
 
-        // Banco de Questões (Estilo Duolingo)
+        // Banco de Questões com Teoria (Matéria) + Exercício
         const questoes = [
             {
-                tipo: 'multipla-escolha',
-                pergunta: 'Como se diz "Eu sou" em francês?',
-                opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
-                correta: 0
+                materia: {
+                    titulo: "O Verbo Être (Ser / Estar)",
+                    explicacao: "Em francês, 'Je suis' significa 'Eu sou' ou 'Eu estou'. É o verbo mais importante para iniciantes. Veja a conjugação básica: Je suis (Eu sou), Tu es (Tu és/Você é), Il/Elle est (Ele/Ela é)."
+                },
+                exercicio: {
+                    pergunta: "Como se diz \"Eu sou\" em francês?",
+                    opcoes: ['Je suis', 'Tu es', 'Il est', 'Nous sommes'],
+                    correta: 0
+                }
             },
             {
-                tipo: 'traducao',
-                pergunta: 'Traduza a frase:',
-                fraseDestaque: 'J\'ai un chat.',
-                opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
-                correta: 0
+                materia: {
+                    titulo: "O Verbo Avoir (Ter)",
+                    explicacao: "O verbo 'avoir' significa 'ter'. A contração 'J'ai' é usada porque 'je' perde a vogal 'e' antes de outra vogal (a). Exemplo: J'ai un chat (Eu tenho um gato)."
+                },
+                exercicio: {
+                    pergunta: "Traduza a frase:",
+                    fraseDestaque: "J'ai un chat.",
+                    opcoes: ['Eu tenho um gato.', 'Ele tem um cão.', 'Eu sou um gato.', 'Você tem um carro.'],
+                    correta: 0
+                }
             },
             {
-                tipo: 'multipla-escolha',
-                pergunta: 'Qual destas palavras significa "Maçã"?',
-                opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
-                correta: 1
+                materia: {
+                    titulo: "Vocabulário de Alimentos",
+                    explicacao: "Para nomear frutas e comidas básicas, usamos artigos definidos ou indefinidos. A palavra para 'maçã' em francês é feminina: *une pomme*."
+                },
+                exercicio: {
+                    pergunta: "Qual destas palavras significa \"Maçã\"?",
+                    opcoes: ['Pain', 'Pomme', 'Eau', 'Lait'],
+                    correta: 1
+                }
             },
             {
-                tipo: 'traducao',
-                pergunta: 'Traduza a frase:',
-                fraseDestaque: 'Bonjour, comment ça va?',
-                opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
-                correta: 1
+                materia: {
+                    titulo: "Saudações Comuns",
+                    explicacao: "\"Bonjour\" significa Bom dia (ou Olá durante o dia). A expressão \"Comment ça va?\" é a forma mais popular e informal de perguntar \"Como vai?\" ou \"Tudo bem?\":"
+                },
+                exercicio: {
+                    pergunta: "Traduza a frase:",
+                    fraseDestaque: "Bonjour, comment ça va?",
+                    opcoes: ['Adeus, como vai?', 'Bom dia, tudo bem?', 'Boa noite, obrigado.', 'Até logo!'],
+                    correta: 1
+                }
             },
             {
-                tipo: 'multipla-escolha',
-                pergunta: 'Complete: "Tu ___ français(e)?"',
-                opcoes: ['suis', 'es', 'est', 'sont'],
-                correta: 1
+                materia: {
+                    titulo: "Conjugação do Pronome Tu",
+                    explicacao: "Para o pronome 'tu' (você/tu), os verbos regulares terminados em -ER perdem a terminação e ganham 's'. Com o verbo être, a forma correta é 'Tu es'."
+                },
+                exercicio: {
+                    pergunta: "Complete: \"Tu ___ français(e)?\"",
+                    opcoes: ['suis', 'es', 'est', 'sont'],
+                    correta: 1
+                }
             }
         ];
 
@@ -69,50 +92,84 @@
                             <span class="text-5xl">🦉</span>
                         </div>
                         <h1 class="text-3xl font-extrabold mb-2 text-zinc-100">LinguaDu</h1>
-                        <p class="text-zinc-400 mb-10 text-sm">Aprenda francês de forma rápida, divertida e gratuita.</p>
+                        <p class="text-zinc-400 mb-10 text-sm">Aprenda a matéria passo a passo e pratique logo em seguida.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition active:scale-95">
                             COMEÇAR LIÇÃO
                         </button>
                     </div>
                 `;
-            } else if (estado.tela === 'licao') {
-                const q = questoes[estado.questaoAtualIndex];
-                const porcentagem = ((estado.questaoAtualIndex) / questoes.length) * 100;
+            } else if (estado.tela === 'teoria') {
+                const item = questoes[estado.questaoAtualIndex];
+                const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
                 app.innerHTML = `
-                    <div>
-                        <!-- Barra Superior (Progresso e Vidas) -->
-                        <div class="flex items-center justify-between mb-8">
-                            <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
-                            <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
-                                <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
+                    <div class="flex flex-col justify-between flex-grow">
+                        <div>
+                            <!-- Barra Superior -->
+                            <div class="flex items-center justify-between mb-6">
+                                <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
+                                <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
+                                    <div class="bg-blue-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
+                                </div>
+                                <div class="flex items-center gap-1 text-red-500 font-bold">
+                                    <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-1 text-red-500 font-bold">
-                                <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
+
+                            <!-- Cartão de Teoria -->
+                            <div class="bg-zinc-900 border border-zinc-800 p-6 rounded-3xl shadow-xl mt-4">
+                                <div class="text-blue-400 font-bold text-xs uppercase tracking-wider mb-2">📚 Hora da Matéria</div>
+                                <h2 class="text-2xl font-bold mb-4 text-zinc-100">${item.materia.titulo}</h2>
+                                <p class="text-zinc-300 text-sm leading-relaxed">${item.materia.explicacao}</p>
                             </div>
                         </div>
 
-                        <!-- Pergunta -->
-                        <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
-                        ${q.fraseDestaque ? `<div class="text-2xl font-bold mb-6 text-zinc-100 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">${q.fraseDestaque}</div>` : ''}
-
-                        <!-- Opções -->
-                        <div class="flex flex-col gap-3 mt-4" id="opcoes-container">
-                            ${q.opcoes.map((opcao, index) => `
-                                <button onclick="verificarResposta(${index})" class="opcao-btn p-4 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98]">
-                                    ${opcao}
-                                </button>
-                            `).join('')}
-                        </div>
+                        <button onclick="irParaExercicio()" class="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-lg transition mt-6">
+                            PRATICAR AGORA
+                        </button>
                     </div>
-                    <div></div> <!-- Espaçador flexível -->
+                `;
+            } else if (estado.tela === 'licao') {
+                const item = questoes[estado.questaoAtualIndex];
+                const q = item.exercicio;
+                const porcentagem = ((estado.questaoAtualIndex + 0.5) / questoes.length) * 100;
+
+                app.innerHTML = `
+                    <div class="flex flex-col justify-between flex-grow">
+                        <div>
+                            <!-- Barra Superior -->
+                            <div class="flex items-center justify-between mb-8">
+                                <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
+                                <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
+                                    <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
+                                </div>
+                                <div class="flex items-center gap-1 text-red-500 font-bold">
+                                    <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
+                                </div>
+                            </div>
+
+                            <!-- Pergunta / Exercício -->
+                            <h2 class="text-zinc-400 font-semibold text-sm mb-2 uppercase tracking-wide">${q.pergunta}</h2>
+                            ${q.fraseDestaque ? `<div class="text-2xl font-bold mb-6 text-zinc-100 bg-zinc-900 p-4 rounded-2xl border border-zinc-800">${q.fraseDestaque}</div>` : ''}
+
+                            <!-- Opções -->
+                            <div class="flex flex-col gap-3 mt-4" id="opcoes-container">
+                                ${q.opcoes.map((opcao, index) => `
+                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-4 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98]">
+                                        ${opcao}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
                 `;
             } else if (estado.tela === 'vitoria') {
                 app.innerHTML = `
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4 animate-bounce">🎉</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-green-400">Lição Concluída!</h1>
-                        <p class="text-zinc-400 mb-8">Você ganhou <strong>+15 XP</strong> e manteve sua ofensiva.</p>
+                        <p class="text-zinc-400 mb-8">Você absorveu a matéria de hoje e ganhou <strong>+15 XP</strong>.</p>
                         <button onclick="voltarMenu()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-bold rounded-2xl shadow-lg transition">
                             CONTINUAR
                         </button>
@@ -123,7 +180,7 @@
                     <div class="flex flex-col items-center justify-center flex-grow text-center">
                         <div class="text-6xl mb-4">💔</div>
                         <h1 class="text-3xl font-extrabold mb-2 text-red-500">Acabaram as vidas!</h1>
-                        <p class="text-zinc-400 mb-8">Não desista, tente novamente para fixar o conteúdo.</p>
+                        <p class="text-zinc-400 mb-8">Revise a matéria com calma e tente novamente.</p>
                         <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-lg transition">
                             TENTAR NOVAMENTE
                         </button>
@@ -135,15 +192,20 @@
         function iniciarLicao() {
             estado.vidas = 3;
             estado.questaoAtualIndex = 0;
+            estado.tela = 'teoria'; // Começa sempre explicando a matéria
+            renderizar();
+        }
+
+        function irParaExercicio() {
             estado.tela = 'licao';
             renderizar();
         }
 
         function verificarResposta(indexSelecionado) {
-            const q = questoes[estado.questaoAtualIndex];
+            const item = questoes[estado.questaoAtualIndex];
+            const q = item.exercicio;
             const botoes = document.querySelectorAll('.opcao-btn');
             
-            // Desativa cliques temporariamente
             botoes.forEach(b => b.disabled = true);
 
             if (indexSelecionado === q.correta) {
@@ -154,6 +216,8 @@
                     estado.questaoAtualIndex++;
                     if (estado.questaoAtualIndex >= questoes.length) {
                         estado.tela = 'vitoria';
+                    } else {
+                        estado.tela = 'teoria'; // Avança para a matéria do próximo nível
                     }
                     renderizar();
                 }, 900);
@@ -169,7 +233,7 @@
                     if (estado.vidas <= 0) {
                         estado.tela = 'derrota';
                     } else {
-                        renderizar();
+                        renderizar(); // Mantém na mesma tela ou repete
                     }
                 }, 1200);
             }
@@ -180,7 +244,6 @@
             renderizar();
         }
 
-        // Inicializa o app ao carregar a página
         renderizar();
     </script>
 </body>

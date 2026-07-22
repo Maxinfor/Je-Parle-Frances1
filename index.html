@@ -1,459 +1,3070 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinguaDu Lógico - Múltiplos Formatos de Exercícios</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>LinguaDu Lógico PRO 🇫🇷</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<style>
+
+body{
+    font-family: 'Arial', sans-serif;
+}
+
+
+.botao{
+    transition:.3s;
+}
+
+.botao:hover{
+    transform:scale(1.05);
+}
+
+
+.animar{
+    animation:pular 2s infinite;
+}
+
+
+@keyframes pular{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-10px);
+}
+
+}
+
+
+.card{
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.15);
+}
+
+
+</style>
+
+
 </head>
-<body class="bg-zinc-950 text-white font-sans min-h-screen flex flex-col justify-between select-none">
 
-    <!-- Container Principal do App -->
-    <div id="app" class="w-full max-w-md mx-auto p-6 flex flex-col justify-between flex-grow">
-        <!-- O conteúdo dinâmico será injetado aqui -->
-    </div>
 
-    <script>
-        // Estado do Sistema de Aprendizagem Progressiva com múltiplos tipos de exercícios
-        let estado = {
-            tela: 'menu', 
-            vidas: 3,
-            questaoAtualIndex: 0,
-            xp: 0,
-            nivelSelecionado: 'A1'
-        };
 
-        // Banco de Questões Expandido com Múltiplos Formatos (Múltipla Escolha, Verdadeiro/Falso, Ordenação e Associação)
-        const bancoNiveis = {
-            A1: [
-                {
-                    tipo: 'multipla',
-                    passo: "A1 - Módulo 1: Verbo & Adjetivo Essencial",
-                    ensinoTexto: "Vamos aprender o verbo: <strong>être</strong> (ser/estar - ex: <em>suis</em>) e o adjetivo: <strong>fatigué</strong> (cansado).",
-                    vocabulario: [
-                        { palavra: "Je suis", significado: "Eu sou / estou (Verbo être)" },
-                        { palavra: "fatigué", significado: "Cansado (Adjetivo masculino)" }
-                    ],
-                    explicacaoLogica: "A lógica de construção básica: Colocamos o pronome e o verbo conjugado <strong>je suis</strong> seguido do adjetivo de estado <strong>fatigué</strong>.",
-                    imagem: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je suis fatigué",
-                    exercicio: {
-                        pergunta: "Aplicando o verbo e o adjetivo aprendidos, como se diz \"Eu estou cansado\"?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je suis fatigué",
-                        opcoes: ['J\'ai un chat', 'Je suis fatigué', 'Il fait beau', 'Nous allons au parc'],
-                        correta: 1
-                    }
-                },
-                {
-                    tipo: 'vf',
-                    passo: "A1 - Módulo 2: Validação de Desejo",
-                    ensinoTexto: "Verificando o uso do verbo <strong>voudrais</strong> para pedidos polidos no cotidiano.",
-                    vocabulario: [
-                        { palavra: "Je voudrais", significado: "Eu gostaria" }
-                    ],
-                    explicacaoLogica: "A frase 'Je voudrais un café' significa literalmente 'Eu gostaria de um café'.",
-                    imagem: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je voudrais un café",
-                    exercicio: {
-                        pergunta: "A frase 'Je voudrais un café' significa 'Eu odeio café'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je voudrais un café",
-                        opcoes: ['Verdadeiro (V)', 'Falso (F)'],
-                        correta: 1
-                    }
-                },
-                {
-                    tipo: 'ordenacao',
-                    passo: "A1 - Módulo 3: Construção Lógica de Posse",
-                    ensinoTexto: "Organize mentalmente os blocos da frase para formar a estrutura correta de posse com <strong>avoir</strong>.",
-                    vocabulario: [
-                        { palavra: "J'ai un chat", significado: "Eu tenho um gato" }
-                    ],
-                    explicacaoLogica: "A ordem padrão em francês para frases afirmativas simples é: Sujeito + Verbo + Artigo + Objeto.",
-                    imagem: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "J'ai un chat",
-                    exercicio: {
-                        pergunta: "Qual das opções apresenta a ordem correta para dizer 'Eu tenho um gato'?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "J'ai un chat",
-                        opcoes: ['Chat un ai J\'', 'J\'ai un chat', 'Un chat j\'ai', 'Ai j\' chat un'],
-                        correta: 1
-                    }
-                }
-            ],
-            A2: [
-                {
-                    tipo: 'multipla',
-                    passo: "A2 - Módulo 1: Passado Composto (Passé Composé)",
-                    ensinoTexto: "Expressando ações concluídas usando o auxiliar <strong>avoir</strong> + particípio (ex: <em>j'ai visité</em>).",
-                    vocabulario: [
-                        { palavra: "J'ai visité", significado: "Eu visitei" },
-                        { palavra: "la France", significado: "A França" }
-                    ],
-                    explicacaoLogica: "O Passé Composé conecta o presente do verbo auxiliar com a ação principal terminada.",
-                    imagem: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "J'ai visité la France",
-                    exercicio: {
-                        pergunta: "Como dizer \"Eu visitei a França\" em francês?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "J'ai visité la France",
-                        opcoes: ['Je visite la France', 'J\'ai visité la France', 'Je vais visiter la France', 'Je visiterais la France'],
-                        correta: 1
-                    }
-                },
-                {
-                    tipo: 'vf',
-                    passo: "A2 - Módulo 2: O Passado com Être",
-                    ensinoTexto: "Verbos de movimento utilizam o auxiliar <strong>être</strong> no Passé Composé (ex: <em>je suis allé</em>).",
-                    vocabulario: [
-                        { palavra: "Je suis allé", significado: "Eu fui" }
-                    ],
-                    explicacaoLogica: "Verbos intransitivos de deslocamento exigem o verbo être como auxiliar.",
-                    imagem: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Je suis allé à Paris",
-                    exercicio: {
-                        pergunta: "A frase 'Je suis allé' utiliza o auxiliar être para expressar movimento?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Je suis allé",
-                        opcoes: ['Verdadeiro (V)', 'Falso (F)'],
-                        correta: 0
-                    }
-                }
-            ],
-            B1: [
-                {
-                    tipo: 'multipla',
-                    passo: "B1 - Módulo 1: Hipóteses com o Imperfeito",
-                    ensinoTexto: "Usando a estrutura condicional simples para expressar desejos educados ou cenários hipotéticos (<strong>Si j'étais...</strong>).",
-                    vocabulario: [
-                        { palavra: "Si j'étais", significado: "Se eu fosse / estivesse" },
-                        { palavra: "riche", significado: "Rico(a)" }
-                    ],
-                    explicacaoLogica: "Em francês, a conjunção <em>si</em> rege o imperfeito para formar hipóteses do tipo 'se eu fosse...'.",
-                    imagem: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Si j'étais riche, je voyagerais partout",
-                    exercicio: {
-                        pergunta: "Como se traduz corretamente \"Se eu fosse rico...\"?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Si j'étais riche",
-                        opcoes: ['Si je suis riche', 'Si j\'étais riche', 'Si je serais riche', 'Quand je serai riche'],
-                        correta: 1
-                    }
-                }
-            ],
-            B2: [
-                {
-                    tipo: 'multipla',
-                    passo: "B2 - Módulo 1: O Subjuntivo (Le Subjonctif)",
-                    ensinoTexto: "O subjuntivo expressa dúvida, obrigação ou subjetividade após a conjunção <strong>Il faut que</strong>.",
-                    vocabulario: [
-                        { palavra: "Il faut que tu", significado: "É preciso que você" },
-                        { palavra: "prennes", significado: "tomes" }
-                    ],
-                    explicacaoLogica: "Expressões de obrigatoriedade como <em>il faut que</em> exigem obrigatoriamente o modo subjuntivo na oração seguinte.",
-                    imagem: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Il faut que tu comprennes la situation",
-                    exercicio: {
-                        pergunta: "Qual alternativa utiliza o subjuntivo corretamente após uma expressão de exigência?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Il faut que tu comprennes",
-                        opcoes: ['Il faut que tu comprends', 'Il faut que tu comprennes', 'Il faut tu as compris', 'Il faut de comprendre'],
-                        correta: 1
-                    }
-                }
-            ],
-            C1: [
-                {
-                    tipo: 'multipla',
-                    passo: "C1 - Módulo 1: Nuances e Expressões Idiomáticas",
-                    ensinoTexto: "Domínio de registros de linguagem avançados, metáforas corporativas e locuções idiomáticas complexas.",
-                    vocabulario: [
-                        { palavra: "Mettre la main à la pâte", significado: "Colocar a mão na massa (contribuir)" }
-                    ],
-                    explicacaoLogica: "O nível C1 exige fluência idiomática natural sem recorrer a traduções literais.",
-                    imagem: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "Il est temps de mettre la main à la pâte",
-                    exercicio: {
-                        pergunta: "O que significa a expressão idiomática avançada \"mettre la main à la pâte\"?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Mettre la main à la pâte",
-                        opcoes: ['Fazer uma massa de bolo', 'Colocar a mão na massa / Ajudar', 'Comprar ingredientes', 'Desistir do trabalho'],
-                        correta: 1
-                    }
-                }
-            ],
-            C2: [
-                {
-                    tipo: 'multipla',
-                    passo: "C2 - Módulo 1: Maestria Literária e Discurso Abstrato",
-                    ensinoTexto: "Domínio equivalente a um falante nativo culto, capaz de interpretar textos literários densos e ironias sutis.",
-                    vocabulario: [
-                        { palavra: "Maîtrise absolue", significado: "Domínio absoluto" }
-                    ],
-                    explicacaoLogica: "Análise crítica avançada de textos clássicos, filosofia e polissemia da língua francesa.",
-                    imagem: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-                    audioFrase: "La subtilité de la langue française exige une maîtrise absolue",
-                    exercicio: {
-                        pergunta: "No contexto de C2, como se caracteriza a precisão lexical avançada?",
-                        imagemExercicio: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80",
-                        audioFrances: "Maîtrise absolue",
-                        opcoes: ['Uso restrito ao vocabulário básico', 'Capacidade de expressar nuances sutilezas de sentido com precisão exímia', 'Dificuldade de compreensão oral', 'Uso exclusivo de gírias'],
-                        correta: 1
-                    }
-                }
-            ]
-        };
+<body class="
+bg-gradient-to-b 
+from-blue-600 
+via-white 
+to-red-500
+min-h-screen
+">
 
-        // Função de Áudio Profissional Oficial (Français Natif)
-        function tocarAudio(texto) {
-            const textoCodificado = encodeURIComponent(texto);
-            const urlAudio = `https://translate.google.com/translate_tts?ie=UTF-8&q=${textoCodificado}&tl=fr&client=tw-ob`;
-            const audio = new Audio(urlAudio);
-            audio.playbackRate = 0.85;
-            audio.play().catch(erro => console.log("Áudio indisponível:", erro));
-        }
 
-        function renderizar() {
-            const app = document.getElementById('app');
-            const questoes = bancoNiveis[estado.nivelSelecionado];
-            
-            if (estado.tela === 'menu') {
-                app.innerHTML = `
-                    <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="w-24 h-24 bg-gradient-to-tr from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-orange-500/20 mb-4 animate-pulse border border-orange-400/30">
-                            <span class="text-4xl">🇫🇷</span>
-                        </div>
-                        <h1 class="text-2xl font-extrabold mb-1 text-zinc-100">LinguaDu Lógico</h1>
-                        <p class="text-zinc-400 mb-5 text-xs">Prática Dinâmica e Multiformato (CEFR)</p>
-                        
-                        <!-- Seletor de Níveis -->
-                        <div class="grid grid-cols-3 gap-2 w-full mb-6">
-                            ${['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map(niv => `
-                                <button onclick="mudarNivel('${niv}')" class="py-2.5 rounded-xl font-bold text-xs border transition ${estado.nivelSelecionado === niv ? 'bg-orange-500 text-zinc-950 border-orange-400 shadow-lg shadow-orange-500/20' : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-700'}">
-                                    ${niv}
-                                </button>
-                            `).join('')}
-                        </div>
-                        
-                        <div class="flex gap-3 mb-6 w-full justify-center">
-                            <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
-                                <span class="text-yellow-400">⚡</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">XP</div><div class="text-sm font-bold text-zinc-200">${estado.xp}</div></div>
-                            </div>
-                            <div class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-2xl flex items-center gap-2">
-                                <span class="text-blue-400">📈</span>
-                                <div class="text-left"><div class="text-[10px] text-zinc-500 uppercase font-bold">Desafios</div><div class="text-sm font-bold text-zinc-200">${questoes.length} formatos</div></div>
-                            </div>
-                        </div>
+<div 
+id="app"
+class="
+max-w-md
+mx-auto
+min-h-screen
+p-5
+flex
+flex-col
+">
+</div>
 
-                        <button onclick="iniciarLicao()" class="w-full py-4 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/20 transition active:scale-95 text-sm">
-                            INICIAR PRÁTICA ${estado.nivelSelecionado}
-                        </button>
-                    </div>
-                `;
-            } else if (estado.tela === 'teoria') {
-                const item = questoes[estado.questaoAtualIndex];
-                const porcentagem = (estado.questaoAtualIndex / questoes.length) * 100;
 
-                setTimeout(() => tocarAudio(item.audioFrase), 400);
 
-                let badgeTipo = item.tipo === 'vf' ? 'Verdadeiro ou Falso' : item.tipo === 'ordenacao' ? 'Ordenação Lógica' : 'Múltipla Escolha';
+<script>
 
-                app.innerHTML = `
-                    <div class="flex flex-col justify-between flex-grow">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
-                                <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-orange-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
-                                </div>
-                                <div class="flex items-center gap-1 text-red-500 font-bold">
-                                    <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
-                                </div>
-                            </div>
 
-                            <div class="flex justify-between items-center mb-2">
-                                <div class="font-bold text-[10px] uppercase tracking-wider py-1.5 px-3 rounded-xl border bg-orange-500/10 text-orange-400 border-orange-500/20">📍 ${item.passo}</div>
-                                <div class="font-bold text-[10px] uppercase tracking-wider py-1.5 px-3 rounded-xl border bg-blue-500/10 text-blue-400 border-blue-500/20">🎯 ${badgeTipo}</div>
-                            </div>
+// ==============================
+// ESTADO DO APLICATIVO
+// ==============================
 
-                            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl mt-1">
-                                <div class="relative h-28 w-full overflow-hidden">
-                                    <img src="${item.imagem}" class="w-full h-full object-cover brightness-90">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
-                                </div>
-                                <div class="p-3.5">
-                                    <div class="mb-2 bg-zinc-950/70 p-2.5 rounded-2xl border border-zinc-800">
-                                        <div class="text-[11px] text-amber-300 font-medium leading-relaxed">${item.ensinoTexto}</div>
-                                    </div>
 
-                                    ${item.vocabulario && item.vocabulario.length > 0 ? `
-                                        <div class="grid grid-cols-1 gap-1 mb-2.5 bg-zinc-950/60 p-2 rounded-xl border border-zinc-800">
-                                            ${item.vocabulario.map(v => `
-                                                <div class="text-center bg-zinc-900 p-1.5 rounded-lg border border-zinc-800">
-                                                    <div class="text-orange-400 font-bold text-[11px]">${v.palavra}</div>
-                                                    <div class="text-[9px] text-zinc-400">${v.significado}</div>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    ` : ''}
+let estado={
 
-                                    <div class="flex justify-between items-center mb-1">
-                                        <h2 class="text-xs font-bold text-zinc-100">Explicação Lógica:</h2>
-                                        <button onclick="tocarAudio('${item.audioFrase}')" class="w-6 h-6 bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 rounded-full flex items-center justify-center transition shrink-0 text-xs" title="Ouvir áudio">🔊</button>
-                                    </div>
-                                    <p class="text-zinc-300 text-[11px] leading-relaxed">${item.explicacaoLogica}</p>
-                                </div>
-                            </div>
-                        </div>
+tela:"menu",
 
-                        <button onclick="irParaExercicio()" class="w-full py-3.5 bg-orange-500 hover:bg-orange-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-orange-500/25 transition mt-3 active:scale-95 text-xs">
-                            RESPONDER DESAFIO
-                        </button>
-                    </div>
-                `;
-            } else if (estado.tela === 'licao') {
-                const item = questoes[estado.questaoAtualIndex];
-                const q = item.exercicio;
-                const porcentagem = ((estado.questaoAtualIndex + 0.5) / questoes.length) * 100;
-                let instrucaoTipo = item.tipo === 'vf' ? 'Julgue o enunciado:' : item.tipo === 'ordenacao' ? 'Organize a estrutura:' : 'Aplicação Prática:';
+nivel:"A1",
 
-                app.innerHTML = `
-                    <div class="flex flex-col justify-between flex-grow">
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <button onclick="voltarMenu()" class="text-zinc-500 hover:text-zinc-300 font-bold text-lg">✕</button>
-                                <div class="w-2/3 bg-zinc-800 h-3 rounded-full overflow-hidden">
-                                    <div class="bg-green-500 h-full transition-all duration-300" style="width: ${porcentagem}%"></div>
-                                </div>
-                                <div class="flex items-center gap-1 text-red-500 font-bold">
-                                    <span>❤️</span> <span class="text-sm">${estado.vidas}</span>
-                                </div>
-                            </div>
+vidas:3,
 
-                            <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider mb-1">${instrucaoTipo}</div>
-                            <h2 class="text-zinc-300 font-semibold text-xs mb-3 leading-relaxed">${q.pergunta}</h2>
-                            
-                            <div class="bg-zinc-900 rounded-3xl border border-zinc-800 overflow-hidden mb-3 shadow-xl">
-                                <div class="h-24 w-full overflow-hidden relative">
-                                    <img src="${q.imagemExercicio}" class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
-                                </div>
-                                <div class="p-3 flex items-center justify-between bg-zinc-900">
-                                    <div>
-                                        <div class="text-[9px] text-zinc-500 uppercase font-semibold">Áudio de Apoio</div>
-                                        <div class="text-xs font-bold text-zinc-100">${q.audioFrances}</div>
-                                    </div>
-                                    <button onclick="tocarAudio('${q.audioFrances}')" class="w-8 h-8 bg-green-500 hover:bg-green-400 text-zinc-950 rounded-xl flex items-center justify-center text-sm shadow-lg transition active:scale-95 shrink-0">🔊</button>
-                                </div>
-                            </div>
+xp:0,
 
-                            <div class="flex flex-col gap-2" id="opcoes-container">
-                                ${q.opcoes.map((opcao, index) => `
-                                    <button onclick="verificarResposta(${index})" class="opcao-btn p-3 bg-zinc-900 border-2 border-zinc-800 hover:border-zinc-700 rounded-2xl text-left font-medium text-zinc-200 transition active:scale-[0.98] text-xs">
-                                        ${opcao}
-                                    </button>
-                                `).join('')}
-                            </div>
-                        </div>
-                        <div></div>
-                    </div>
-                `;
-            } else if (estado.tela === 'vitoria') {
-                app.innerHTML = `
-                    <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="text-6xl mb-4 animate-bounce">🏆</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-green-400">Nível ${estado.nivelSelecionado} Superado!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">Você completou todos os formatos com sucesso. Ganhou <strong>+250 XP</strong>.</p>
-                        <button onclick="reiniciarJornada()" class="w-full py-4 bg-green-500 hover:bg-green-400 text-zinc-950 font-extrabold rounded-2xl shadow-lg shadow-green-500/20 transition">
-                            VOLTAR AO MENU
-                        </button>
-                    </div>
-                `;
-            } else if (estado.tela === 'derrota') {
-                app.innerHTML = `
-                    <div class="flex flex-col items-center justify-center flex-grow text-center">
-                        <div class="text-6xl mb-4 animate-bounce">💡</div>
-                        <h1 class="text-3xl font-extrabold mb-2 text-red-500">Vidas esgotadas!</h1>
-                        <p class="text-zinc-400 mb-8 text-sm">A prática com formatos variados fixa o idioma. Tente novamente.</p>
-                        <button onclick="iniciarLicao()" class="w-full py-4 bg-red-600 hover:bg-red-500 text-white font-extrabold rounded-2xl shadow-lg shadow-red-600/20 transition">
-                            TENTAR NOVAMENTE
-                        </button>
-                    </div>
-                `;
-            }
-        }
+questao:0,
 
-        function mudarNivel(novoNivel) {
-            estado.nivelSelecionado = novoNivel;
-            renderizar();
-        }
+moedas:0
 
-        function iniciarLicao() {
-            estado.vidas = 3;
-            estado.questaoAtualIndex = 0;
-            estado.tela = 'teoria';
-            renderizar();
-        }
+};
 
-        function irParaExercicio() {
-            estado.tela = 'licao';
-            renderizar();
-        }
 
-        function reiniciarJornada() {
-            estado.xp += 250;
-            estado.questaoAtualIndex = 0;
-            estado.tela = 'menu';
-            renderizar();
-        }
 
-        function verificarResposta(indexSelecionado) {
-            const questoes = bancoNiveis[estado.nivelSelecionado];
-            const item = questoes[estado.questaoAtualIndex];
-            const q = item.exercicio;
-            const botoes = document.querySelectorAll('.opcao-btn');
-            
-            botoes.forEach(b => b.disabled = true);
+// ==============================
+// BANCO DE NÍVEIS
+// ==============================
 
-            if (indexSelecionado === q.correta) {
-                botoes[indexSelecionado].classList.remove('bg-zinc-900', 'border-zinc-800');
-                botoes[indexSelecionado].classList.add('bg-green-600/30', 'border-green-500', 'text-green-300');
-                
-                setTimeout(() => {
-                    estado.questaoAtualIndex++;
-                    if (estado.questaoAtualIndex >= questoes.length) {
-                        estado.tela = 'vitoria';
-                    } else {
-                        estado.tela = 'teoria';
-                    }
-                    renderizar();
-                }, 900);
-            } else {
-                botoes[indexSelecionado].classList.remove('bg-zinc-900', 'border-zinc-800');
-                botoes[indexSelecionado].classList.add('bg-red-600/30', 'border-red-500', 'text-red-300');
-                botoes[q.correta].classList.remove('bg-zinc-900', 'border-zinc-800');
-                botoes[q.correta].classList.add('bg-green-600/30', 'border-green-500', 'text-green-300');
 
-                estado.vidas--;
+const niveis={
 
-                setTimeout(() => {
-                    if (estado.vidas <= 0) {
-                        estado.tela = 'derrota';
-                    } else {
-                        renderizar();
-                    }
-                }, 1200);
-            }
-        }
 
-        function voltarMenu() {
-            estado.tela = 'menu';
-            renderizar();
-        }
+A1:{
 
-        renderizar();
-    </script>
+nome:"Iniciante",
+
+icone:"🌱",
+
+cor:"green",
+
+descricao:
+"Primeiros passos no francês"
+
+
+},
+
+
+A2:{
+
+nome:"Básico",
+
+icone:"📚",
+
+cor:"blue",
+
+descricao:
+"Conversas do dia a dia"
+
+
+},
+
+
+B1:{
+
+nome:"Intermediário",
+
+icone:"🚀",
+
+cor:"purple",
+
+descricao:
+"Comunicação natural"
+
+
+},
+
+
+B2:{
+
+nome:"Avançado",
+
+icone:"🎓",
+
+cor:"orange",
+
+descricao:
+"Domínio da gramática"
+
+
+},
+
+
+C1:{
+
+nome:"Fluente",
+
+icone:"🏆",
+
+cor:"yellow",
+
+descricao:
+"Francês profissional"
+
+
+},
+
+
+C2:{
+
+nome:"Mestre",
+
+icone:"👑",
+
+cor:"red",
+
+descricao:
+"Nível nativo"
+
+
+}
+
+
+};
+
+
+
+
+// ==============================
+// DESENHOS DO APP
+// ==============================
+
+
+const desenhos={
+
+
+mascote:
+"https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+
+
+franca:
+"https://cdn-icons-png.flaticon.com/512/330/330490.png",
+
+
+livro:
+"https://cdn-icons-png.flaticon.com/512/2232/2232688.png",
+
+
+trofeu:
+"https://cdn-icons-png.flaticon.com/512/2583/2583344.png"
+
+
+};
+
+
+
+
+// ==============================
+// TELA MENU
+// ==============================
+
+
+function renderizar(){
+
+
+let app=document.getElementById("app");
+
+
+
+if(estado.tela==="menu"){
+
+
+app.innerHTML=`
+
+<div class="
+flex
+flex-col
+items-center
+text-center
+">
+
+
+<img 
+
+src="${desenhos.mascote}"
+
+class="
+w-32
+h-32
+animar
+mb-4
+">
+
+
+<h1 class="
+text-4xl
+font-black
+text-blue-900
+">
+
+LinguaDu
+
+</h1>
+
+
+<h2 class="
+text-2xl
+font-bold
+text-red-600
+">
+
+Lógico PRO 🇫🇷
+
+</h2>
+
+
+
+<p class="
+text-lg
+text-gray-700
+mt-3
+">
+
+Aprenda francês brincando!
+
+</p>
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-5
+mt-6
+w-full
+card
+">
+
+
+<div class="
+flex
+justify-around
+text-xl
+font-bold
+">
+
+
+<div>
+
+⚡
+
+<br>
+
+${estado.xp}
+
+XP
+
+</div>
+
+
+
+<div>
+
+❤️
+
+<br>
+
+${estado.vidas}
+
+</div>
+
+
+
+<div>
+
+🪙
+
+<br>
+
+${estado.moedas}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<h3 class="
+text-2xl
+font-black
+mt-8
+text-blue-900
+">
+
+Escolha seu nível
+
+</h3>
+
+
+
+
+
+<div class="
+grid
+grid-cols-2
+gap-4
+w-full
+mt-5
+">
+
+
+${Object.keys(niveis).map(n=>`
+
+<button
+
+onclick="selecionarNivel('${n}')"
+
+class="
+botao
+bg-white
+rounded-3xl
+p-5
+card
+border-4
+border-blue-200
+">
+
+
+<div class="
+text-4xl
+">
+
+${niveis[n].icone}
+
+</div>
+
+
+<div class="
+text-2xl
+font-black
+">
+
+${n}
+
+</div>
+
+
+<div class="
+text-sm
+font-bold
+">
+
+${niveis[n].nome}
+
+</div>
+
+
+
+</button>
+
+
+`).join("")}
+
+
+
+</div>
+
+
+
+
+
+
+<button
+
+onclick="iniciar()"
+
+class="
+botao
+mt-8
+bg-blue-700
+text-white
+text-xl
+font-black
+rounded-3xl
+py-5
+w-full
+">
+
+
+COMEÇAR AVENTURA 🚀
+
+
+</button>
+
+
+
+</div>
+
+
+`;
+
+}
+
+
+}
+
+
+
+
+function selecionarNivel(n){
+
+estado.nivel=n;
+
+}
+
+
+
+function iniciar(){
+
+estado.tela="aula";
+
+estado.questao=0;
+
+renderizar();
+
+}
+
+
+
+renderizar();
+
+
+
+</script>
+
+
 </body>
+
 </html>
+// =====================================
+// BANCO DE AULAS
+// =====================================
+
+
+const aulas={
+
+
+A1:[
+
+{
+
+frances:"Bonjour 👋",
+
+traducao:"Olá",
+
+explicacao:
+"Uma das primeiras palavras que todo estudante de francês aprende.",
+
+imagem:
+"👋"
+
+},
+
+
+{
+
+frances:"Je m'appelle Max",
+
+traducao:"Meu nome é Max",
+
+explicacao:
+"Usamos esta frase para nos apresentar.",
+
+imagem:
+"🙂"
+
+},
+
+
+{
+
+frances:"Je suis brésilien",
+
+traducao:"Eu sou brasileiro",
+
+explicacao:
+"Je suis significa: Eu sou / Eu estou.",
+
+imagem:
+"🇧🇷"
+
+},
+
+
+{
+
+frances:"Merci beaucoup",
+
+traducao:"Muito obrigado",
+
+explicacao:
+"Uma forma educada de agradecer.",
+
+imagem:
+"🙏"
+
+}
+
+
+],
+
+
+
+A2:[
+
+{
+
+frances:"J'aime apprendre le français",
+
+traducao:
+"Eu gosto de aprender francês",
+
+explicacao:
+"O verbo aimer significa gostar ou amar.",
+
+imagem:"📚"
+
+},
+
+
+{
+
+frances:"Je vais au travail",
+
+traducao:
+"Eu vou ao trabalho",
+
+explicacao:
+"Je vais vem do verbo aller (ir).",
+
+imagem:"🚶"
+
+}
+
+
+],
+
+
+
+
+B1:[
+
+{
+
+frances:
+"Si j'avais le temps",
+
+traducao:
+"Se eu tivesse tempo",
+
+explicacao:
+"Estrutura usada para situações hipotéticas.",
+
+imagem:"⏰"
+
+}
+
+
+],
+
+
+
+B2:[
+
+{
+
+frances:
+"Il faut que tu comprennes",
+
+traducao:
+"É necessário que você compreenda",
+
+explicacao:
+"Usamos o subjuntivo após algumas expressões.",
+
+imagem:"🎓"
+
+}
+
+
+],
+
+
+
+C1:[
+
+{
+
+frances:
+"Mettre la main à la pâte",
+
+traducao:
+"Colocar a mão na massa",
+
+explicacao:
+"Expressão idiomática francesa.",
+
+imagem:"💪"
+
+}
+
+
+],
+
+
+
+C2:[
+
+{
+
+frances:
+"La subtilité du langage",
+
+traducao:
+"A sutileza da linguagem",
+
+explicacao:
+"Expressão usada em contextos avançados.",
+
+imagem:"👑"
+
+}
+
+
+]
+
+};
+
+
+
+
+// =====================================
+// TELA DE AULA
+// =====================================
+
+
+function telaAula(){
+
+
+let app=document.getElementById("app");
+
+
+let lista=aulas[estado.nivel];
+
+
+let aula=lista[estado.questao];
+
+
+
+app.innerHTML=`
+
+
+<div class="flex flex-col min-h-screen">
+
+
+<!-- CABEÇALHO -->
+
+
+<div class="
+flex
+justify-between
+items-center
+mb-5
+">
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-white
+rounded-full
+p-3
+text-xl
+">
+
+⬅️
+
+</button>
+
+
+
+<div class="
+bg-white
+rounded-full
+px-5
+py-3
+font-black
+text-xl
+">
+
+${estado.nivel}
+
+</div>
+
+
+
+<div class="
+bg-red-600
+text-white
+rounded-full
+px-4
+py-3
+font-black
+">
+
+❤️ ${estado.nivel?estado.vidas:0}
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- PROGRESSO -->
+
+
+<div class="
+bg-white
+rounded-full
+h-5
+mb-6
+overflow-hidden
+">
+
+
+<div
+
+class="
+bg-green-500
+h-full
+"
+
+style="width:${((estado.questao+1)/lista.length)*100}%"
+
+></div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CARD PRINCIPAL -->
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+card
+text-center
+">
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-24
+mx-auto
+animar
+">
+
+
+<div class="
+text-7xl
+mt-3
+">
+
+${aula.imagem}
+
+</div>
+
+
+
+
+<h1 class="
+text-4xl
+font-black
+text-blue-700
+mt-5
+">
+
+${aula.frances}
+
+</h1>
+
+
+
+<button
+
+onclick="ouvir('${aula.frances}')"
+
+class="
+mt-5
+bg-green-500
+text-white
+rounded-full
+px-8
+py-4
+text-xl
+font-black
+">
+
+🔊 Ouvir
+
+</button>
+
+
+
+
+
+
+<div class="
+bg-blue-50
+rounded-3xl
+p-5
+mt-6
+">
+
+
+<p class="
+text-3xl
+font-black
+text-gray-800
+">
+
+${aula.traducao}
+
+</p>
+
+
+
+</div>
+
+
+
+
+<p class="
+text-lg
+mt-5
+text-gray-700
+">
+
+${aula.explicacao}
+
+</p>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<button
+
+onclick="proximo()"
+
+class="
+mt-auto
+mb-5
+bg-blue-700
+text-white
+rounded-3xl
+py-5
+text-xl
+font-black
+">
+
+
+CONTINUAR ➡️
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+`;
+
+
+
+}
+
+
+
+
+// =====================================
+// FUNÇÕES
+// =====================================
+
+
+function proximo(){
+
+
+let lista=aulas[estado.nivel];
+
+
+estado.questao++;
+
+
+if(estado.questao>=lista.length){
+
+
+estado.tela="exercicio";
+
+
+estado.questao=0;
+
+
+}
+
+renderizar();
+
+
+}
+
+
+
+
+function ouvir(texto){
+
+
+let fala=new SpeechSynthesisUtterance(texto);
+
+
+fala.lang="fr-FR";
+
+
+fala.rate=0.8;
+
+
+speechSynthesis.speak(fala);
+
+
+}
+
+
+
+function voltarMenu(){
+
+estado.tela="menu";
+
+renderizar();
+
+}
+
+
+
+
+
+// Atualiza o renderizador principal
+
+let renderAntigo=renderizar;
+
+
+renderizar=function(){
+
+
+if(estado.tela==="aula"){
+
+telaAula();
+
+}
+
+else{
+
+renderAntigo();
+
+}
+// =====================================
+// BANCO DE AULAS
+// =====================================
+
+
+const aulas={
+
+
+A1:[
+
+{
+
+frances:"Bonjour 👋",
+
+traducao:"Olá",
+
+explicacao:
+"Uma das primeiras palavras que todo estudante de francês aprende.",
+
+imagem:
+"👋"
+
+},
+
+
+{
+
+frances:"Je m'appelle Max",
+
+traducao:"Meu nome é Max",
+
+explicacao:
+"Usamos esta frase para nos apresentar.",
+
+imagem:
+"🙂"
+
+},
+
+
+{
+
+frances:"Je suis brésilien",
+
+traducao:"Eu sou brasileiro",
+
+explicacao:
+"Je suis significa: Eu sou / Eu estou.",
+
+imagem:
+"🇧🇷"
+
+},
+
+
+{
+
+frances:"Merci beaucoup",
+
+traducao:"Muito obrigado",
+
+explicacao:
+"Uma forma educada de agradecer.",
+
+imagem:
+"🙏"
+
+}
+
+
+],
+
+
+
+A2:[
+
+{
+
+frances:"J'aime apprendre le français",
+
+traducao:
+"Eu gosto de aprender francês",
+
+explicacao:
+"O verbo aimer significa gostar ou amar.",
+
+imagem:"📚"
+
+},
+
+
+{
+
+frances:"Je vais au travail",
+
+traducao:
+"Eu vou ao trabalho",
+
+explicacao:
+"Je vais vem do verbo aller (ir).",
+
+imagem:"🚶"
+
+}
+
+
+],
+
+
+
+
+B1:[
+
+{
+
+frances:
+"Si j'avais le temps",
+
+traducao:
+"Se eu tivesse tempo",
+
+explicacao:
+"Estrutura usada para situações hipotéticas.",
+
+imagem:"⏰"
+
+}
+
+
+],
+
+
+
+B2:[
+
+{
+
+frances:
+"Il faut que tu comprennes",
+
+traducao:
+"É necessário que você compreenda",
+
+explicacao:
+"Usamos o subjuntivo após algumas expressões.",
+
+imagem:"🎓"
+
+}
+
+
+],
+
+
+
+C1:[
+
+{
+
+frances:
+"Mettre la main à la pâte",
+
+traducao:
+"Colocar a mão na massa",
+
+explicacao:
+"Expressão idiomática francesa.",
+
+imagem:"💪"
+
+}
+
+
+],
+
+
+
+C2:[
+
+{
+
+frances:
+"La subtilité du langage",
+
+traducao:
+"A sutileza da linguagem",
+
+explicacao:
+"Expressão usada em contextos avançados.",
+
+imagem:"👑"
+
+}
+
+
+]
+
+};
+
+
+
+
+// =====================================
+// TELA DE AULA
+// =====================================
+
+
+function telaAula(){
+
+
+let app=document.getElementById("app");
+
+
+let lista=aulas[estado.nivel];
+
+
+let aula=lista[estado.questao];
+
+
+
+app.innerHTML=`
+
+
+<div class="flex flex-col min-h-screen">
+
+
+<!-- CABEÇALHO -->
+
+
+<div class="
+flex
+justify-between
+items-center
+mb-5
+">
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-white
+rounded-full
+p-3
+text-xl
+">
+
+⬅️
+
+</button>
+
+
+
+<div class="
+bg-white
+rounded-full
+px-5
+py-3
+font-black
+text-xl
+">
+
+${estado.nivel}
+
+</div>
+
+
+
+<div class="
+bg-red-600
+text-white
+rounded-full
+px-4
+py-3
+font-black
+">
+
+❤️ ${estado.nivel?estado.vidas:0}
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- PROGRESSO -->
+
+
+<div class="
+bg-white
+rounded-full
+h-5
+mb-6
+overflow-hidden
+">
+
+
+<div
+
+class="
+bg-green-500
+h-full
+"
+
+style="width:${((estado.questao+1)/lista.length)*100}%"
+
+></div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- CARD PRINCIPAL -->
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+card
+text-center
+">
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-24
+mx-auto
+animar
+">
+
+
+<div class="
+text-7xl
+mt-3
+">
+
+${aula.imagem}
+
+</div>
+
+
+
+
+<h1 class="
+text-4xl
+font-black
+text-blue-700
+mt-5
+">
+
+${aula.frances}
+
+</h1>
+
+
+
+<button
+
+onclick="ouvir('${aula.frances}')"
+
+class="
+mt-5
+bg-green-500
+text-white
+rounded-full
+px-8
+py-4
+text-xl
+font-black
+">
+
+🔊 Ouvir
+
+</button>
+
+
+
+
+
+
+<div class="
+bg-blue-50
+rounded-3xl
+p-5
+mt-6
+">
+
+
+<p class="
+text-3xl
+font-black
+text-gray-800
+">
+
+${aula.traducao}
+
+</p>
+
+
+
+</div>
+
+
+
+
+<p class="
+text-lg
+mt-5
+text-gray-700
+">
+
+${aula.explicacao}
+
+</p>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<button
+
+onclick="proximo()"
+
+class="
+mt-auto
+mb-5
+bg-blue-700
+text-white
+rounded-3xl
+py-5
+text-xl
+font-black
+">
+
+
+CONTINUAR ➡️
+
+
+</button>
+
+
+
+
+</div>
+
+
+
+`;
+
+
+
+}
+
+
+
+
+// =====================================
+// FUNÇÕES
+// =====================================
+
+
+function proximo(){
+
+
+let lista=aulas[estado.nivel];
+
+
+estado.questao++;
+
+
+if(estado.questao>=lista.length){
+
+
+estado.tela="exercicio";
+
+
+estado.questao=0;
+
+
+}
+
+renderizar();
+
+
+}
+
+
+
+
+function ouvir(texto){
+
+
+let fala=new SpeechSynthesisUtterance(texto);
+
+
+fala.lang="fr-FR";
+
+
+fala.rate=0.8;
+
+
+speechSynthesis.speak(fala);
+
+
+}
+
+
+
+function voltarMenu(){
+
+estado.tela="menu";
+
+renderizar();
+
+}
+
+
+
+
+
+// Atualiza o renderizador principal
+
+let renderAntigo=renderizar;
+
+
+renderizar=function(){
+
+
+if(estado.tela==="aula"){
+
+telaAula();
+
+}
+
+else{
+
+renderAntigo();
+
+}
+
+
+}
+
+
+}// =====================================
+// BANCO DE EXERCÍCIOS
+// =====================================
+
+
+const exercicios = {
+
+
+A1:[
+
+{
+pergunta:
+"Como dizemos 'Olá' em francês?",
+
+opcoes:[
+"Bonjour",
+"Merci",
+"Au revoir",
+"Bonsoir"
+],
+
+correta:0
+},
+
+
+{
+pergunta:
+"Qual significa 'Obrigado'?",
+
+opcoes:[
+"Salut",
+"Merci",
+"Oui",
+"Non"
+],
+
+correta:1
+},
+
+
+{
+pergunta:
+"Je m'appelle significa:",
+
+opcoes:[
+"Eu estudo",
+"Eu moro",
+"Meu nome é",
+"Eu gosto"
+],
+
+correta:2
+}
+
+],
+
+
+
+A2:[
+
+{
+
+pergunta:
+"O verbo aimer significa:",
+
+opcoes:[
+"Ir",
+"Gostar",
+"Comer",
+"Falar"
+],
+
+correta:1
+
+},
+
+
+{
+
+pergunta:
+"Je vais significa:",
+
+opcoes:[
+"Eu vou",
+"Eu sou",
+"Eu tenho",
+"Eu quero"
+],
+
+correta:0
+
+}
+
+
+],
+
+
+
+B1:[
+
+{
+
+pergunta:
+"Si j'avais le temps significa:",
+
+opcoes:[
+"Se eu tivesse tempo",
+"Eu tenho tempo",
+"Eu perdi tempo",
+"Tenho pressa"
+],
+
+correta:0
+
+}
+
+],
+
+
+
+B2:[
+
+{
+
+pergunta:
+"Il faut que significa:",
+
+opcoes:[
+"Talvez",
+"É necessário que",
+"Eu penso",
+"Eu vejo"
+],
+
+correta:1
+
+}
+
+],
+
+
+
+C1:[
+
+{
+
+pergunta:
+"Mettre la main à la pâte significa:",
+
+opcoes:[
+"Desistir",
+"Colocar a mão na massa",
+"Dormir",
+"Viajar"
+],
+
+correta:1
+
+}
+
+],
+
+
+
+C2:[
+
+{
+
+pergunta:
+"Maîtrise absolue significa:",
+
+opcoes:[
+"Domínio absoluto",
+"Erro grave",
+"Começo básico",
+"Frase curta"
+],
+
+correta:0
+
+}
+
+]
+
+
+};
+
+
+
+
+
+
+// =====================================
+// TELA DE EXERCÍCIO
+// =====================================
+
+
+
+function telaExercicio(){
+
+
+let app=document.getElementById("app");
+
+
+let lista=exercicios[estado.nivel];
+
+
+let pergunta=lista[estado.questao];
+
+
+
+app.innerHTML=`
+
+
+<div class="flex flex-col min-h-screen">
+
+
+
+<div class="
+flex
+justify-between
+mb-6
+">
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-white
+rounded-full
+p-3
+text-xl
+">
+
+⬅️
+
+</button>
+
+
+
+<div class="
+bg-yellow-400
+rounded-full
+px-5
+py-3
+font-black
+text-xl
+">
+
+⭐ ${estado.xp}
+
+</div>
+
+
+
+<div class="
+bg-red-600
+text-white
+rounded-full
+px-4
+py-3
+font-black
+">
+
+❤️ ${estado.vidas}
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+card
+">
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-28
+mx-auto
+animar
+">
+
+
+<h1 class="
+text-3xl
+font-black
+text-blue-900
+text-center
+mt-5
+">
+
+Desafio 🇫🇷
+
+</h1>
+
+
+
+<p class="
+text-xl
+font-bold
+text-gray-700
+text-center
+mt-5
+">
+
+${pergunta.pergunta}
+
+</p>
+
+
+
+
+
+<div class="
+mt-8
+space-y-4
+">
+
+
+${pergunta.opcoes.map((op,i)=>`
+
+
+<button
+
+onclick="responder(${i})"
+
+class="
+opcao
+w-full
+bg-blue-600
+text-white
+rounded-3xl
+py-5
+text-xl
+font-black
+botao
+">
+
+
+${op}
+
+
+</button>
+
+
+
+`).join("")}
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+`;
+
+}
+
+
+
+
+// =====================================
+// RESPOSTA
+// =====================================
+
+
+function responder(valor){
+
+
+let lista=exercicios[estado.nivel];
+
+
+let pergunta=lista[estado.questao];
+
+
+
+let botoes=document.querySelectorAll(".opcao");
+
+
+
+if(valor===pergunta.correta){
+
+
+botoes[valor].classList.remove(
+"bg-blue-600"
+);
+
+
+botoes[valor].classList.add(
+"bg-green-600"
+);
+
+
+
+estado.xp+=20;
+
+estado.moedas+=5;
+
+
+
+setTimeout(()=>{
+
+
+estado.questao++;
+
+
+
+if(estado.questao>=lista.length){
+
+
+estado.tela="vitoria";
+
+estado.questao=0;
+
+
+}
+
+else{
+
+
+renderizar();
+
+
+}
+
+
+
+},900);
+
+
+
+}
+
+else{
+
+
+botoes[valor].classList.remove(
+"bg-blue-600"
+);
+
+
+botoes[valor].classList.add(
+"bg-red-600"
+);
+
+
+
+estado.vidas--;
+
+
+
+setTimeout(()=>{
+
+
+if(estado.vidas<=0){
+
+
+estado.tela="derrota";
+
+
+}
+
+else{
+
+
+renderizar();
+
+
+}
+
+
+},1000);
+
+
+
+}
+
+
+
+}
+
+
+
+
+// =====================================
+// VITÓRIA
+// =====================================
+
+
+
+function telaVitoria(){
+
+
+let app=document.getElementById("app");
+
+
+app.innerHTML=`
+
+
+<div class="
+flex
+flex-col
+items-center
+justify-center
+min-h-screen
+text-center
+">
+
+
+<img
+
+src="${desenhos.trofeu}"
+
+class="
+w-40
+animar
+">
+
+
+<h1 class="
+text-5xl
+font-black
+text-yellow-500
+mt-5
+">
+
+Parabéns! 🎉
+
+</h1>
+
+
+
+<p class="
+text-2xl
+font-bold
+text-white
+mt-4
+">
+
+Você ganhou:
+
+<br>
+
+⭐ ${estado.xp} XP
+
+<br>
+
+🪙 ${estado.moedas} moedas
+
+</p>
+
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-blue-700
+text-white
+rounded-3xl
+px-10
+py-5
+mt-8
+text-xl
+font-black
+">
+
+
+CONTINUAR APRENDENDO 🚀
+
+
+</button>
+
+
+</div>
+
+
+`;
+
+}
+
+
+
+
+
+// =====================================
+// DERROTA
+// =====================================
+
+
+
+function telaDerrota(){
+
+
+let app=document.getElementById("app");
+
+
+app.innerHTML=`
+
+
+<div class="
+flex
+flex-col
+items-center
+justify-center
+min-h-screen
+text-center
+">
+
+
+<div class="
+text-8xl
+">
+
+💔
+
+</div>
+
+
+<h1 class="
+text-4xl
+font-black
+text-red-600
+">
+
+Fim das vidas
+
+</h1>
+
+
+<p class="
+text-xl
+font-bold
+text-white
+mt-4
+">
+
+Continue treinando!
+
+</p>
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-blue-700
+text-white
+rounded-3xl
+px-8
+py-5
+mt-8
+font-black
+text-xl
+">
+
+TENTAR NOVAMENTE
+
+</button>
+
+
+
+</div>
+
+
+
+`;
+
+}
+
+
+
+// =====================================
+// ATUALIZAR RENDER
+// =====================================
+
+
+let renderAnterior=renderizar;
+
+
+renderizar=function(){
+
+
+if(estado.tela==="aula"){
+
+telaAula();
+
+}
+
+else if(estado.tela==="exercicio"){
+
+telaExercicio();
+
+}
+
+else if(estado.tela==="vitoria"){
+
+telaVitoria();
+
+}
+
+else if(estado.tela==="derrota"){
+
+telaDerrota();
+
+}
+
+else{
+
+renderAnterior();
+
+}
+
+
+};
+
+// =====================================
+// SISTEMA DE PERFIL
+// =====================================
+
+
+let perfil={
+
+nome:"Aluno Francês",
+
+nivel:"A1",
+
+medalhas:[],
+
+sequencia:0
+
+};
+
+
+
+// =====================================
+// SALVAR PROGRESSO
+// =====================================
+
+
+function salvar(){
+
+
+localStorage.setItem(
+
+"linguadu",
+
+JSON.stringify({
+
+estado,
+
+perfil
+
+})
+
+);
+
+
+}
+
+
+
+function carregar(){
+
+
+let dados=
+localStorage.getItem("linguadu");
+
+
+if(dados){
+
+
+let salvo=JSON.parse(dados);
+
+
+estado=salvo.estado;
+
+perfil=salvo.perfil;
+
+
+}
+
+
+}
+
+
+carregar();
+
+
+
+
+// =====================================
+// MEDALHAS
+// =====================================
+
+
+const medalhas={
+
+
+primeira:
+
+{
+
+nome:"Primeira Palavra",
+
+icone:"🥉",
+
+descricao:
+"Aprendeu sua primeira frase"
+
+},
+
+
+
+dez:
+
+{
+
+nome:"Aprendiz Francês",
+
+icone:"🥈",
+
+descricao:
+"Conquistou 10 exercícios"
+
+},
+
+
+
+mestre:
+
+{
+
+nome:"Mestre do Francês",
+
+icone:"🥇",
+
+descricao:
+"Completou um nível"
+
+}
+
+
+
+};
+
+
+
+
+
+
+function ganharMedalha(nome){
+
+
+if(!perfil.medalhas.includes(nome)){
+
+
+perfil.medalhas.push(nome);
+
+
+}
+
+
+salvar();
+
+
+}
+
+
+
+
+
+
+// =====================================
+// LOJA DE RECOMPENSAS
+// =====================================
+
+
+const premios=[
+
+
+{
+
+nome:"Bandeira Francesa",
+
+icone:"🇫🇷",
+
+preco:50
+
+},
+
+
+{
+
+nome:"Chapéu Francês",
+
+icone:"🎩",
+
+preco:100
+
+},
+
+
+{
+
+nome:"Torre Eiffel",
+
+icone:"🗼",
+
+preco:200
+
+},
+
+
+{
+
+nome:"Coroa Mestre",
+
+icone:"👑",
+
+preco:500
+
+}
+
+
+];
+
+
+
+
+
+
+function loja(){
+
+
+let app=document.getElementById("app");
+
+
+
+app.innerHTML=`
+
+
+<div class="text-center">
+
+
+<h1 class="
+text-4xl
+font-black
+text-white
+">
+
+🎁 Loja Francês
+
+</h1>
+
+
+
+<p class="
+text-xl
+font-bold
+text-yellow-300
+mt-4
+">
+
+🪙 ${estado.moedas}
+
+</p>
+
+
+
+<div class="
+mt-8
+space-y-4
+">
+
+
+${premios.map((p,i)=>`
+
+
+<div class="
+bg-white
+rounded-3xl
+p-5
+flex
+justify-between
+items-center
+">
+
+
+<div class="text-5xl">
+
+${p.icone}
+
+</div>
+
+
+<div>
+
+
+<h2 class="
+text-xl
+font-black
+">
+
+${p.nome}
+
+</h2>
+
+
+<p>
+
+🪙 ${p.preco}
+
+</p>
+
+
+</div>
+
+
+
+<button
+
+onclick="comprar(${i})"
+
+class="
+bg-blue-700
+text-white
+rounded-2xl
+px-5
+py-3
+font-black
+">
+
+Comprar
+
+</button>
+
+
+</div>
+
+
+`).join("")}
+
+
+
+</div>
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-red-600
+text-white
+rounded-3xl
+px-8
+py-4
+mt-8
+font-black
+">
+
+Voltar
+
+</button>
+
+
+</div>
+
+
+`;
+
+}
+
+
+
+
+function comprar(i){
+
+
+let premio=premios[i];
+
+
+if(estado.moedas>=premio.preco){
+
+
+estado.moedas-=premio.preco;
+
+
+alert(
+"Parabéns! Você ganhou "+premio.nome
+);
+
+
+salvar();
+
+
+}
+
+
+else{
+
+
+alert(
+"Você precisa de mais moedas 🪙"
+);
+
+
+}
+
+
+
+}
+
+
+
+
+// =====================================
+// PERFIL
+// =====================================
+
+
+
+function mostrarPerfil(){
+
+
+let app=document.getElementById("app");
+
+
+
+app.innerHTML=`
+
+
+<div class="
+bg-white
+rounded-3xl
+p-6
+text-center
+">
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-32
+mx-auto
+">
+
+
+<h1 class="
+text-3xl
+font-black
+text-blue-800
+mt-4
+">
+
+${perfil.nome}
+
+</h1>
+
+
+<p class="
+text-xl
+font-bold
+">
+
+Nível:
+
+${estado.nivel}
+
+</p>
+
+
+
+<div class="
+mt-6
+bg-yellow-100
+rounded-3xl
+p-5
+">
+
+
+<h2 class="
+text-2xl
+font-black
+">
+
+Medalhas
+
+</h2>
+
+
+
+<p class="
+text-5xl
+mt-3
+">
+
+${perfil.medalhas.length ?
+
+perfil.medalhas.join(" ")
+
+:
+
+"🔒"}
+
+</p>
+
+
+</div>
+
+
+
+<button
+
+onclick="voltarMenu()"
+
+class="
+bg-blue-700
+text-white
+rounded-3xl
+px-8
+py-4
+mt-6
+font-black
+">
+
+Voltar
+
+</button>
+
+
+</div>
+
+
+`;
+
+}
+
+
+
+
+// =====================================
+// MENU FINAL COM MAIS OPÇÕES
+// =====================================
+
+
+function menuCompleto(){
+
+
+let app=document.getElementById("app");
+
+
+app.innerHTML=`
+
+
+<div class="text-center">
+
+
+<img
+
+src="${desenhos.mascote}"
+
+class="
+w-36
+mx-auto
+animar
+">
+
+
+<h1 class="
+text-5xl
+font-black
+text-white
+">
+
+LinguaDu
+
+</h1>
+
+
+<h2 class="
+text-3xl
+font-black
+text-yellow-300
+">
+
+PRO 🇫🇷
+
+</h2>
+
+
+
+<div class="
+grid
+grid-cols-2
+gap-4
+mt-8
+">
+
+
+<button
+
+onclick="iniciar()"
+
+class="
+bg-green-600
+text-white
+rounded-3xl
+p-5
+text-xl
+font-black
+">
+
+📚 Aula
+
+</button>
+
+
+
+<button
+
+onclick="loja()"
+
+class="
+bg-yellow-500
+rounded-3xl
+p-5
+text-xl
+font-black
+">
+
+🎁 Loja
+
+</button>
+
+
+
+<button
+
+onclick="mostrarPerfil()"
+
+class="
+bg-white
+rounded-3xl
+p-5
+text-xl
+font-black
+">
+
+👤 Perfil
+
+</button>
+
+
+
+<button
+
+class="
+bg-red-600
+text-white
+rounded-3xl
+p-5
+text-xl
+font-black
+">
+
+🏆 Ranking
+
+</button>
+
+
+</div>
+
+
+</div>
+
+`;
+
+}
+
+
+
+
+// SALVAR SEMPRE QUE ALTERAR XP
+
+
+setInterval(()=>{
+
+salvar();
+
+},5000);

@@ -246,5 +246,5 @@ function voltarMenu() {
     renderizar();
 }
 
-// Inicialização inicial
+// Inicializa a aplicação ao carregar
 renderizar();
